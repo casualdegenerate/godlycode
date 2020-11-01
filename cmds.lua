@@ -3,18 +3,25 @@ if not rconsoleprint then
     lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
 end
 
-if not isfolder("cd") then
+if not isfile("cd") then
     lchat("Welcome newcomer!",Color3.new(0,1,0))
     makefolder("cd")
+    repeat wait() until isfile("cd")
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
     writefile("cd/Log.txt","Will be used later to log any errors!")
     makefolder("cd/Cache")
+    repeat wait() until isfile("cd/Cache")
     makefolder("cd/Config")
+    repeat wait() until isfile("cd/Config")
     writefile("cd/Config/cmds.settings","settings = {\n\tservers = {\n\t\tcolorFriends = true,\n\t\tnameOnlyFriends = true,\n\t\tnamePlayers = false,\n\t},\n}")
     makefolder("cd/Downloads")
+    repeat wait() until isfile("cd/Downloads")
     makefolder("cd/Lighting")
+    repeat wait() until isfile("cd/Lighting")
     makefolder("cd/Outfits")
+    repeat wait() until isfile("cd/Outfits")
     makefolder("cd/Scripts")
+    repeat wait() until isfile("cd/Scripts")
 end
 
 local rconsoleprint = function(input,color)
