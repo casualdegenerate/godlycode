@@ -1,3 +1,22 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
+if not rconsoleprint then
+    lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
+end
+
+if not isfolder("cd") then
+    lchat("Welcome newcomer!",Color3.new(0,1,0))
+    makefolder("cd")
+    writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
+    writefile("cd/Log.txt","Will be used later to log any errors!")
+    makefolder("cd/Cache")
+    makefolder("cd/Config")
+    writefile("cd/Config/cmds.settings","settings = {\n\tservers = {\n\t\tcolorFriends = true,\n\t\tnameOnlyFriends = true,\n\t\tnamePlayers = false,\n\t},\n}")
+    makefolder("cd/Downloads")
+    makefolder("cd/Lighting")
+    makefolder("cd/Outfits")
+    makefolder("cd/Scripts")
+end
+
 local rconsoleprint = function(input,color)
     if color then
         rconsoleprint(color)
@@ -11,11 +30,7 @@ end
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
 rconsolename("cmds.lua")
 
-rconsoleprint("Loading API...","@@LIGHT_GRAY@@")
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
-
-rconsoleprint("Loaded API!","@@GREEN@@")
+rconsoleprint("Loaded!","@@GREEN@@")
 local lplr = game:GetService("Players").LocalPlayer
 tchat("Loaded .\\cd\\cmds.lua")
 local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
