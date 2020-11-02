@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.5")
+lchat("2.3.6")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -88,7 +88,7 @@ end
 local cerror = function(input)
     rchat("cd/error/: "..input)
 end
-function GetPlayer(a)local b={}local c=a:lower()if c=="all"then for d,e in pairs(game.Players:GetPlayers())do table.insert(b,e)end elseif c=="others"then for d,e in pairs(game.Players:GetPlayers())do if e.Name~=game.Players.LocalPlayer.Name then table.insert(b,e)end end elseif c=="me"then for d,e in pairs(game.Players:GetPlayers())do if e.Name==game.Players.LocalPlayer.Name then table.insert(b,e)end end else for d,e in pairs(game.Players:GetPlayers())do if e.Name:lower():sub(1,#a)==a:lower()then table.insert(b,e)end end end;if unpack(b) == nil then cwarn("No players in-game goes by that name") end return b end
+function GetPlayer(a)local b={}local c=a:lower()if c=="all"then for d,e in pairs(game.Players:GetPlayers())do table.insert(b,e)end elseif c=="others"then for d,e in pairs(game.Players:GetPlayers())do if e.Name~=game.Players.LocalPlayer.Name then table.insert(b,e)end end elseif c=="me"then for d,e in pairs(game.Players:GetPlayers())do if e.Name==game.Players.LocalPlayer.Name then table.insert(b,e)end end else for d,e in pairs(game.Players:GetPlayers())do if e.Name:lower():sub(1,#a)==a:lower()then table.insert(b,e)end end end;if unpack(b) == nil then rconsoleprint("No players in-game goes by that name. If you are spelling their name right and this still pops up, DM @casual_degenerate#7475 586141923048161291 your issue and they will help.","@@RED@@") end return b end
 
 local CheckGamepass=function(userid,gamepass)
 	local g = game:HttpGet("https://inventory.roblox.com/v1/users/"..tostring(userid).."/items/GamePass/"..tostring(gamepass)):sub(65)
@@ -882,6 +882,11 @@ getgenv().Commands = {
                             if v:IsA("Model") then 
                                 pcall(function()
                                     for i1,v1 in pairs(GetPlayer(args[2])) do 
+                                        if v1 == nil then 
+                                            rconsoleprint("[cmds.lua]: HACKER DOWN! :sunglasses:","@@MAGENTA@@")
+                                            getgenv().annoy = false 
+                                            break 
+                                        end
                                         v.HumanoidRootPart.CFrame = v1.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
                                         rchat("unskydive "..v1.name.." "..v1.Name.." "..v1.Name.." robot.txt")
                                     end 
