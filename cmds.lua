@@ -1401,7 +1401,7 @@ getgenv().Commands = {
                 return
             end
             tchat("Joining GMOD servers be like")
-            wait(.3)
+            wait(.8)
             sword.Parent = lplr.Character
             for i=1,120 do
                 if sword.Parent == nil then
