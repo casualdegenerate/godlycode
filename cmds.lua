@@ -56,7 +56,7 @@ end
 
 
 
-lchat("2.2.11")
+lchat("2.2.12")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -514,11 +514,16 @@ getgenv().Commands = {
         a(osidfje)
         osidfje=nil
     end,
-    ["cd"] = function(args) print(args)
-        if isfile("cd/Lighting/"..args[2]..".lua") then
-            loadstring(readfile("cd/Lighting/"..args[2]..".lua"))()
-        end
-    end,
+    ["cd"] = {
+        description = "You can create a cd in cd/Lighting/name.lua simply just follow the example.lua.... if any....",
+        funk = function(args)
+            if isfile("cd/Lighting/"..args[2]..".lua") then
+                loadstring(readfile("cd/Lighting/"..args[2]..".lua"))()
+            else
+                rconsoleprint("[cmds.lua]: The file does not exist dummy! >:V","@@RED@@")
+            end
+        end,
+    },
     ["outfit"] = {
         description = "Set's cd/Outfits/<args[2]>.cd as your outfit.",
         funk = function(args)
@@ -529,7 +534,6 @@ getgenv().Commands = {
                     local c = listfiles("cd/Outfits")[math.random(1,#listfiles("cd/Outfits"))]
                     local c = c:gsub("\\","/")
                     Outfit=loadstring(readfile(c))()
-                    spawn(function()wait(1)rchat("h "..c:split("/")[3])end)
                 end
             end
             if not reeeeeeee then
@@ -547,14 +551,13 @@ getgenv().Commands = {
                 end
             end
             rchat("unface me")
-            
             for _,v in pairs(Outfit.Hat) do
                 rchat("hat me "..v)
             end
             rchat("shirt me "..Outfit.Shirt)
             rchat("pants me "..Outfit.Pants)
             rchat("face me "..Outfit.Face)
-            if Outfit.Creator then rchat("h "..Outfit.Creator) end
+            if Outfit.Creator then rchat("h "..Outfit.Creator) end --if you wanted to give credit...
         end,
     },
     ["nn"] = function(args)
