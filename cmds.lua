@@ -1387,23 +1387,9 @@ getgenv().Commands = {
     },
     ['antipunish'] = {
         description = "Will make sure you are not punished.",
-        toggle = true,
+        toggle = false,
         funk = function(args)
             if antipunish then getgenv().antipunish = false rconsoleprint("AntiPunish/OFF","@@RED@@") return else getgenv().antipunish = true rconsoleprint("AntiPunish/ON","@@GREEN@@") end
-            fspawn(function()while antipunish do
-                if game:GetService("Lighting"):FindFirstChild(lplr.Name) then
-                    lplr.Character = game:GetService("Workspace")
-                end
-            fwait()end
-            end)
-            fspawn(function()while antipunish do
-                if game:GetService("Lighting"):FindFirstChild(lplr.Name) then
-                    local prev = lplr.Character.HumanoidRootPart.CFrame
-                    rchat("unpunish me robot.txt")
-                    lplr.Character.HumanoidRootPart.CFrame = prev
-                end
-            wait(.1)end
-            end)
         end,
     },
 }
@@ -1514,6 +1500,15 @@ game:GetService("Lighting").ChildAdded:connect(function(c)
     if localunpunish then
         if c == lplr.Character then 
             fwait()c.Parent = game:GetService("Workspace")
+        end
+    end
+    if antipunish then
+        if c.Name == lplr.Name then
+            lplr.Character = game:GetService("Workspace")
+            wait(1)
+            local prev = lplr.Character.HumanoidRootPart.CFrame
+            rchat("unpunish me robot.txt")
+            lplr.Character.HumanoidRootPart.CFrame = prev
         end
     end
 end)
