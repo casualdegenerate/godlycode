@@ -38,7 +38,11 @@ if not isfile("cd") then
 end
 loadstring(readfile("cd/Config/cmds.settings"))()
 
-
+if not isfile("cd/cmds.lua") then
+    writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
+	fspawn(function()loadstring(readfile("cd/cmds.lua"))()end)
+	return
+end
 
 if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") and settings.autoupdate then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
@@ -46,7 +50,9 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.2.9")
+
+
+lchat("2.2.10")
 
 local rconsoleprint = function(input,color)
     if color then
