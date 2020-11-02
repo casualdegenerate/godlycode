@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.6")
+lchat("2.3.7")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -1388,7 +1388,7 @@ getgenv().Commands = {
 fspawn(function()
     while true do
         local args = rconsoleinput():lower():split(" ")
-        if args[1] == "exit" or args[1] == "stop" or args[1] == "restart" or args[1] == "reboot" then break end
+        if args[1] == "exit" or args[1] == "stop" or args[1] == "restart" or args[1] == "reboot" or args[1] == "reload" then break end
         for _,v in pairs(Commands) do
             if type(v) == "function" then
                 if args[1] == _ then
