@@ -29,7 +29,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 end
 
-lchat("oh, new update :D")
+lchat("2.1.1")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -256,17 +256,21 @@ getgenv().antifling=false
 
 
 getgenv().Commands = {
-    ["snipe"] = function(args)
-        args[2] = GetPlayer(args[2])
-        for _,v in pairs(args[2]) do v = v.Name
-            rchat("jail "..v)
-            rchat("ff "..v.." "..v.." "..v)
-            rchat("freeze "..v.." "..v.." "..v)
-            for i=1,2000 do --wait()
-                rchat("explode "..v.." "..v.." "..v)
+    ["snipe"] = {
+        toggle = true, --It's a one command and next. 
+        description = "Test command(copied from Kuzo) will snipe <args2>(plr)",
+        funk = function(args)
+            args[2] = GetPlayer(args[2])
+            for _,v in pairs(args[2]) do v = v.Name
+                rchat("jail "..v)
+                rchat("ff "..v.." "..v.." "..v)
+                rchat("freeze "..v.." "..v.." "..v)
+                for i=1,2000 do --wait()
+                    rchat("explode "..v.." "..v.." "..v)
+                end
             end
-        end
-    end,
+        end,
+    },
     ["regen"] = {
         description = "Presses the regen button(Resets admin pads).",
         funk = function()
@@ -357,35 +361,45 @@ getgenv().Commands = {
         local json = game:GetService("HttpService"):JSONEncode(Punished)
         setclipboard(json)
     end,--]]
-    ["visu"] = function(args)
-        if not Music then Music = true
-            if args[2] ~= nil then rchat("music "..args[2]) end
-            local s = gf.Folder:WaitForChild("Sound",10)
-            while Music do
-                local s = gf.Folder:WaitForChild("Sound")
-                --[[
-                if s.PlaybackLoudness*power/150 > 10 then
-                    spawn(function() --print("HIT")
-                        rchat("fogstart 0")
-                        wait(0.5)
-                        rchat("fix")
-                    end)
+    ["visualize"] = {
+        allies = {"visualizer"--[[lol +r]],"visu"},
+        description = "Visualizer with the sun and moon.",
+        funk = function(args)
+            if not Music then Music = true
+                if args[2] ~= nil then rchat("music "..args[2]) end
+                local s = gf.Folder:WaitForChild("Sound",10)
+                while Music do
+                    local s = gf.Folder:WaitForChild("Sound")
+                    --[[
+                    if s.PlaybackLoudness*power/150 > 10 then
+                        spawn(function() --print("HIT")
+                            rchat("fogstart 0")
+                            wait(0.5)
+                            rchat("fix")
+                        end)
+                    end
+                    --]]
+                    r=tostring(s.PlaybackLoudness*power/150):sub(1,3)
+                    if r~=musiclprev then
+                        getgenv().musiclprev=r
+                        rchat("time "..r)
+                        print("time "..r)
+                    end
+                    wait(tps) 
                 end
-                --]]
-                r=tostring(s.PlaybackLoudness*power/150):sub(1,3)
-                if r~=musiclprev then
-                    getgenv().musiclprev=r
-                    rchat("time "..r)
-                    print("time "..r)
-                end
-                wait(tps) 
             end
-        end
-    end,
-    ["unvisu"] = function(args)
-        Music = false
-        if args[2] == "m" then rchat("music") end
-    end,
+        end,
+    },
+    ["unvisualize"] = {
+        allies = {"unvisualizer"--[[lol +r]],"unvisu"},
+        description = "Turns off visualizer.",
+        funk = function(args)
+            Music = false
+            if args[2] == "m" then 
+                rchat("stopmusic") 
+            end
+        end,
+    },
     ["con"] = function(args)
         if args[2] == "pow" and args[3] ~= nil then
             getgenv().power = tonumber(args[3])
