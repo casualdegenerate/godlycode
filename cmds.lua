@@ -46,7 +46,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.2.4")
+lchat("2.2.5")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -310,16 +310,19 @@ getgenv().Commands = {
         description = "Keeps a person punished.",
         toggle = true,
         funk = function(args)
-            args[2] = GetPlayer(args[2])
-            for _,v in pairs(args[2]) do
-                table.insert(Punished,v.UserId,true)
-                pcall(function()
-                    while Punished[v.UserId] do wait(0.3)
-                        if v.Character.Parent ~= game:GetService("Lighting") then
-                            rchat("punish "..v.Name)
+            if args[2] then
+                for _,v in pairs(GetPlayer(args[2])) do
+                    table.insert(Punished,v.UserId,true)
+                    pcall(function()
+                        while Punished[v.UserId] do wait(0.3)
+                            if v.Character.Parent ~= game:GetService("Lighting") then
+                                rchat("punish "..v.Name)
+                            end
                         end
-                    end
-                end)
+                    end)
+                end
+            else
+                rconsoleprint("[cmds.lua]: You need to add a player name b-baka! >_<","@@RED@@")
             end
         end,
     },
@@ -327,10 +330,13 @@ getgenv().Commands = {
         allies = {"unpp"},
         description = "Will unpermpunish the player.",
         funk = function(args)
-            args[2] = GetPlayer(args[2])
-            for _,v in pairs(args[2]) do
-                Punished[v.UserId]=nil
-                wait()rchat("unpunish "..v.Name)
+            if args[2] then
+                for _,v in pairs(GetPlayer(args[2])) do
+                    Punished[v.UserId]=nil
+                    wait()rchat("unpunish "..v.Name)
+                end
+            else
+                rconsoleprint("[cmds.lua]: You need to add a player name b-baka! >_<","@@RED@@")
             end
         end,
     },
