@@ -201,7 +201,9 @@ end
 if unguly then
     getgenv().unguly = false
 end
-
+if antipunish then
+    getgenv().antipunish = false
+end
 
 
 
