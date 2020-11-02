@@ -43,7 +43,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 end
 
-lchat("2.2.3")
+lchat("2.2.4")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -835,7 +835,11 @@ getgenv().Commands = {
         toggle = true,
         funk = function(args)
             if antifling then getgenv().antifling = false else getgenv().antifling = true end
-            lchat("[Admin]: Antifling/"..tostring(antifling))
+            if antifling == true then
+				rconsoleprint("Antifling/On","@@GREEN@@)
+			else
+				rconsoleprint("Antifling/Off","@@RED@@")
+			end
             while antifling do
                 local h = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart",2)
                 if h then
