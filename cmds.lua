@@ -57,7 +57,7 @@ end
 
 
 
-lchat("2.2.14")
+lchat("2.2.15")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -454,68 +454,71 @@ getgenv().Commands = {
             end
         end,
     },
-    ["mimic"] = function(args)
-        local a = function(id)
-            local h = game:HttpGet("https://avatar.roblox.com/v1/users/"..tostring(id).."/avatar")
-            local j = game:GetService("HttpService"):JSONDecode(h)
-            local hats = {8}
-            for i=41,47 do 
-                table.insert(hats,i)
-            end
-            local content={{}}
-            for _,v in pairs(j.assets) do
-                for k,f in pairs(hats) do
-                    if v.assetType.id == f then
-                        table.insert(content[1],v.id)
+    ["mimic"] = {
+        description = "<args2>(plr) <extra>(+e) Will make you look exactly like the person by removing your hats and only having theirs.",
+        funk = function(args)
+            local a = function(id)
+                local h = game:HttpGet("https://avatar.roblox.com/v1/users/"..tostring(id).."/avatar")
+                local j = game:GetService("HttpService"):JSONDecode(h)
+                local hats = {8}
+                for i=41,47 do 
+                    table.insert(hats,i)
+                end
+                local content={{}}
+                for _,v in pairs(j.assets) do
+                    for k,f in pairs(hats) do
+                        if v.assetType.id == f then
+                            table.insert(content[1],v.id)
+                        end
+                    end
+                    if v.assetType.name == "Shirt" then
+                        content[2] = v.id
+                    elseif v.assetType.name == "Pants" then
+                        content[3] = v.id
+                    elseif v.assetType.name == "Face" then
+                        content[4] = v.id
                     end
                 end
-                if v.assetType.name == "Shirt" then
-                    content[2] = v.id
-                elseif v.assetType.name == "Pants" then
-                    content[3] = v.id
-                elseif v.assetType.name == "Face" then
-                    content[4] = v.id
-                end
-            end
-            for _,v in pairs(content) do
-                if _ == 1 then
-                    for o,p in pairs(v) do
-                        rchat("hat me "..p)
+                for _,v in pairs(content) do
+                    if _ == 1 then
+                        for o,p in pairs(v) do
+                            rchat("hat me "..p)
+                        end
+                    elseif _ == 2 then
+                        rchat("shirt me "..v)
+                    elseif _ == 3 then
+                        rchat("pants me "..v)
+                    elseif _ == 4 then
+                        rchat("unface me")
+                        rchat("face me "..v)
                     end
-                elseif _ == 2 then
-                    rchat("shirt me "..v)
-                elseif _ == 3 then
-                    rchat("pants me "..v)
-                elseif _ == 4 then
-                    rchat("unface me")
-                    rchat("face me "..v)
                 end
             end
-        end
-        for _,u in pairs(args) do dprint("args check",u)
-            if u:find("+e") then dprint("+E")
-                rchat("unshirt me")
-                rchat("unpants me")
-                rchat("unhat me")
-            end
-            if u:find("+f") then dprint("+F")
-                if tonumber(args[2]) ~= nil then
-                    osidfje = args[2]
-                else
-                    local h = Fetch.Get("https://api.roblox.com/users/get-by-username?username="..args[2])
-                    local j = JSOND(h)
-                    osidfje = j.Id
+            for _,u in pairs(args) do 
+                if u:find("+e") then 
+                    rchat("unshirt me")
+                    rchat("unpants me")
+                    rchat("unhat me")
+                end
+                if u:find("+f") then
+                    if tonumber(args[2]) ~= nil then
+                        osidfje = args[2]
+                    else
+                        local h = Fetch.Get("https://api.roblox.com/users/get-by-username?username="..args[2])
+                        local j = JSOND(h)
+                        osidfje = j.Id
+                    end
                 end
             end
-        end
-        if not osidfje then print("no osidfje")
-            for _,v in pairs(GetPlayer(args[2])) do
-                osidfje = v.UserId
+            if not osidfje then print("no osidfje")
+                for _,v in pairs(GetPlayer(args[2])) do
+                    osidfje = v.UserId
+                end
             end
-        end
-        a(osidfje)
-        osidfje=nil
-    end,
+            a(osidfje)
+            osidfje=nil
+        end,
+    },
     ["cd"] = {
         description = "You can create a cd in cd/Lighting/name.lua simply just follow the example.lua.... if any....",
         funk = function(args)
@@ -598,15 +601,23 @@ getgenv().Commands = {
         end end
         end
     end,
-    ["csl"] = function()
-        local output=""
-        for _,v in pairs(GetPlayer("all")) do
-            output = output..v.Name..";"
-        end
-        setclipboard(output)
-    end,
+    ["copyplayerlist"] = {
+        allies = {"cpl"},
+        description = "Copies the playerlist in your clipboard!(useful if you don't know how to type a player name and you want to copy their username",
+        funk = function()
+            local output=""
+            for _,v in pairs(GetPlayer("all")) do
+                output = output..v.Name..";"
+            end
+            setclipboard(output)
+        end,
+    },
     ["logsscramble"] = function()
-        if logsscramble then logsscramble=false else logsscramble=true end
+        if logsscramble then 
+            logsscramble=false 
+        else 
+            logsscramble=true 
+        end
     end,
     ["cdcommands"] = function()
         local index = 0
@@ -639,30 +650,34 @@ getgenv().Commands = {
 
         rchat("music "..s..msg:sub(1,msg:len()-1).."\n")
     end,
-    ["fix"] = function(args)
-        if args[2] == "speed" then
-            if fix.speed == false then fix.speed = true else fix.speed = false end
-            if args[3] == nil then args[3] = 16 end
-            fspawn(function()
-                while fix.speed do fwait()
-                    if lplr.Character.Humanoid.WalkSpeed ~= args[3] then lplr.Character.Humanoid.WalkSpeed = args[3] end
-                end
-            end)
-        --[[elseif args[2] == "anchor" then
-            if args[3] == nil or args[3] == "1" then args[3] = 
-            
-        elseif args[2] == "cam" then
-            for _v, in pairs(game:GetService("Workspace").Camera:GetChildren()) do 
-                if v.Name == "GrayScale" then
-                    v.Parent = nil
-                end
-            end--]]
-        end
-    end,
+    ["fix"] = {
+        allies = {"fixed"},
+        description = "<args2>(speed) <args3>(number) will make you at a fixed speed.",
+        funk = function(args)
+            if args[2] == "speed" then
+                if fix.speed == false then fix.speed = true else fix.speed = false end
+                if args[3] == nil then args[3] = 16 end
+                fspawn(function()
+                    while fix.speed do fwait()
+                        if lplr.Character.Humanoid.WalkSpeed ~= args[3] then lplr.Character.Humanoid.WalkSpeed = args[3] end
+                    end
+                end)
+            --[[elseif args[2] == "anchor" then
+                if args[3] == nil or args[3] == "1" then args[3] = 
+                
+            elseif args[2] == "cam" then
+                for _v, in pairs(game:GetService("Workspace").Camera:GetChildren()) do 
+                    if v.Name == "GrayScale" then
+                        v.Parent = nil
+                    end
+                end--]]
+            end
+        end,
+    },
     ---[[
     ["cache"] = {
         --allies = {"rj"},
-        description = "Will download the player's entire outfits list and check if they have an email on that player. ",
+        description = "Will download the <args2>(plr)'s entire outfits list and check if they have an email on that account(Just because it says they are unverified it is not 100% but if it's verified it's 100%).",
         funk = function(args)
             local eh = function(idname,userid,plr)local idname, userid = tostring(idname), tostring(userid) 
                 fspawn(function()if hasAsset(userid,102611803) == "true" then
@@ -809,49 +824,60 @@ getgenv().Commands = {
     end,
     --]]
 ---]]
-    ["dcache"] = function(args)
-        --local f = "<meta property=\"og:image\" content=\"https://t0.rbxcdn.com/"
-        for _,v in pairs(GetPlayer(args[2])) do dprint(v) local id = tostring(tick())
-            makefolder("cd/Downloads/"..tostring(v.UserId).." "..v.Name)
-            --repeat wait() until 
-            if v.Character:FindFirstChild("Shirt") then dprint('shirt') local s = v.Character.Shirt.ShirtTemplate:sub(33,v.Character.Shirt.ShirtTemplate:len()) dprint(s)
-                local s = Fetch.Get("https://assetdelivery.roblox.com/v1/asset/?id="..s)
-                --wait(1) --[[Tried to use waits() to minmalize dataloss]]
-                writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Shirt"..".png",s)
-            else
-                writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Shirt"..".png","")
-            end
-            if v.Character:FindFirstChild("Pants") then dprint('pants') local p = v.Character.Pants.PantsTemplate:sub(33,v.Character.Pants.PantsTemplate:len()) dprint(p)
-                local p = Fetch.Get("https://assetdelivery.roblox.com/v1/asset/?id="..p)
-                --wait(1)
-                writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Pants"..".png",p)
-            else
-                writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Pants"..".png","")
-            end
-        end
-    end,
-    ["ro"] = function(args)
-        if Workspace.Terrain._Game.Workspace.Obby:FindFirstChild("Jump1") then
-            for _,v in pairs(Workspace.Terrain._Game.Workspace.Obby:GetChildren()) do
-                if v:FindFirstChild("TouchInterest") then
-                    v.TouchInterest:Destroy()
+    ["dcache"] = {
+        description = "NOTE THIS WON'T ALWAYS WORK AND WILL SOMETIMES FAIL! Will download the <args2>(plr)'s outfit they are CURRENTLY wearing.",
+        funk = function(args)
+            --local f = "<meta property=\"og:image\" content=\"https://t0.rbxcdn.com/"
+            for _,v in pairs(GetPlayer(args[2])) do dprint(v) local id = tostring(tick())
+                makefolder("cd/Downloads/"..tostring(v.UserId).." "..v.Name)
+                --repeat wait() until 
+                if v.Character:FindFirstChild("Shirt") then dprint('shirt') local s = v.Character.Shirt.ShirtTemplate:sub(33,v.Character.Shirt.ShirtTemplate:len()) dprint(s)
+                    local s = Fetch.Get("https://assetdelivery.roblox.com/v1/asset/?id="..s)
+                    --wait(1) --[[Tried to use waits() to minmalize dataloss]]
+                    writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Shirt"..".png",s)
+                else
+                    writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Shirt"..".png","")
+                end
+                if v.Character:FindFirstChild("Pants") then dprint('pants') local p = v.Character.Pants.PantsTemplate:sub(33,v.Character.Pants.PantsTemplate:len()) dprint(p)
+                    local p = Fetch.Get("https://assetdelivery.roblox.com/v1/asset/?id="..p)
+                    --wait(1)
+                    writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Pants"..".png",p)
+                else
+                    writefile("cd/Downloads/"..tostring(v.UserId).." "..v.Name.."/"..id.." Pants"..".png","")
                 end
             end
-        --[[else
-            for _,v in pairs(cd:GetChildren()) do
-                v.Parent = Workspace.Terrain._Game.Workspace.Obby
-            end--]]
-        end
-    end,
+        end,
+    },
+    ["ro"] = {
+        funk = function(args)
+            if Workspace.Terrain._Game.Workspace.Obby:FindFirstChild("Jump1") then
+                for _,v in pairs(Workspace.Terrain._Game.Workspace.Obby:GetChildren()) do
+                    if v:FindFirstChild("TouchInterest") then
+                        v.TouchInterest:Destroy()
+                    end
+                end
+            --[[else
+                for _,v in pairs(cd:GetChildren()) do
+                    v.Parent = Workspace.Terrain._Game.Workspace.Obby
+                end--]]
+            end
+        end,
+    },
     ["freeze"] = {
         allies = {"anticheat"},
-        description = "Freezes everyone",
+        description = "Freezes everyone(you can type an 2nd arg for a player's name, please note it does not use the getplayer function so what you type in the 2nd argument will be cas and stay as cas and not be changed to CasualDegenerate).",
         toggle = true,
         funk = function(args)
             if annoy then getgenv().annoy = false return else getgenv().annoy = true
-                while annoy do 
-                    rchat("unskydive others others others robot.txt")
-                wait()end
+                if args[2] then
+                    while annoy do 
+                        rchat("unskydive "..args[2]..args[2]..args[2].." robot.txt")
+                    wait()end
+                else
+                    while annoy do 
+                        rchat("unskydive others others others robot.txt")
+                    wait()end
+                end
             end
         end,
     },
