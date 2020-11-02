@@ -26,6 +26,7 @@ if not isfile("cd") then
     autoupdate = true,
 }]]
 )
+    writefile("cd/Config/Music.txt","5580376560\n5833642888\n1064109642\n535308988\n554711853")
     makefolder("cd/Downloads")
     repeat wait() until isfile("cd/Downloads")
     makefolder("cd/Lighting")
