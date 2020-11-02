@@ -57,7 +57,7 @@ end
 
 
 
-lchat("2.2.13")
+lchat("2.2.14")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -850,7 +850,7 @@ getgenv().Commands = {
         funk = function(args)
             if annoy then getgenv().annoy = false return else getgenv().annoy = true
                 while annoy do 
-                    rchat("unskydive all all all robot.txt")
+                    rchat("unskydive others others others robot.txt")
                 wait()end
             end
         end,
