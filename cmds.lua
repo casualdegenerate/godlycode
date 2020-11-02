@@ -57,7 +57,7 @@ end
 
 
 
-lchat("2.3.1")
+lchat("2.3.2")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -1357,6 +1357,13 @@ getgenv().Commands = {
             end
         end,
     },
+    ["fart"] = {
+        funk = function(args)
+            rchat("music "..antilogger1.."4809574295")
+            wait(0.7)
+            rchat("stopmusic")
+        end,
+    }
 }
 
 fspawn(function()
