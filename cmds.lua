@@ -57,7 +57,7 @@ end
 
 
 
-lchat("2.3.2")
+lchat("2.3.3")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -1028,7 +1028,7 @@ getgenv().Commands = {
         funk = function(args)
             local song = songs[math.random(1,#songs)]
             rchat("music "..song)
-            rconsoleprint("Playing "..gpi(song).Name.." |[cd.lua]: ^-^")
+            rconsoleprint("[cd.lua]: Enjoy! ^-^ Playing "..gpi(song).Name)
         end,
     },
     ["clear"] = {
@@ -1360,7 +1360,7 @@ getgenv().Commands = {
     ["fart"] = {
         funk = function(args)
             rchat("music "..antilogger1.."4809574295")
-            wait(0.7)
+            wait(1.3)
             rchat("stopmusic")
         end,
     }
