@@ -1537,7 +1537,7 @@ fspawn(function()
         if State == Enum.TeleportState.InProgress then
             syn.queue_on_teleport("loadstring(readfile(\"cd/cmds.lua\"))()")
         elseif State == Enum.TeleportState.Failed then
-            rchat("h [cmds.lua]: Serverhop failed!")
+            rchat("h [cmds.lua]: Failed!? Server is full! Oh no!")
         end
     end)
     for i,connection in pairs(getconnections(lplr.OnTeleport)) do
