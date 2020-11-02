@@ -3,6 +3,7 @@ repeat wait() until game:GetService("ReplicatedStorage").DefaultChatSystemChatEv
 loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
 if not rconsoleprint then
     lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
+    return
 end
 
 if not isfile("cd") then
@@ -36,10 +37,9 @@ if not isfile("cd") then
     makefolder("cd/Scripts")
     repeat wait() until isfile("cd/Scripts")
 end
-
 loadstring(readfile("cd/Config/cmds.settings"))()
 
-if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") and settings.auto.update then
+if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 end
 
@@ -52,7 +52,7 @@ local rconsoleprint = function(input,color)
         rconsoleprint("@@WHITE@@")
     end
     rconsoleprint(input.."\n")
-    wait()
+    fwait()
     rconsoleprint("@@WHITE@@")
 end
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -88,6 +88,7 @@ local hasAsset = function(userId,assetId)
     return h
 end
 
+--[[Will use in new logs patch when it works...
 function filt(txt)local o=''
     local t=tick()
     local ok='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.,;:{}()^*~\\/!"#¤%&=?><|€'
@@ -108,7 +109,9 @@ function filt(txt)local o=''
     end
     return o,tick()-t
 end
+--]]
 
+--GPI is an acronym for GetProductInfo
 local gpi = function(id)
     return game:GetService("MarketplaceService"):GetProductInfo(id)
 end
@@ -118,12 +121,12 @@ end
 local antilogger1 = "000000000000"
 local gf=game:GetService("Workspace").Terrain._Game
 local camera = game:GetService("Workspace").Camera
-local VS = camera.ViewportSize
+local VS = camera.ViewportSize --This is used to make the patched logs the 'right size' when using it. 
 
 
 
 
-
+--This is why I prefer SynX.
 if lplrPG then
     getgenv().lplrPG:Disable()
 end
@@ -213,43 +216,11 @@ getgenv().bypassmusic = {
     "5515902212",
     "5650070170",
 
-
-
-
-
-
 }
 
-getgenv().hentai = {
-    5707097328,
+getgenv().hentai = {5707097328}
+getgenv().songs = readfile("cd/Config/Music.txt"):split("\n")
 
-}
-
-getgenv().songs = {
-    5580376560,
---removed?    5833642888,
-    1064109642,
-    535308988,
-    554711853,
-    4647728904,
-    4824258129,
-    510033671,
-    5672089024,
-    5423486195,
-    1405220513,
-    4977705884,
-    4751470861,
-    160774530,
-    3189491216,
-
-
-
-
-
-}
-getgenv().funnies = {
-    359774781,
-}
 getgenv().fix = {
     speed = false
 }
