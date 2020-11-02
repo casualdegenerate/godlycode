@@ -1401,6 +1401,7 @@ getgenv().Commands = {
                 return
             end
             tchat("Joining GMOD servers be like")
+            wait(.3)
             sword.Parent = lplr.Character
             for i=1,120 do
                 if sword.Parent == nil then
@@ -1409,6 +1410,7 @@ getgenv().Commands = {
                 end
                 sword.Handle.Unsheath:Play()
             fwait()end
+            sword:Destroy()
         end,
     },
 }
