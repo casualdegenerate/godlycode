@@ -46,7 +46,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.2.7")
+lchat("2.2.9")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -63,9 +63,11 @@ rconsolename("cmds.lua")
 
 rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
 local lplr = game:GetService("Players").LocalPlayer
-tchat("Loaded .\\cd\\cmds.lua")
+if not kek then 
+    tchat("Loaded .\\cd\\cmds.lua") 
+end
 local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
-getgenv().kekk=true
+getgenv().kek=true
 debug = true
 function dprint(t)if debug then print(t)end end
 local Fetch = {}
@@ -1445,7 +1447,9 @@ fspawn(function()
 end)
 --]]
 fspawn(function()
-    rchat("particle me c")
+    if not kek then 
+        rchat("particle me c")
+    end
 end)
 
 fspawn(function()
