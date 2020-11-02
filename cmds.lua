@@ -870,25 +870,23 @@ getgenv().Commands = {
         funk = function(args)
             if annoy then getgenv().annoy = false return else getgenv().annoy = true
                 if args[2] then
-                    while annoy do 
-                        fspawn(function()
-                            rchat("clone all")wait()
-                            for i=1,360 do
-                                sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
-                                setsimulationradius(1e308)
-                                for _,v in pairs(gf.Folder:GetChildren()) do
-                                    if v:IsA("Model") then 
-                                        pcall(function()
-                                            for i1,v1 in pairs(GetPlayer(args[2])) do 
-                                                v.HumanoidRootPart.CFrame = v1.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
-                                            end 
-                                        end)
-                                    end
+                    fspawn(function()
+                        rchat("clone all")wait()
+                        for i=1,360 do
+                            sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
+                            setsimulationradius(1e308)
+                            for _,v in pairs(gf.Folder:GetChildren()) do
+                                if v:IsA("Model") then 
+                                    pcall(function()
+                                        for i1,v1 in pairs(GetPlayer(args[2])) do 
+                                            v.HumanoidRootPart.CFrame = v1.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
+                                        end 
+                                    end)
                                 end
-                            fwait()end
-                        end)
-                        rchat("unskydive "..args[2]..args[2]..args[2].." robot.txt")
-                    wait()end
+                            end
+                        fwait()end
+                    end)
+                    rchat("unskydive "..args[2]..args[2]..args[2].." robot.txt")
                 else
                     while annoy do 
                         rchat("unskydive others others others robot.txt")
