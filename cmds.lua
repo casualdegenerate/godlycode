@@ -15,7 +15,18 @@ if not isfile("cd") then
     repeat wait() until isfile("cd/Cache")
     makefolder("cd/Config")
     repeat wait() until isfile("cd/Config")
-    writefile("cd/Config/cmds.settings","settings = {\n\tservers = {\n\t\tcolorFriends = true,\n\t\tnameOnlyFriends = true,\n\t\tnamePlayers = false,\n\t},\n}")
+    writefile("cd/Config/cmds.settings",
+[[settings = {
+    servers = {
+        colorFriends = true,
+        nameOnlyFriends = true,
+        namePlayers = false,
+    },
+    auto = {
+        update = true,
+    },
+}]]
+)
     makefolder("cd/Downloads")
     repeat wait() until isfile("cd/Downloads")
     makefolder("cd/Lighting")
@@ -25,11 +36,14 @@ if not isfile("cd") then
     makefolder("cd/Scripts")
     repeat wait() until isfile("cd/Scripts")
 end
-if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") then
+
+loadstring(readfile("cd/Config/cmds.settings"))()
+
+if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") and settings.auto.update then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 end
 
-lchat("2.1.1")
+lchat("2.2.0")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -99,7 +113,7 @@ local gpi = function(id)
     return game:GetService("MarketplaceService"):GetProductInfo(id)
 end
 
-loadstring(readfile("cd/Config/cmds.settings"))()
+
 
 local antilogger1 = "000000000000"
 local gf=game:GetService("Workspace").Terrain._Game
@@ -407,9 +421,12 @@ getgenv().Commands = {
             getgenv().tps = tonumber(args[3])
         end
     end,
-    ["cn"] = function()
-        charnil=true
-    end,
+    ["cn"] = {
+        --description = "Will hide your character until you toggle it o",
+        funk = function()
+            charnil=true
+        end,
+    },
     ["uncn"] = function()
         selfNil:Disable()
     end,
@@ -603,7 +620,7 @@ getgenv().Commands = {
         rchat("music "..space:rep(200)..command.."\nIndex: "..index)
     end,
     ["bypass"] = function()
-        rchat("music 000000000000"..bypassmusic[math.random(1,#bypassmusic)])
+        rchat("music "..antilogger1..bypassmusic[math.random(1,#bypassmusic)])
     end,
     ["cd-a"] = function()
         local s = ""
