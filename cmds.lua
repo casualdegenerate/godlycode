@@ -23,9 +23,7 @@ if not isfile("cd") then
         nameOnlyFriends = true,
         namePlayers = false,
     },
-    auto = {
-        update = true,
-    },
+    autoupdate = true,
 }]]
 )
     makefolder("cd/Downloads")
