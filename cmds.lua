@@ -1060,6 +1060,8 @@ getgenv().Commands = {
         description = "Doxxes casual's own discord in-game chat.",
         funk = function(args)
             tchat("h @casual_degenerate#7475")
+            rchat("h @casual_degenerate")
+            rchat("h #7475")
             rchat("m Check logs for my # if it's tagged.")
         end,
     },
