@@ -860,16 +860,18 @@ getgenv().Commands = {
         end,
     },
     ["pads"] = {
-        allies = {"l"},
+        --allies = {"l"},
         description = "Takes pads.",
         toggle = true,
         funk = function(args)
             if autopads then 
+                rconsoelprint("Pads/Off","@@RED@@")
                 getgenv().autopads = false
                 wait(1)
                 fireclickdetector(game:GetService("Workspace").Terrain["_Game"].Admin.Regen.ClickDetector)
                 return 
             else 
+                rconsoleprint("Pads/On","@@GREEN@@")
                 getgenv().autopads = true 
             end
             while autopads do
@@ -884,7 +886,7 @@ getgenv().Commands = {
                                 firetouchinterest(hit,v.Head,0)
                             end
                         else
-                            cwarn("local player head does not exist? lol??")
+                            rconsoleprint("[cmds.lua]: local player head does not exist? lol??","@@RED@@")
                         end
                     end
                 end
@@ -988,7 +990,7 @@ getgenv().Commands = {
     },
     ["discord"] = {
         allies = {"disc","d"},
-        description = "Doxxes your own discord in-game chat.",
+        description = "Doxxes casual's own discord in-game chat.",
         funk = function(args)
             tchat("h @casual_degenerate#7475")
             rchat("m Check logs for my # if it's tagged.")
