@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.7")
+lchat("2.3.8")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -1381,6 +1381,27 @@ getgenv().Commands = {
                     lplr.Character["Realistic Head"]:Remove()
                 end
             fwait()end
+        end,
+    },
+    ['antipunish'] = {
+        description = "Will make sure you are not punished.",
+        toggle = true,
+        funk = function(args)
+            if antipunish then getgenv().antipunish = false rconsoleprint("AntiPunish/OFF","@@RED@@") return else getgenv().antipunish = true rconsoleprint("AntiPunish/ON","@@GREEN@@") end
+            fspawn(function()while antipunish do
+                if game:GetService("Lighting"):FindFirstChild(lplr.Character) then
+                    lplr.Character = game:GetService("Workspace")
+                end
+            fwait()end
+            end)
+            fspawn(function()while antipunish do
+                if game:GetService("Lighting"):FindFirstChild(lplr.Character) then
+                    local prev = lplr.Character.HumanoidRootPart.CFrame
+                    rchat("unpunish me robot.txt")
+                    lplr.Character.HumanoidRootPart.CFrame = prev
+                end
+            wait(.1)end
+            end)
         end,
     },
 }
