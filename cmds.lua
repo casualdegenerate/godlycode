@@ -643,7 +643,7 @@ getgenv().Commands = {
         allies = {"c"},
         description = "Will talk over people's screen's(w/ filter ofc)",
         funk = function(args)
-            local s = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"..lplr.Name..": "
+            local s = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
             local msg = ""
             local nw = "\n"
             for _,v in pairs(args) do
