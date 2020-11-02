@@ -113,7 +113,7 @@ end
 
 --GPI is an acronym for GetProductInfo
 local gpi = function(id)
-    return game:GetService("MarketplaceService"):GetProductInfo(id)
+    return game:GetService("MarketplaceService"):GetProductInfo(tonumber(id))
 end
 
 
