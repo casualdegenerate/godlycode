@@ -882,7 +882,7 @@ getgenv().Commands = {
                             if v:IsA("Model") then 
                                 pcall(function()
                                     for i1,v1 in pairs(GetPlayer(args[2])) do 
-                                        if v1 == nil then 
+                                        if unpack(GetPlayer(args[2])) == nil then 
                                             rconsoleprint("[cmds.lua]: HACKER DOWN! :sunglasses:","@@MAGENTA@@")
                                             getgenv().annoy = false 
                                             break 
