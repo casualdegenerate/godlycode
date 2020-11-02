@@ -1291,10 +1291,10 @@ getgenv().Commands = {
         toggle = true, -- so it goes down before i rejoin.
         funk = function(args)
             if args[2] == nil then
-                rconsoleprint("[cd.lua]: Hhhhh! You have to add a server GUID you idiot! >_<")
+                rconsoleprint("[cd.lua]: Hhhhh! You have to add <args2>(server GUID) you idiot! >_<")
             else
-                rchat("h "..args[2])
-                wait(0.3)
+                rchat("h GUID "..args[2])
+                wait(0.5)
                 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, args[2])
             end
         end
