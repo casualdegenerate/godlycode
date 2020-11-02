@@ -39,7 +39,9 @@ if not isfile("cd") then
 end
 loadstring(readfile("cd/Config/cmds.settings"))()
 
-if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") and settings.auto.update then
+
+
+if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") and settings.autoupdate then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 	fspawn(function()loadstring(readfile("cd/cmds.lua"))()end)
 	return
