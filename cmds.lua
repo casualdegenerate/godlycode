@@ -876,7 +876,7 @@ getgenv().Commands = {
         description = "Freezes everyone(you can type an 2nd arg for a player's name since their might be a secret with it.)",
         toggle = true,
         funk = function(args)
-            if annoy then getgenv().annoy = false return else getgenv().annoy = true
+            if annoy then getgenv().annoy = false rchat("stopmusic") return else getgenv().annoy = true
                 if args[2] then
                     rchat("clone all")wait()
                     while annoy do
