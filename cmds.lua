@@ -57,7 +57,7 @@ end
 
 
 
-lchat("2.3.0")
+lchat("2.3.1")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -645,12 +645,15 @@ getgenv().Commands = {
         funk = function(args)
             local s = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"..lplr.Name..": "
             local msg = ""
+            local nw = "\n"
             for _,v in pairs(args) do
                 if _ ~= 1 then
                     msg = msg..v.." "
                 end
             end
-            rchat("h "..s..msg)
+            for i=1,4 do
+                rchat("h "..s..nw:rep(i)..msg)
+            end
         end,
     },
     ["fix"] = {
