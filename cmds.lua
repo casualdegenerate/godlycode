@@ -639,17 +639,20 @@ getgenv().Commands = {
         end
         rchat("music "..s)
     end,
-    ["c"] = function(args)
-        local s = "cd/COM/robot.txt\n"..lplr.Name..": "
-        local msg = ""
-        for _,v in pairs(args) do
-            if _ ~= 1 then
-                msg = msg..v.." "
+    ["chat"] = {
+        allies = {"c"},
+        description = "Will talk over people's screen's(w/ filter ofc)",
+        funk = function(args)
+            local s = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"..lplr.Name..": "
+            local msg = ""
+            for _,v in pairs(args) do
+                if _ ~= 1 then
+                    msg = msg..v.." "
+                end
             end
-        end
-
-        rchat("music "..s..msg:sub(1,msg:len()-1).."\n")
-    end,
+            rchat("h "..s..msg)
+        end,
+    },
     ["fix"] = {
         allies = {"fixed"},
         description = "<args2>(speed) <args3>(number) will make you at a fixed speed.",
