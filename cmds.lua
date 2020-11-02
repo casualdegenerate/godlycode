@@ -1392,6 +1392,25 @@ getgenv().Commands = {
             if antipunish then getgenv().antipunish = false rconsoleprint("AntiPunish/OFF","@@RED@@") return else getgenv().antipunish = true rconsoleprint("AntiPunish/ON","@@GREEN@@") end
         end,
     },
+    ["gmod"] = {
+        funk = function(args)
+            rchat("sword me")
+            local sword = lplr.Backpack:WaitForChild("LinkedSword",5)
+            if sword == nil then
+                rconsoleprint("Sword still does not exist?","@@RED@@")
+                return
+            end
+            tchat("Joining GMOD servers be like")
+            sword.Parent = lplr.Character
+            for i=1,120 do
+                if sword.Parent == nil then
+                    rconsoleprint("Sword was removed during bit","@@YELLOW@@")
+                    break 
+                end
+                sword.Handle.Unsheath:Play()
+            fwait()end
+        end,
+    },
 }
 
 fspawn(function()
