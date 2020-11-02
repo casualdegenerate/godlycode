@@ -57,7 +57,7 @@ end
 
 
 
-lchat("2.2.15")
+lchat("2.2.16")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -1185,21 +1185,29 @@ getgenv().Commands = {
             end)
             for _,server in pairs(h.data) do
                 if args[2] == server.id then 
-                    if server.fps > 50 then
-                        rconsoleprint("FPS: "..server.fps,"@@GREEN@@")
-                    elseif server.fps < 49 and server.fps > 30 then
-                        rconsoleprint("FPS: "..server.fps,"@@LIGHT_RED@@")
-                    elseif server.fps < 29 then
-                        rconsoleprint("FPS: "..server.fps,"@@RED@@")
+                    if server.fps then
+                        if server.fps > 50 then
+                            rconsoleprint("FPS: "..server.fps,"@@GREEN@@")
+                        elseif server.fps < 49 and server.fps > 30 then
+                            rconsoleprint("FPS: "..server.fps,"@@LIGHT_RED@@")
+                        elseif server.fps < 29 then
+                            rconsoleprint("FPS: "..server.fps,"@@RED@@")
+                        end
+                    else
+                        rconsoleprint("FPS: Undefined?","@@MAGENTA@@")
                     end
-                    if server.ping < 49 then
-                        rconsoleprint("Ping: "..server.ping,"@@GREEN@@")
-                    elseif server.ping > 50 and server.ping < 99 then
-                        rconsoleprint("Ping: "..server.ping,"@@YELLOW@@")
-                    elseif server.ping > 100 and server.ping < 199 then
-                        rconsoleprint("Ping: "..server.ping,"@@LIGHT_RED@@")
-                    elseif server.ping > 200 then
-                        rconsoleprint("Ping: "..server.ping,"@@RED@@")
+                    if server.ping then
+                        if server.ping < 49 then
+                            rconsoleprint("Ping: "..server.ping,"@@GREEN@@")
+                        elseif server.ping > 50 and server.ping < 99 then
+                            rconsoleprint("Ping: "..server.ping,"@@YELLOW@@")
+                        elseif server.ping > 100 and server.ping < 199 then
+                            rconsoleprint("Ping: "..server.ping,"@@LIGHT_RED@@")
+                        elseif server.ping > 200 then
+                            rconsoleprint("Ping: "..server.ping,"@@RED@@")
+                        end
+                    else
+                        rconsoleprint("Ping: Undefined?","@@MAGENTA@@")
                     end
                     for _1,player in pairs(server.playerIds) do
                         if settings.servers.namePlayers then
