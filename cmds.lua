@@ -3,6 +3,7 @@ repeat wait() until game:GetService("ReplicatedStorage").DefaultChatSystemChatEv
 loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
 if not rconsoleprint then
     lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
+    rchat("music 5648499584")
     return
 end
 
@@ -56,7 +57,7 @@ end
 
 
 
-lchat("2.2.12")
+lchat("2.2.13")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -447,7 +448,8 @@ getgenv().Commands = {
                 rconsoleprint("[cd.lua]: Aaaaaah! There is no song! ;-;")
             end
             rconsoleprint("This song is "..gpi(song).Name.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
-            if rconsoleinput:sub(1,1):lower() == "y" then
+            local input = rconsoleinput()
+            if input:sub(1,1):lower() == "y" then
                 setclipboard(tostring(song))
             end
         end,
