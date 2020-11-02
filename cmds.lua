@@ -43,7 +43,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 end
 
-lchat("2.2.0")
+lchat("2.2.2")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -113,7 +113,7 @@ end
 
 --GPI is an acronym for GetProductInfo
 local gpi = function(id)
-    return game:GetService("MarketplaceService"):GetProductInfo(tonumber(id))
+    return game:GetService("MarketplaceService"):GetProductInfo(id)
 end
 
 
@@ -425,8 +425,10 @@ getgenv().Commands = {
             if song == nil then
                 rconsoleprint("[cd.lua]: Aaaaaah! There is no song! ;-;")
             end
-            rconsoleprint("This song is "..gpi(song).Name.." |[cd.lua]: I've copied the id to your clipboard.. *v*")
-            setclipboard(tostring(song))
+            rconsoleprint("This song is "..gpi(song).Name.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
+            if rconsoleinput:sub(1,1):lower() == "y" then
+                setclipboard(tostring(song))
+            end
         end,
     },
     ["mimic"] = function(args)
