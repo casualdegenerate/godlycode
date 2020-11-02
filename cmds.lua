@@ -1420,7 +1420,7 @@ getgenv().Commands = {
                 getgenv().buddy = false 
                 return 
             else 
-                getgenv().buddy 
+                getgenv().buddy = true
             end
             rchat("clone me")wait()
             while buddy do
