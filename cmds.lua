@@ -897,11 +897,21 @@ getgenv().Commands = {
                                 end)
                             end
                         end
-                    wait()end
+                    wait(.09)end
                 else
+                    tchat("[SPELL]: Sakuya's World!")
+                    rchat("music "..antilogger1.."743521618")
+                    wait(3)
+                    rchat("music "..antilogger1.."743521691")
+                    wait(1.38)
+                    fspawn(function()
+                        rchat("music "..antilogger1.."743521450")
+                        wait(3)
+                        rchat("music "..antilogger1.."4940109913")
+                    end)
                     while annoy do 
                         rchat("unskydive others others others robot.txt")
-                    wait()end
+                    wait(.09)end
                 end
             end
         end,
