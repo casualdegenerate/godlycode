@@ -645,7 +645,7 @@ getgenv().Commands = {
         funk = function(args)
             local s = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
             local msg = ""
-            local nw = "\n"
+            local nw = "\n "
             for _,v in pairs(args) do
                 if _ ~= 1 then
                     msg = msg..v.." "
