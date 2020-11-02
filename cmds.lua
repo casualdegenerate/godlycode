@@ -1504,7 +1504,7 @@ game:GetService("Lighting").ChildAdded:connect(function(c)
     end
     if antipunish then
         if c.Name == lplr.Name then
-            lplr.Character = game:GetService("Workspace")
+            fwait()lplr.Character = game:GetService("Workspace")
             wait(1)
             local prev = lplr.Character.HumanoidRootPart.CFrame
             rchat("unpunish me robot.txt")
