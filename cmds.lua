@@ -1249,6 +1249,7 @@ getgenv().Commands = {
                 rconsoleprint("[cd.lua]: Hhhhh! You have to add a server GUID you idiot! >_<")
             else
                 rchat("h "..args[2])
+                wait(0.3)
                 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, args[2])
             end
         end
