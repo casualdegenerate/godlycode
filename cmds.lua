@@ -880,7 +880,7 @@ getgenv().Commands = {
                                     if v:IsA("Model") then 
                                         pcall(function()
                                             for i1,v1 in pairs(GetPlayer(args[2])) do 
-                                                v.HumanoidRootPart.CFrame = t.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
+                                                v.HumanoidRootPart.CFrame = v1.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
                                             end 
                                         end)
                                     end
