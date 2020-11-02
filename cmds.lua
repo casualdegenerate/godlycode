@@ -46,7 +46,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.2.5")
+lchat("2.2.7")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -61,7 +61,7 @@ end
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
 rconsolename("cmds.lua")
 
-rconsoleprint("Loaded!","@@GREEN@@")
+rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
 local lplr = game:GetService("Players").LocalPlayer
 tchat("Loaded .\\cd\\cmds.lua")
 local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
