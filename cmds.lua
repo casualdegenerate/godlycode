@@ -1413,6 +1413,29 @@ getgenv().Commands = {
             sword:Destroy()
         end,
     },
+    ["buddy"] = {
+        toggle = true,
+        funk = function(args)
+            if buddy then 
+                getgenv().buddy = false 
+                return 
+            else 
+                getgenv().buddy 
+            end
+            rchat("clone me")wait()
+            while buddy do
+                sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
+                setsimulationradius(1e308)
+                for _,v in pairs(gf.Folder:GetChildren()) do
+                    if v:IsA("Model") then 
+                        pcall(function()
+                            v.HumanoidRootPart.CFrame = lplr.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10))
+                        end)
+                    end
+                end
+            wait()end
+        end,
+    },
 }
 
 fspawn(function()
