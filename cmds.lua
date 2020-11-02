@@ -43,7 +43,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 end
 
-lchat("2.2.2")
+lchat("2.2.3")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -807,7 +807,9 @@ getgenv().Commands = {
     ["ro"] = function(args)
         if Workspace.Terrain._Game.Workspace.Obby:FindFirstChild("Jump1") then
             for _,v in pairs(Workspace.Terrain._Game.Workspace.Obby:GetChildren()) do
-                v.TouchInterest:Destroy()
+                if v:FindFirstChild("TouchInterest") then
+                    v.TouchInterest:Destroy()
+                end
             end
         --[[else
             for _,v in pairs(cd:GetChildren()) do
