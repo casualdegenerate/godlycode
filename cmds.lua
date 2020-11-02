@@ -956,7 +956,6 @@ getgenv().Commands = {
         allies = {"l"},
         description = "Patched logs.",
         funk = function(args)
-            rchat("logs robot.txt")
             if logsA then
                 getgenv().logsA:Disable()
             end
@@ -964,8 +963,12 @@ getgenv().Commands = {
                 local disapear = lplr.PlayerGui.ScrollGui
                 repeat disapear:Destroy()fwait() until disapear.Parent == nil
             end
+            rchat("logs robot.txt")
             local l = lplr.PlayerGui:WaitForChild("ScrollGui",5)
-            if not l then cwarn("Logs was not created?") return end
+            if not l then 
+                rconsoleprint("Logs was not created?","@@YELLOW@@") 
+                return 
+            end
             l.TextButton.Frame.Size = UDim2.new(0,VS.X,0,VS.Y-300)
             l.TextButton.Size = UDim2.new(0,VS.X-15,0,20)
             l.TextButton.Position = UDim2.new(0,0,0,269)
