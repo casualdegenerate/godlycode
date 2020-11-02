@@ -1369,7 +1369,18 @@ getgenv().Commands = {
             wait(1.3)
             rchat("stopmusic")
         end,
-    }
+    },
+    ["unugly"] = {
+        toggle = true,
+        funk = function(args)
+            if unugly then getgenv().unguly = false return else getgenv().unugly = true end
+            while unugly do
+                if lplr.Character:FindFirstChild("Realistic Head") then
+                    lplr.Character["Realistic Head"]:Remove()
+                end
+            fwait()end
+        end,
+    },
 }
 
 fspawn(function()
