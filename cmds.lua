@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.4")
+lchat("2.3.5")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -874,23 +874,21 @@ getgenv().Commands = {
         funk = function(args)
             if annoy then getgenv().annoy = false return else getgenv().annoy = true
                 if args[2] then
-                    fspawn(function()
-                        rchat("clone all")wait()
-                        for i=1,360 do
-                            sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
-                            setsimulationradius(1e308)
-                            for _,v in pairs(gf.Folder:GetChildren()) do
-                                if v:IsA("Model") then 
-                                    pcall(function()
-                                        for i1,v1 in pairs(GetPlayer(args[2])) do 
-                                            v.HumanoidRootPart.CFrame = v1.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
-                                        end 
-                                    end)
-                                end
+                    rchat("clone all")wait()
+                    while annoy do
+                        sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
+                        setsimulationradius(1e308)
+                        for _,v in pairs(gf.Folder:GetChildren()) do
+                            if v:IsA("Model") then 
+                                pcall(function()
+                                    for i1,v1 in pairs(GetPlayer(args[2])) do 
+                                        v.HumanoidRootPart.CFrame = v1.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
+                                        rchat("unskydive "..v1.name.." "..v1.Name.." "..v1.Name.." robots.txt")
+                                    end 
+                                end)
                             end
-                        fwait()end
-                    end)
-                    rchat("unskydive "..args[2]..args[2]..args[2].." robot.txt")
+                        end
+                    wait()end
                 else
                     while annoy do 
                         rchat("unskydive others others others robot.txt")
