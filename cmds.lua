@@ -838,7 +838,7 @@ getgenv().Commands = {
         funk = function(args)
             if antifling then getgenv().antifling = false else getgenv().antifling = true end
             if antifling == true then
-				rconsoleprint("Antifling/On","@@GREEN@@)
+				rconsoleprint("Antifling/On","@@GREEN@@")
 			else
 				rconsoleprint("Antifling/Off","@@RED@@")
 			end
