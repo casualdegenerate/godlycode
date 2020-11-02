@@ -198,7 +198,9 @@ end
 if OT then
     getgenv().OT:Disable()
 end
-
+if unguly then
+    getgenv().unguly = false
+end
 
 
 
