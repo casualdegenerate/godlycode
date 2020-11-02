@@ -12,6 +12,7 @@ if not isfile("cd") then
     repeat wait() until isfile("cd")
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
     writefile("cd/Log.txt","Will be used later to log any errors!")
+    writefile("cd/README.txt","If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)")
     makefolder("cd/Cache")
     repeat wait() until isfile("cd/Cache")
     makefolder("cd/Config")
@@ -38,6 +39,9 @@ if not isfile("cd") then
 end
 loadstring(readfile("cd/Config/cmds.settings"))()
 
+if not isfile("cd/README.txt") then
+    writefile("cd/README.txt","If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)")
+end
 if not isfile("cd/cmds.lua") then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 	fspawn(function()loadstring(readfile("cd/cmds.lua"))()end)
@@ -52,7 +56,7 @@ end
 
 
 
-lchat("2.2.10")
+lchat("2.2.11")
 
 local rconsoleprint = function(input,color)
     if color then
