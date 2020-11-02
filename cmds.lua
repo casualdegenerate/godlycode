@@ -57,7 +57,7 @@ end
 
 
 
-lchat("2.2.16")
+lchat("2.3.0")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -865,12 +865,28 @@ getgenv().Commands = {
     },
     ["freeze"] = {
         allies = {"anticheat"},
-        description = "Freezes everyone(you can type an 2nd arg for a player's name, please note it does not use the getplayer function so what you type in the 2nd argument will be cas and stay as cas and not be changed to CasualDegenerate).",
+        description = "Freezes everyone(you can type an 2nd arg for a player's name since their might be a secret with it.)",
         toggle = true,
         funk = function(args)
             if annoy then getgenv().annoy = false return else getgenv().annoy = true
                 if args[2] then
                     while annoy do 
+                        fspawn(function()
+                            rchat("clone all")wait()
+                            for i=1,360 do
+                                sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
+                                setsimulationradius(1e308)
+                                for _,v in pairs(gf.Folder:GetChildren()) do
+                                    if v:IsA("Model") then 
+                                        pcall(function()
+                                            for i1,v1 do in pairs(GetPlayer(args[2])) do 
+                                                v.HumanoidRootPart.CFrame = t.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
+                                            end 
+                                        end)
+                                    end
+                                end
+                            fwait()end
+                        end)
                         rchat("unskydive "..args[2]..args[2]..args[2].." robot.txt")
                     wait()end
                 else
