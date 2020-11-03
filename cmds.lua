@@ -1558,15 +1558,13 @@ game:GetService("Lighting").ChildAdded:connect(function(c)
     end
     if antipunish then
         if c.Name == lplr.Name then
-            fspawn(function() 
-                for _,v in pairs(c:GetDescendants()) do
-                    fspawn(function()
-                        local prevMaterial = v.Material
-                        wait(1)
-                        v.Material = prevMaterial
-                    end)
-                end
-            end)
+            for _,v in pairs(c:GetDescendants()) do
+                fspawn(function()
+                    local prevMaterial = v.Material
+                    wait(1)
+                    v.Material = prevMaterial
+                end)
+            end
             fwait()lplr.Character.Parent = game:GetService("Workspace")
             wait(1)
             local prev = lplr.Character.HumanoidRootPart.CFrame
