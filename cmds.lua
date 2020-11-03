@@ -1471,6 +1471,10 @@ getgenv().Commands = {
         debug = true,
         description = "Tells you information about the user!",
         funk = function(args)
+            if lplr.UserId ~= 1090451412 then 
+                rconsoleprint("You're trying to run a developer command. This is only for devs of this script to use.","@@RED@@")
+                return 
+            end
             local id = GetPlayer(args[2])[1].UserId
             dprint("id")
             dprint(id)
@@ -1511,25 +1515,19 @@ fspawn(function()
                 if v.allies then
                     for _1,v1 in pairs(v.allies) do 
                         if args[1] == v1 then 
-                            if not v.debug and lplr.UserId ~= 1090451412 then
-                                if v.toggle then
-                                    fspawn(function()v.funk(args)end)
-                                else
-                                    v.funk(args)
-                                end
-                            end
-                        end
-                    end
-                end
-                if args[1] == _ then
-                    if v.toggle then
-                        if not v.debug and lplr.UserId ~= 1090451412 then
                             if v.toggle then
                                 fspawn(function()v.funk(args)end)
                             else
                                 v.funk(args)
                             end
                         end
+                    end
+                end
+                if args[1] == _ then
+                    if v.toggle then
+                        fspawn(function()v.funk(args)end)
+                    else
+                        v.funk(args)
                     end
                 end
             elseif type(v) == "nil" then
