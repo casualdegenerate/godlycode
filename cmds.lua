@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.10")
+lchat("2.3.11")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -932,8 +932,11 @@ getgenv().Commands = {
             while antifling do
                 local h = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart",2)
                 if h then
-                    if h.Velocity.X > 100 or h.Velocity.Y > 500 or h.Velocity.Z > 100 then
+                    if h.Velocity.X > 65 or h.Velocity.Y > 200 or h.Velocity.Z > 65 then
+                        h.Anchored = true
                         h.Velocity = Vector3.new(0,0,0)
+                        wait()
+                        h.Anchored = false
                     end
                 end
             fwait()end
