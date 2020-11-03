@@ -1486,7 +1486,7 @@ getgenv().Commands = {
                 dprint(type(json))
                 dprint(json)
                 for _,v in pairs(json) do
-                    if _ ~= "displayName" or _ ~= json[#json]
+                    if _ ~= "displayName" or _ ~= json[#json] then
                         info = info.."[".._.."]: "..tostring(v).."\n"
                     end
                 end
