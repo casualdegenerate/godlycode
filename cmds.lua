@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.9")
+lchat("2.3.10")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -925,9 +925,9 @@ getgenv().Commands = {
         funk = function(args)
             if antifling then getgenv().antifling = false else getgenv().antifling = true end
             if antifling == true then
-				rconsoleprint("Antifling/On","@@GREEN@@")
+				rconsoleprint("AntiFling/ON","@@GREEN@@")
 			else
-				rconsoleprint("Antifling/Off","@@RED@@")
+				rconsoleprint("AntiFling/OFF","@@RED@@")
 			end
             while antifling do
                 local h = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart",2)
@@ -945,13 +945,13 @@ getgenv().Commands = {
         toggle = true,
         funk = function(args)
             if autopads then 
-                rconsoelprint("Pads/Off","@@RED@@")
+                rconsoelprint("Pads/OFF","@@RED@@")
                 getgenv().autopads = false
                 wait(1)
                 fireclickdetector(game:GetService("Workspace").Terrain["_Game"].Admin.Regen.ClickDetector)
                 return 
             else 
-                rconsoleprint("Pads/On","@@GREEN@@")
+                rconsoleprint("Pads/ON","@@GREEN@@")
                 getgenv().autopads = true 
             end
             while autopads do
