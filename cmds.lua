@@ -922,17 +922,46 @@ getgenv().Commands = {
             while antifling do
                 local h = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart",2)
                 if h then
-                    if h.Velocity.X > 100 or h.Velocity.Y > 100 or h.Velocity.Z > 100 then
-                        h.Anchored = true
-                        h.Velocity = Vector3.new(0,0,0)
-                        wait(.3)
-                        h.Anchored = false
-                    end
-                    if h.Velocity.X < -100 or h.Velocity.Y < -100 or h.Velocity.Z < -100 then
-                        h.Anchored = true
-                        h.Velocity = Vector3.new(0,0,0)
-                        wait(.3)
-                        h.Anchored = false
+                    elseif h.Velocity.X > 100 then
+                        fspawn(function()
+                            for i=1,60 do
+                                h.Velocity.X = 0
+                            fwait()end
+                        end)
+                    elseif h.Velocity.X < -100 then
+                        fspawn(function()
+                            for i=1,60 do
+                                h.Velocity.X = 0
+                            fwait()end
+                        end)
+                        
+                    elseif h.Velocity.Y < 100 then
+                        fspawn(function()
+                            for i=1,60 do
+                                h.Velocity.Y = 0
+                            fwait()end
+                        end)
+                        
+                    elseif h.Velocity.Y < -100 then
+                        fspawn(function()
+                            for i=1,60 do
+                                h.Velocity.Y = 0
+                            fwait()end
+                        end)
+                        
+                    elseif h.Velocity.Z < 100 then
+                        fspawn(function()
+                            for i=1,60 do
+                                h.Velocity.Z = 0
+                            fwait()end
+                        end)
+                        
+                    elseif h.Velocity.Z < -100 then
+                        fspawn(function()
+                            for i=1,60 do
+                                h.Velocity.Z = 0
+                            fwait()end
+                        end)
                     end
                 end
             fwait()end
