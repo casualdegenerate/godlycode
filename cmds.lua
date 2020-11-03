@@ -1477,24 +1477,18 @@ getgenv().Commands = {
                 return 
             end
             local id = tostring(GetPlayer(args[2])[1].UserId)
-            dprint("id")
-            dprint(id)
             local json
             local info = ""
             pcall(function()
                 local h = Fetch.Get("https://users.roblox.com/v1/users/"..id)
-                dprint(type(h))
-                dprint(h)
                 json = JSOND(h)
             end)
-            dprint(type(json))
-            dprint(json)
             for _,v in pairs(json) do
                 if _ ~= "displayName" or _ ~= json[#json] then
                     info = info.."[".._.."]: "..tostring(v).."\n"
                 end
             end
-            rconsoleprint(info,"@@BLUE@@")
+            rconsoleprint(info:sub(1,info:len()-1),"@@BLUE@@")
         end,
     }
 }
