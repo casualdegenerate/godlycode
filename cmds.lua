@@ -1470,6 +1470,7 @@ getgenv().Commands = {
     ["info"] = {
         debug = true,
         description = "Tells you information about the user!",
+        toggle = true,
         funk = function(args)
             if lplr.UserId ~= 1090451412 then 
                 rconsoleprint("You're trying to run a developer command. This is only for devs of this script to use.","@@RED@@")
