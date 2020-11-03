@@ -1131,22 +1131,22 @@ getgenv().Commands = {
         description = "Giga's script :D Thanks!",
         funk = function(args)
             if giga1 then
-                getgenv().giga1 = false
+                getgenv().giga1:Disable()
             end
             if giga2 then
-                getgenv().giga2 = false
+                getgenv().giga2:Disable()
             end
             if giga3 then
-                getgenv().giga3 = false
+                getgenv().giga3:Disable()
             end
             if giga4 then
-                getgenv().giga4 = false
+                getgenv().giga4:Disable()
             end
             if giga5 then
-                getgenv().giga5 = false
+                getgenv().giga5:Disable()
             end
             if giga6 then
-                getgenv().giga6 = false
+                getgenv().giga6:Disable()
                 rconsoleprint("Giga Script/OFF","@@RED@@")
                 return
             end
