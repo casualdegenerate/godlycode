@@ -1484,7 +1484,7 @@ getgenv().Commands = {
                 json = JSOND(h)
             end)
             for _,v in pairs(json) do
-                if _ ~= "displayName" or _ ~= "isBanned" then
+                if _ ~= "displayName" and _ ~= "isBanned" then
                     info = info.."[".._.."]: "..tostring(v):gsub("\n","\\n").."\n"
                 end
             end
