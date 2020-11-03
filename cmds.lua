@@ -1486,7 +1486,7 @@ getgenv().Commands = {
                 dprint(type(json))
                 dprint(json)
                 for _,v in pairs(json) do
-                    info = info.."[".._.."]: "..v.."\n"
+                    info = info.."[".._.."]: "..tostring(v).."\n"
                 end
                 rconsoleprint("info","@@BLUE@@")
             else
