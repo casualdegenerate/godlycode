@@ -1510,8 +1510,8 @@ fspawn(function()
             elseif type(v) == "table" then
                 if v.allies then
                     for _1,v1 in pairs(v.allies) do 
-                        if v.debug and args[1] == v1 and lplr.UserId ~= 1090451412 then return end
                         if args[1] == v1 then 
+                            if v.debug and lplr.UserId ~= 1090451412 then return end
                             if v.toggle then
                                 fspawn(function()v.funk(args)end)
                             else
@@ -1522,8 +1522,10 @@ fspawn(function()
                 end
                 if args[1] == _ then
                     if v.toggle then
+                        if v.debug and lplr.UserId ~= 1090451412 then return end
                         fspawn(function()v.funk(args)end)
                     else
+                        if v.debug and lplr.UserId ~= 1090451412 then return end
                         v.funk(args)
                     end
                 end
