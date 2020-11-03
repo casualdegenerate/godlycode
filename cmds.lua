@@ -928,6 +928,12 @@ getgenv().Commands = {
                         wait()
                         h.Anchored = false
                     end
+                    if h.Velocity.X > -65 or h.Velocity.Y > -200 or h.Velocity.Z > -65 then
+                        h.Anchored = true
+                        h.Velocity = Vector3.new(0,0,0)
+                        wait()
+                        h.Anchored = false
+                    end
                 end
             fwait()end
         end,
@@ -1345,13 +1351,21 @@ getgenv().Commands = {
     },
     ["kill"] = {
         funk = function(args)
-            rchat("sword me")
-            local s = lplr.Backpack:WaitForChild("LinkedSword",5)
-            if s == nil then
-                rconsoleprint("ERROR: Server unresponcive??","@@RED@@")
-                return
+            local sword
+            if lplr.Backpack:FindFirstChild("LinkedSword") then
+                sword = lplr.Backpack.LinkedSword
+                sword.Parent = lplr.Character
+            elseif lplr.Character:FindFirstChild("LinkedSword") then
+                sword = lplr.Character.LinkedSword
+            else
+                rchat("sword me")
+                sword = lplr.Backpack:WaitForChild("LinkedSword",5)
+                if sword == nil then
+                    rconsoleprint("ERROR: Server unresponcive??","@@RED@@")
+                    return
+                end
+                sword.Parent = lplr.Character
             end
-            s.Parent = lplr.Character
             for _1,p1 in pairs(GetPlayer(args[2])) do
                 fspawn(function()
                     for i=1,40 do wait()
@@ -1363,8 +1377,8 @@ getgenv().Commands = {
                             rconsoleprint("WARNING: Player("..p1.Name..") does not have humanoid?","@@YELLOW@@")
                             return
                         end
-                        firetouchinterest(p1.Character.Head,s.Handle,1)
-                        wait()firetouchinterest(p1.Character.Head,s.Handle,0)
+                        firetouchinterest(p1.Character.Head,sword.Handle,1)
+                        wait()firetouchinterest(p1.Character.Head,sword.Handle,0)
                         if p1.Character.Humanoid.Health == 0 then
                             break
                         end
