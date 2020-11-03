@@ -1472,13 +1472,18 @@ getgenv().Commands = {
         description = "Tells you information about the user!",
         funk = function(args)
             local id = GetPlayer(args[2])[1].UserId
-            dprint("id",id)
+            dprint("id")
+            dprint(id)
             local json
             if id and id ~= "1090451412" and id ~= "111743671" then
                 pcall(function()
                     local h = Fetch.Get("https://users.roblox.com/v1/users/"..args[2])
+                    dprint(type(h))
+                    dprint(h)
                     json = JSOND(h)
                 end)
+                dprint(type(json))
+                dprint(json)
                 for _,v in pairs(json) do
                     info = info.."[".._.."]: "..v.."\n"
                 end
