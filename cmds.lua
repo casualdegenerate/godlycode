@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.8")
+lchat("2.3.9")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -1558,6 +1558,13 @@ game:GetService("Lighting").ChildAdded:connect(function(c)
     end
     if antipunish then
         if c.Name == lplr.Name then
+            fspawn(function()for _,v in pairs(c:GetDescendants()) do
+                fspawn(function()
+                    local prevMaterial = v.Material
+                    wait(1)
+                    v.Material = prevMaterial
+                end)
+            end)
             fwait()lplr.Character.Parent = game:GetService("Workspace")
             wait(1)
             local prev = lplr.Character.HumanoidRootPart.CFrame
