@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.12")
+lchat("2.3.13")
 
 local rconsoleprint = function(input,color)
     if color then
