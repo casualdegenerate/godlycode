@@ -1488,7 +1488,7 @@ getgenv().Commands = {
                 for _,v in pairs(json) do
                     info = info.."[".._.."]: "..tostring(v).."\n"
                 end
-                rconsoleprint("info","@@BLUE@@")
+                rconsoleprint(info,"@@BLUE@@")
             else
                 rconsoleprint("You can't list that player.")
             end
