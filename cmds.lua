@@ -1476,29 +1476,25 @@ getgenv().Commands = {
                 rconsoleprint("You're trying to run a developer command. This is only for devs of this script to use.","@@RED@@")
                 return 
             end
-            local id = GetPlayer(args[2])[1].UserId
+            local id = tostring(GetPlayer(args[2])[1].UserId)
             dprint("id")
             dprint(id)
             local json
             local info = ""
-            if id and id ~= "1090451412" and id ~= "111743671" then
-                pcall(function()
-                    local h = Fetch.Get("https://users.roblox.com/v1/users/"..id)
-                    dprint(type(h))
-                    dprint(h)
-                    json = JSOND(h)
-                end)
-                dprint(type(json))
-                dprint(json)
-                for _,v in pairs(json) do
-                    if _ ~= "displayName" or _ ~= json[#json] then
-                        info = info.."[".._.."]: "..tostring(v).."\n"
-                    end
+            pcall(function()
+                local h = Fetch.Get("https://users.roblox.com/v1/users/"..id)
+                dprint(type(h))
+                dprint(h)
+                json = JSOND(h)
+            end)
+            dprint(type(json))
+            dprint(json)
+            for _,v in pairs(json) do
+                if _ ~= "displayName" or _ ~= json[#json] then
+                    info = info.."[".._.."]: "..tostring(v).."\n"
                 end
-                rconsoleprint(info,"@@BLUE@@")
-            else
-                rconsoleprint("You can't list that player.")
             end
+            rconsoleprint(info,"@@BLUE@@")
         end,
     }
 }
