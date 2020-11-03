@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.9")
+lchat("2.3.10")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -451,7 +451,7 @@ getgenv().Commands = {
             end
             rconsoleprint("This song is "..gpi(song).Name.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
             local input = rconsoleinput()
-            if input:sub(1,1):lower() == "y" then
+            if input:lower():find("y") then
                 setclipboard(tostring(song))
             end
         end,
