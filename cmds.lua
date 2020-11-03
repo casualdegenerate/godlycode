@@ -1561,8 +1561,12 @@ game:GetService("Lighting").ChildAdded:connect(function(c)
             for _,v in pairs(c:GetDescendants()) do
                 fspawn(function()
                     local prevMaterial = v.Material
+                    local prevColor = v.Color
+                    v.Material = Enum.Material.ForceField
+                    v.Color = Color3.new(1,0,0)
                     wait(1)
                     v.Material = prevMaterial
+                    v.Color = prevColor
                 end)
             end
             fwait()lplr.Character.Parent = game:GetService("Workspace")
