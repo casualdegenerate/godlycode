@@ -928,7 +928,7 @@ getgenv().Commands = {
                         wait()
                         h.Anchored = false
                     end
-                    if h.Velocity.X > -5000 or h.Velocity.Y > -5000 or h.Velocity.Z > -5000 then
+                    if h.Velocity.X < -5000 or h.Velocity.Y < -5000 or h.Velocity.Z < -5000 then
                         h.Anchored = true
                         h.Velocity = Vector3.new(0,0,0)
                         wait()
