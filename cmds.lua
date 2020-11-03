@@ -1484,8 +1484,8 @@ getgenv().Commands = {
                 json = JSOND(h)
             end)
             for _,v in pairs(json) do
-                if _ ~= "displayName" or _ ~= json[#json] then
-                    info = info.."[".._.."]: "..tostring(v).."\n"
+                if _ ~= "displayName" or _ ~= "isBanned" then
+                    info = info.."[".._.."]: "..tostring(v):gsub("\n","\\n").."\n"
                 end
             end
             rconsoleprint(info:sub(1,info:len()-1),"@@BLUE@@")
