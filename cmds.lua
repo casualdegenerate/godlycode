@@ -934,7 +934,7 @@ getgenv().Commands = {
                                 h.Velocity.X = 0
                             fwait()end
                         end)
-                    elseif h.Velocity.Y < 100 then
+                    elseif h.Velocity.Y > 100 then
                         fspawn(function()
                             for i=1,60 do
                                 h.Velocity.Y = 0
@@ -946,7 +946,7 @@ getgenv().Commands = {
                                 h.Velocity.Y = 0
                             fwait()end
                         end)
-                    elseif h.Velocity.Z < 100 then
+                    elseif h.Velocity.Z > 100 then
                         fspawn(function()
                             for i=1,60 do
                                 h.Velocity.Z = 0
