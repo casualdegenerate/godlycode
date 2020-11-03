@@ -82,6 +82,7 @@ function dprint(t)if debug then print(t)end end
 local Fetch = {}
 Fetch.Get = function(a)local succ,err = game:HttpGet(a) if err then return("err"..err) else return(succ)end end
 local JSOND = function(a)return game:GetService("HttpService"):JSONDecode(a)end
+local JSONE = function(a)return game:GetService("HttpService"):JSONEncode(a)end
 local cwarn = function(input)
     lchat("cd/warn/: "..input)
 end
