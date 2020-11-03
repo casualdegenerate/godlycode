@@ -78,7 +78,7 @@ end
 local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
 getgenv().kek=true
 debug = true
-function dprint(t)if debug then print(t)end end
+function dprint(t)if debug --[[and lplr.UserId == 1090451412--]] then print(t)end end
 local Fetch = {}
 Fetch.Get = function(a)local succ,err = game:HttpGet(a) if err then return("err"..err) else return(succ)end end
 local JSOND = function(a)return game:GetService("HttpService"):JSONDecode(a)end
@@ -1472,6 +1472,7 @@ getgenv().Commands = {
         description = "Tells you information about the user!",
         funk = function(args)
             local id = GetPlayer(args[2])[1].UserId
+            dprint("id",id)
             local json
             if id and id ~= "1090451412" and id ~= "111743671" then
                 pcall(function()
