@@ -1147,6 +1147,7 @@ getgenv().Commands = {
             end
             if giga6 then
                 getgenv().giga6:Disable()
+                getgenv().giga6 = false
                 rconsoleprint("Giga Script/OFF","@@RED@@")
                 return
             end
