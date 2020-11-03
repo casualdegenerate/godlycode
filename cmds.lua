@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.10")
+lchat("2.3.9")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -373,6 +373,7 @@ getgenv().Commands = {
     ["visualize"] = {
         allies = {"visualizer"--[[lol +r]],"visu"},
         description = "Visualizer with the sun and moon.",
+        toggle = true,
         funk = function(args)
             if not Music then Music = true
                 if args[2] ~= nil then rchat("music "..args[2]) end
@@ -451,7 +452,7 @@ getgenv().Commands = {
             end
             rconsoleprint("This song is "..gpi(song).Name.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
             local input = rconsoleinput()
-            if input:lower():find("y") then
+            if input:sub(1,1):lower() == "y" then
                 setclipboard(tostring(song))
             end
         end,
@@ -1118,7 +1119,7 @@ getgenv().Commands = {
     },
     ["music"] = {
         funk = function(args)
-            if args[2] == nil then
+            if args[2] == nil or args[2] == "" then
                 for _,song in pairs(songs) do
                     local asset = gpi(song)
                     rconsoleprint("[".._.."]: "..asset.Name,"@@MAGENTA@@")
