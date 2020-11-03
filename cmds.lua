@@ -938,7 +938,7 @@ getgenv().Commands = {
         toggle = true,
         funk = function(args)
             if autopads then 
-                rconsoelprint("Pads/OFF","@@RED@@")
+                rconsoleprint("Pads/OFF","@@RED@@")
                 getgenv().autopads = false
                 wait(1)
                 fireclickdetector(game:GetService("Workspace").Terrain["_Game"].Admin.Regen.ClickDetector)
