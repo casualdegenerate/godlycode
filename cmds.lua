@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.13")
+lchat("2.3.12")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -1503,7 +1503,7 @@ fspawn(function()
                     for _1,v1 in pairs(v.allies) do 
                         if v.debug and args[1] == v1 and lplr.UserId ~= 1090451412 then return end
                         if args[1] == v1 then 
-                            if v.toggle and then
+                            if v.toggle then
                                 fspawn(function()v.funk(args)end)
                             else
                                 v.funk(args)
