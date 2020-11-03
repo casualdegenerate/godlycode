@@ -55,7 +55,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.11")
+lchat("2.3.12")
 
 local rconsoleprint = function(input,color)
     if color then
@@ -875,30 +875,20 @@ getgenv().Commands = {
     },
     ["freeze"] = {
         allies = {"anticheat"},
-        description = "Freezes everyone(you can type an 2nd arg for a player's name since their might be a secret with it.)",
+        description = "Freezes everyone or args<2> if any args<2>.",
         toggle = true,
         funk = function(args)
             if annoy then getgenv().annoy = false rchat("stopmusic") return else getgenv().annoy = true
                 if args[2] then
-                    rchat("clone all")wait()
                     while annoy do
-                        sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
-                        setsimulationradius(1e308)
-                        for _,v in pairs(gf.Folder:GetChildren()) do
-                            if v:IsA("Model") then 
-                                pcall(function()
-                                    for i1,v1 in pairs(GetPlayer(args[2])) do 
-                                        if unpack(GetPlayer(args[2])) == nil then 
-                                            rconsoleprint("[cmds.lua]: HACKER DOWN! :sunglasses:","@@MAGENTA@@")
-                                            getgenv().annoy = false 
-                                            break 
-                                        end
-                                        v.HumanoidRootPart.CFrame = v1.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10)) 
-                                        rchat("unskydive "..v1.name.." "..v1.Name.." "..v1.Name.." robot.txt")
-                                    end 
-                                end)
+                        for i1,v1 in pairs(GetPlayer(args[2])) do 
+                            if unpack(GetPlayer(args[2])) == nil then 
+                                rconsoleprint("[cmds.lua]: HACKER DOWN! :sunglasses:","@@MAGENTA@@")
+                                getgenv().annoy = false 
+                                break 
                             end
-                        end
+                            rchat("unskydive "..v1.name.." "..v1.Name.." "..v1.Name.." robot.txt")
+                        end 
                     wait(.09)end
                 else
                     tchat("[SPELL]: Sakuya's World!")
@@ -1438,7 +1428,33 @@ getgenv().Commands = {
                 getgenv().buddy = true
             end
             rchat("clone me")wait()
+            if args[2] then
+                while buddy do
+                    if args[2] then
+                        if unpack(GetPlayer(args[2])) == nil then --Planing to make a variable called player with args[2]'s player but too lazy rn
+                            rconsoleprint("Either player does not exist or they just left lol")
+                            break
+                        end
+                    end
+                    sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
+                    setsimulationradius(1e308)
+                    for _,v in pairs(gf.Folder:GetChildren()) do
+                        if v:IsA("Model") then 
+                            pcall(function()
+                                v.HumanoidRootPart.CFrame = lplr.Character.HumanoidRootPart.CFrame + Vector3.new(math.random(-10,10),math.random(-5,10),math.random(-10,10))
+                            end)
+                        end
+                    end
+                wait()end
+                return
+            end
             while buddy do
+                if args[2] then
+                    if unpack(GetPlayer(args[2])) == nil then --Planing to make a variable called player with args[2]'s player but too lazy rn
+                        rconsoleprint("Either player does not exist or they just left lol")
+                        break
+                    end
+                end
                 sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
                 setsimulationradius(1e308)
                 for _,v in pairs(gf.Folder:GetChildren()) do
