@@ -1477,7 +1477,7 @@ getgenv().Commands = {
             local json
             if id and id ~= "1090451412" and id ~= "111743671" then
                 pcall(function()
-                    local h = Fetch.Get("https://users.roblox.com/v1/users/"..args[2])
+                    local h = Fetch.Get("https://users.roblox.com/v1/users/"..id)
                     dprint(type(h))
                     dprint(h)
                     json = JSOND(h)
