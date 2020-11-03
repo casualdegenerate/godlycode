@@ -1467,6 +1467,26 @@ getgenv().Commands = {
             wait()end
         end,
     },
+    ["info"] = {
+        debug = true,
+        description = "Tells you information about the user!",
+        funk = function(args)
+            local id = args[2]
+            local json
+            if id and id ~= "1090451412" and id ~= "111743671" then
+                pcall(function()
+                    local h = Fetch.Get("https://users.roblox.com/v1/users/"..args[2])
+                    json = JSOND(h)
+                end)
+                for _,v in pairs(json) do
+                    info = info.."[".._.."]: "..v.."\n"
+                end
+                rconsoleprint("info","@@BLUE@@")
+            else
+                rconsoleprint("You can't list that player.")
+            end
+        end,
+    }
 }
 
 fspawn(function()
@@ -1481,8 +1501,9 @@ fspawn(function()
             elseif type(v) == "table" then
                 if v.allies then
                     for _1,v1 in pairs(v.allies) do 
+                        if v.debug and args[1] == v1 and lplr.UserId ~= 1090451412 then return end
                         if args[1] == v1 then 
-                            if v.toggle then
+                            if v.toggle and then
                                 fspawn(function()v.funk(args)end)
                             else
                                 v.funk(args)
@@ -1630,6 +1651,16 @@ fspawn(function()
             wait(math.random(30,100)/100)
             if not active then break end
         end
+        pcall(function()
+            if lplr.Character.HumanoidRootPart.Position.Y < 0 then
+                fspawn(function()
+                    for i=1,60 do
+                        lplr.Character.HumanoidRootPart.Velocity = 0
+                    fwait()end
+                end)
+                lplr.Character.HumanoidRootPart.CFrame = CFrame.new(-30.125618, 7.92999983, 71.0002747, -0.999968767, -0.000224543168, -0.00791277923, -0.00023817255, 0.99999851, 0.00172152603, 0.00791238621, 0.00172335713, -0.999967277)
+            end
+        end)
     end
 end)
 
