@@ -922,13 +922,13 @@ getgenv().Commands = {
             while antifling do
                 local h = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart",2)
                 if h then
-                    if h.Velocity.X > 65 or h.Velocity.Y > 200 or h.Velocity.Z > 65 then
+                    if h.Velocity.X > 600 or h.Velocity.Y > 600 or h.Velocity.Z > 600 then
                         h.Anchored = true
                         h.Velocity = Vector3.new(0,0,0)
                         wait()
                         h.Anchored = false
                     end
-                    if h.Velocity.X > -65 or h.Velocity.Y > -200 or h.Velocity.Z > -65 then
+                    if h.Velocity.X > -600 or h.Velocity.Y > -600 or h.Velocity.Z > -600 then
                         h.Anchored = true
                         h.Velocity = Vector3.new(0,0,0)
                         wait()
