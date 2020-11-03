@@ -1471,7 +1471,7 @@ getgenv().Commands = {
         debug = true,
         description = "Tells you information about the user!",
         funk = function(args)
-            local id = args[2]
+            local id = GetPlayer(args[2])[1].UserId
             local json
             if id and id ~= "1090451412" and id ~= "111743671" then
                 pcall(function()
