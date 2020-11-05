@@ -62,7 +62,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.14")
+lchat("2.3.15")
 
 local rconsoleprint = function(input,color)
     fspawn(function()
@@ -566,7 +566,11 @@ getgenv().Commands = {
                     rchat("unpants me")
                 end
             end
-            rchat("unface me")
+            for _,v in pairs(lplr.Character:GetDescendants()) do
+                if v.Name == "face" and v:IsA("Decal") then
+                    v:Destroy()
+                end
+            end
             for _,v in pairs(Outfit.Hat) do
                 rchat("hat me "..v)
             end
@@ -574,6 +578,14 @@ getgenv().Commands = {
             rchat("pants me "..Outfit.Pants)
             rchat("face me "..Outfit.Face)
             if Outfit.Creator then rchat("h "..Outfit.Creator) end --if you wanted to give credit...
+            fspawn(function()
+                wait(2)
+                for _,v in pairs(lplr.Character.Head:GetChildren()) do
+                    if v.Name == "face" and _ ~= #lplr.Character.Head:GetChildren()-1 then
+                        v:Destroy()
+                    end
+                end
+            end)
         end,
     },
     ["nn"] = function(args)
