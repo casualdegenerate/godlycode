@@ -1628,7 +1628,7 @@ gf.Folder.ChildAdded:connect(function(c)
     end
     if c.Name == "Sound" and settings.antiloud then
         while c.Parent ~= nil do
-            if c.PlaybackLoudness > 700 then
+            if c.PlaybackLoudness > 900 then
                 rchat("stopmusic")
             end
         fwait()end
