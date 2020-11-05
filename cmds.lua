@@ -1526,7 +1526,22 @@ getgenv().Commands = {
             rconsoleprint(info:sub(1,info:len()-1),"@@BLUE@@")
         end,
     },
-    
+    ["removeface"] = {
+        allies = {"rf"},
+        description = "Will remove your face, if you don't like it.",
+        funk = function(args)
+            for _,v in pairs(lplr.Character:GetDescendants()) do
+                if v.Name == "face" and v:IsA("Decal") then
+                    v:Destroy()
+                end
+            end
+        end,
+    },
+    ["flingball"] = {
+        funk = function(args)
+            rconsoleprint("[cmds.lua]: Not Added Yet!","@@YELLOW@@")
+        end,
+    }
 }
 
 fspawn(function()
