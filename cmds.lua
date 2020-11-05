@@ -62,7 +62,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.13")
+lchat("2.3.14")
 
 local rconsoleprint = function(input,color)
     fspawn(function()
@@ -1175,7 +1175,7 @@ getgenv().Commands = {
                         respawnpos = lplr.Character.HumanoidRootPart.CFrame
                     end
                     cameracframe = camera.CFrame
-                    rchat("respawn me")
+                    rchat("respawn me robot.txt")
                 end)
                 for i,connection in pairs(getconnections(a:WaitForChild("Humanoid").Died)) do
                     if i==1 then getgenv().giga1 = connection end
@@ -1221,7 +1221,7 @@ getgenv().Commands = {
             for i,connection in pairs(getconnections(lplr.CharacterAdded)) do
                 if i==1 then getgenv().giga6 = connection end
             end
-            rchat("reset me")
+            rchat("reset me robot.txt")
         end
     },
     ["servers"] = {
@@ -1759,4 +1759,13 @@ fspawn(function()
     if regen.CFrame ~= CFrame.new(-7.16500044, 5.42999268, 94.7430038, 0, 0, -1, 0, 1, 0, 1, 0, 0) then
         rconsoleprint("[cmds.lua]: Regen was tampered with via 'Relocation'!","@@YELLOW@@")
     end
+end)
+fspawn(function()
+    local chimney
+    chimney = gf.Workspace:WaitForchild("Chimney",5)
+    if not chimney then
+        rconsoleprint("[cmds.lua]: Chimney does not exist?","@@YELLOW@@")
+        return
+    end
+    chimney.Smoke.Enabled = true
 end)
