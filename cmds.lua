@@ -62,7 +62,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.15")
+lchat("2.3.16")
 
 local rconsoleprint = function(input,color)
     fspawn(function()
@@ -1540,6 +1540,21 @@ getgenv().Commands = {
     ["flingball"] = {
         funk = function(args)
             rconsoleprint("[cmds.lua]: Not Added Yet!","@@YELLOW@@")
+        end,
+    },
+    ["lag"] = {
+        description = "Will lag a user.(will take 30 secounds to effect)",
+        toggle = true,
+        funk = function(args)
+            local player 
+            player = GetPlayer(args[2])[1]
+            for i=1,1000 do
+                rchat("sword "..player.Name.." "..player.Name.." "..player.Name)
+                if not active then 
+                    break 
+                end
+            wait()end
+            rchat("ungear "..player.Name)
         end,
     }
 }
