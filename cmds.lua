@@ -55,17 +55,19 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.12")
+lchat("2.3.13")
 
 local rconsoleprint = function(input,color)
-    if color then
-        rconsoleprint(color)
-    else
-        rconsoleprint("@@WHITE@@")
-    end
-    rconsoleprint(input.."\n")
-    fwait()
-    rconsoleprint("@@WHITE@@")
+    fspawn(function()
+        if color then
+            fspawn(function()rconsoleprint(color)end)
+        else
+            fspawn(function()rconsoleprint("@@WHITE@@")end)
+        end
+        fspawn(function()rconsoleprint(input.."\n")end)
+        fwait()
+        fspawn(function()rconsoleprint("@@WHITE@@")end)
+    end)
 end
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
 rconsolename("cmds.lua")
@@ -878,7 +880,7 @@ getgenv().Commands = {
         description = "Freezes everyone or args<2> if any args<2>.",
         toggle = true,
         funk = function(args)
-            if annoy then getgenv().annoy = false rchat("stopmusic") return else getgenv().annoy = true
+            if annoy then getgenv().annoy = false return else getgenv().annoy = true
                 if args[2] then
                     while annoy do
                         for i1,v1 in pairs(GetPlayer(args[2])) do 
@@ -904,6 +906,7 @@ getgenv().Commands = {
                     while annoy do 
                         rchat("unskydive others others others robot.txt")
                     wait(.09)end
+                    rchat("stopmusic")
                 end
             end
         end,
