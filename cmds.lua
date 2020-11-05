@@ -1,6 +1,8 @@
 repeat wait() until game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
 repeat wait() until game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents:FindFirstChild("SayMessageRequest")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
+local JSOND = function(a)return game:GetService("HttpService"):JSONDecode(a)end
+local JSONE = function(a)return game:GetService("HttpService"):JSONEncode(a)end
 if not rconsoleprint then
     lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
     rchat("music 5648499584")
@@ -38,7 +40,12 @@ if not isfile("cd") then
     makefolder("cd/Scripts")
     repeat wait() until isfile("cd/Scripts")
 end
-loadstring(readfile("cd/Config/cmds.settings"))()
+settings = JSOND(readfile("cd/Config/cmds.settings"))
+
+if not settings.antiloud then
+    settings.antiloud = true
+    writefile("cd/Config/cmds.settings",JSONE(settings))
+end
 
 if not isfile("cd/README.txt") then
     writefile("cd/README.txt","If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)")
@@ -83,8 +90,6 @@ debug = true
 function dprint(t)if debug --[[and lplr.UserId == 1090451412--]] then print(t)end end
 local Fetch = {}
 Fetch.Get = function(a)local succ,err = game:HttpGet(a) if err then return("err"..err) else return(succ)end end
-local JSOND = function(a)return game:GetService("HttpService"):JSONDecode(a)end
-local JSONE = function(a)return game:GetService("HttpService"):JSONEncode(a)end
 local cwarn = function(input)
     lchat("cd/warn/: "..input)
 end
@@ -883,12 +888,12 @@ getgenv().Commands = {
             if annoy then getgenv().annoy = false return else getgenv().annoy = true
                 if args[2] then
                     while annoy do
+                        if unpack(GetPlayer(args[2])) == nil then 
+                            rconsoleprint("[cmds.lua]: HACKER DOWN! :sunglasses:","@@MAGENTA@@")
+                            getgenv().annoy = false 
+                            break 
+                        end
                         for i1,v1 in pairs(GetPlayer(args[2])) do 
-                            if unpack(GetPlayer(args[2])) == nil then 
-                                rconsoleprint("[cmds.lua]: HACKER DOWN! :sunglasses:","@@MAGENTA@@")
-                                getgenv().annoy = false 
-                                break 
-                            end
                             rchat("unskydive "..v1.name.." "..v1.Name.." "..v1.Name.." robot.txt")
                         end 
                     wait(.09)end
@@ -1508,7 +1513,8 @@ getgenv().Commands = {
             end
             rconsoleprint(info:sub(1,info:len()-1),"@@BLUE@@")
         end,
-    }
+    },
+    
 }
 
 fspawn(function()
@@ -1607,6 +1613,13 @@ end
 gf.Folder.ChildAdded:connect(function(c)
     if c.Name:sub(-4) == "jail" or c:IsA("Message") then
         fwait()c.Parent = nil
+    end
+    if c.Name == "Sound" and settings.antiloud then
+        while c.Parent ~= nil do
+            if c.PlaybackLoudness > 700 then
+                rchat("stopmusic")
+            end
+        fwait()end
     end
 end)
 for i,connection in pairs(getconnections(gf.Folder.ChildAdded)) do
@@ -1713,5 +1726,37 @@ fspawn(function()
     end)
     for i,connection in pairs(getconnections(lplr.OnTeleport)) do
         if i==1 then getgenv().OT = connection end
+    end
+end)
+
+fspawn(function()
+    local pads
+    pads = gf.Admin:WaitForChild("Pads",5)
+    if pads == nil then
+        rconsoleprint("[cmds.lua]: Pads model does not exist?","@@RED@@")
+        return
+    end
+    for _,v in pairs(pads:GetChidlren()) do
+        if v:FindFirstChild("TransmorphScript") then
+            rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Transmorpher'!","@@YELLOW@@")
+            v.Transparency = 0
+        elseif v.Head.Velocity ~= Vector3.new(0,0,0) then
+            rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Velocity'!","@@YELLOW@@")
+            v.Velocity = Vector3.new(0,0,0)
+        end
+    end
+    if #pads:GetChidlren() ~= 9 then
+        rconsoleprint("[cmds.lua]: Admin pads was tampered with via 'Removal'!","@@RED@@")
+    end
+end)
+fspawn(function()
+    local regen
+    regen = gf.Admin:WaitForChild("Regen",5)
+    if regen == nil then
+        rconsoleprint("[cmds.lua]: Regen part does not exist?","@@RED@@")
+        return
+    end
+    if regen.CFrame ~= CFrame.new(-7.16500044, 5.42999268, 94.7430038, 0, 0, -1, 0, 1, 0, 1, 0, 0) then
+        rconsoleprint("[cmds.lua]: Regen was tampered with via 'Relocation'!","@@YELLOW@@")
     end
 end)
