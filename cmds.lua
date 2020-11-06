@@ -8,6 +8,18 @@ if not rconsoleprint then
     rchat("music 5648499584")
     return
 end
+local rconsoleprint = function(input,color)
+    fspawn(function()
+        if color then
+            fspawn(function()rconsoleprint(color)end)
+        else
+            fspawn(function()rconsoleprint("@@WHITE@@")end)
+        end
+        fspawn(function()rconsoleprint(input.."\n")end)
+        fwait()
+        fspawn(function()rconsoleprint("@@WHITE@@")end)
+    end)
+end
 
 if not isfile("cd") then
     lchat("Welcome newcomer!",Color3.new(0,1,0))
@@ -104,18 +116,7 @@ end
 
 lchat("2.3.17")
 
-local rconsoleprint = function(input,color)
-    fspawn(function()
-        if color then
-            fspawn(function()rconsoleprint(color)end)
-        else
-            fspawn(function()rconsoleprint("@@WHITE@@")end)
-        end
-        fspawn(function()rconsoleprint(input.."\n")end)
-        fwait()
-        fspawn(function()rconsoleprint("@@WHITE@@")end)
-    end)
-end
+
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
 rconsolename("cmds.lua")
 
