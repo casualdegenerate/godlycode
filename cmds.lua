@@ -46,10 +46,50 @@ if not settings.antiloud then
     settings.antiloud = true
     writefile("cd/Config/cmds.settings",JSONE(settings))
 end
-
+local s = [[If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)
+Everything I want to tell you is here.
+Listed commands documentation! (please praise me for making this...Also, anything with NaN it's not writen. Just wrote it down so you can see the list of commands, but I might add a description to it here.)
+snipe: (snipe <plr>) Will jail the player and explode them(could lag player if they render the explosion)
+regen: (regen) Will regen the admin pads IF there is a regen button in the first place, else it will just say "WARNING: Regen does not exist? Removed by someone?" in the console.
+reset: (reset) You say "reset me" command. I just made it cause I don't like tabbing whenever I want to reset.
+permpunish: (permpunish <plr>) This will punish the player when they are placed back into the game's workspace(where you see them).
+unpermpunish: (unpermpunish <plr>) This will remove the player from the list of people you perm punished.
+klown: (klown <plr>) Will turn someone into a clown.
+visualize: (NaN)
+unvisualize: (NaN)
+con: (NaN)
+cn: (NaN)
+uncn: (NaN)
+?: (?) Will tell you the song the person played in the game with "music 12345678" and tell you the name, it would ask you if you want to copy it to your clipboard.
+mimic: (NaN)
+cd: (NaN)
+outfit: (NaN)
+nn: (NaN)
+unnn: (NaN)
+lunp: (NaN)
+unlunp: (NaN)
+rainbow: (rainbow) Will make the map turn into a rainbow.
+copyplayerlist: (copyplayerlist) Will copy the playerlist to your clipboard.
+logsscramble: (NaN)
+cdcommands: (NaN)
+bypass: (NaN)
+cd-a: (NaN)
+chat: (NaN)
+fix: (NaN)
+cache: (NaN)
+check: (NaN)
+logss: (NaN)
+logse: (NaN)
+cdfunni: (NaN)
+rejoin: (rejoin) Will make you rejoin the game.
+dcache: (NaN)]]
 if not isfile("cd/README.txt") then
-    writefile("cd/README.txt","If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)")
+    writefile("cd/README.txt",s)
+elseif readfile("cd/README.txt") ~= s then
+    rconsoleprint("[cd/cmds.lua]: The cd/README.txt has been updated! Check it out if you want!","@@GREEN@@")
+    writefile("cd/README.txt",s)
 end
+
 if not isfile("cd/cmds.lua") then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
 	fspawn(function()loadstring(readfile("cd/cmds.lua"))()end)
@@ -62,7 +102,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.16")
+lchat("2.3.17")
 
 local rconsoleprint = function(input,color)
     fspawn(function()
@@ -1538,11 +1578,13 @@ getgenv().Commands = {
         end,
     },
     ["flingball"] = {
+        description = "Jump on player's head you wish to fling and POOF they go!",
         funk = function(args)
             rconsoleprint("[cmds.lua]: Not Added Yet!","@@YELLOW@@")
+            
         end,
     },
-    ["lag"] = {
+    ["lag-a"] = {
         description = "Will lag a user.(will take 30 secounds to effect)",
         toggle = true,
         funk = function(args)
