@@ -85,7 +85,7 @@ rejoin: (rejoin) Will make you rejoin the game.
 dcache: (NaN)]]
 if not isfile("cd/README.txt") then
     writefile("cd/README.txt",s)
-elseif readfile("cd/README.txt") ~= s then
+elseif readfile("cd/README.txt") ~= s and settings.autoupdate then
     rconsoleprint("[cd/cmds.lua]: The cd/README.txt has been updated! Check it out if you want!","@@GREEN@@")
     writefile("cd/README.txt",s)
 end
