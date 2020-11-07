@@ -58,6 +58,13 @@ if not settings.antiloud then
     settings.antiloud = true
     writefile("cd/Config/cmds.settings",JSONE(settings))
 end
+if not settings.antiloud then
+    settings.antiloud = true
+    writefile("cd/Config/cmds.settings",JSONE(settings))
+end
+
+
+
 local s = [[If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)
 Everything I want to tell you is here.
 Listed commands documentation! (please praise me for making this...Also, anything with NaN it's not writen. Just wrote it down so you can see the list of commands, but I might add a description to it here.)
@@ -114,11 +121,11 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.17")
+lchat("2.3.18")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
-rconsolename("cmds.lua")
+rconsolename(".\\cd\\cmds.lua")
 
 rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
 local lplr = game:GetService("Players").LocalPlayer
@@ -1240,7 +1247,7 @@ getgenv().Commands = {
             for i,v in pairs(game:GetService("Players"):GetPlayers()) do
                 v.Chatted:connect(function(msg)
                     if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
-                        respawnpos = lplr.Character.HumanoidRootPart.CFrame
+                        respawnpos = lplr.Character:WaitForChild("HumanoidRootPart").CFrame
                         cameracframe = camera.CFrame
                     end
                 end)
