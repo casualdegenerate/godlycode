@@ -121,7 +121,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.19")
+lchat("2.3.20")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -145,18 +145,27 @@ local cerror = function(input)
     rchat("cd/error/: "..input)
 end
 function GetPlayer(a)local b={}local c=a:lower()if c=="all"then for d,e in pairs(game.Players:GetPlayers())do table.insert(b,e)end elseif c=="others"then for d,e in pairs(game.Players:GetPlayers())do if e.Name~=game.Players.LocalPlayer.Name then table.insert(b,e)end end elseif c=="me"then for d,e in pairs(game.Players:GetPlayers())do if e.Name==game.Players.LocalPlayer.Name then table.insert(b,e)end end else for d,e in pairs(game.Players:GetPlayers())do if e.Name:lower():sub(1,#a)==a:lower()then table.insert(b,e)end end end;if unpack(b) == nil then rconsoleprint("No players in-game goes by that name. If you are spelling their name right and this still pops up, DM @casual_degenerate#7475 586141923048161291 your issue and they will help.","@@RED@@") end return b end
-
 local CheckGamepass=function(userid,gamepass)
 	local g = game:HttpGet("https://inventory.roblox.com/v1/users/"..tostring(userid).."/items/GamePass/"..tostring(gamepass)):sub(65)
 	if g ~= "" then return true
 	else return false
     end
-end;
+end
 
 local hasAsset = function(userId,assetId)
     local h = Fetch.Get("https://api.roblox.com/ownership/hasasset?userId="..tostring(userId).."&assetId="..tostring(assetId))
     return h
 end
+
+
+
+
+--[[
+local rchat = function(text)
+    if 
+end
+--]]
+
 
 --[[Will use in new logs patch when it works...
 function filt(txt)local o=''
@@ -272,6 +281,23 @@ end
 
 wait(1)
 rconsoleprint("Passed reset!","@@LIGHT_GRAY@@")
+
+
+fspawn(function()
+    for i,aa in pairs({66254, 64354}) do
+        if CheckGamepass(v.UserId,aa) then
+            return
+        end
+    end
+    for i,aa in pairs({35748, 37127}) do
+        if CheckGamepass(v.UserId,aa) then
+            rconsoleprint("This script does not support person's admin. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@YELLOW@@")
+            return
+        end
+    end
+    rconsoleprint("This script does not support non perms. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@YELLOW@@")
+end)
+
 
 
 getgenv().Punished = {}
@@ -1114,7 +1140,7 @@ getgenv().Commands = {
         description = "Plays a random song.",
         funk = function(args)
             local song = songs[math.random(1,#songs)]
-            rchat("music "..song)
+            rchat("music "..antilogger1..song)
             rconsoleprint("[cd.lua]: Enjoy! ^-^ Playing "..gpi(song).Name)
         end,
     },
@@ -1132,7 +1158,6 @@ getgenv().Commands = {
         funk = function(args)
             if rep or args[2] == nil then getgenv().rep = false return else getgenv().rep = true end
             if tonumber(args[4]) == nil then args[4] = 0.03 end
-
             while rep do
                 rchat(args[2].." "..args[3].." "..args[3].." "..args[3].." robot.txt")
             wait(args[4])end
@@ -1193,7 +1218,7 @@ getgenv().Commands = {
                     rconsoleprint("[".._.."]: "..asset.Name,"@@MAGENTA@@")
                 end
                 local choice = rconsoleinput()
-                if choice == "0" then return end
+                if choice == "0" or type(choice) == 'nil' then return end
                 rchat("music "..antilogger1..tostring(songs[tonumber(choice)]))
             else
                 rchat("music "..antilogger1..tostring(songs[tonumber(args[2])]))
@@ -1258,7 +1283,12 @@ getgenv().Commands = {
             game:GetService("Players").PlayerAdded:connect(function(v)
                 v.Chatted:connect(function(msg)
                     if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
-                        respawnpos = lplr.Character.HumanoidRootPart.CFrame
+                        h = lplr.Character:WaitForChild("HumanoidRootPart",5)
+                        if h then
+                            respawnpos = h.CFrame
+                        else
+                            respawnpos = CFrame.new(0,4,0)
+                        end
                         cameracframe = camera.CFrame
                     end
                 end)
