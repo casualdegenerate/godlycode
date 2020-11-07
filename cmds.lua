@@ -1251,7 +1251,7 @@ getgenv().Commands = {
                     rconsoleprint("[".._.."]: "..asset.Name,"@@MAGENTA@@")
                 end
                 local choice = rconsoleinput()
-                if choice == "0" or type(choice) == 'nil' then return end
+                if choice == "0" or choice == "" then return end
                 rchat("music "..antilogger1..tostring(songs[tonumber(choice)]))
             else
                 rchat("music "..antilogger1..tostring(songs[tonumber(args[2])]))
