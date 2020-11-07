@@ -121,7 +121,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.18")
+lchat("2.3.19")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1194,9 +1194,9 @@ getgenv().Commands = {
                 end
                 local choice = rconsoleinput()
                 if choice == "0" then return end
-                rchat("music "..tostring(songs[tonumber(choice)]))
+                rchat("music "..antilogger1..tostring(songs[tonumber(choice)]))
             else
-                rchat("music "..tostring(songs[tonumber(args[2])]))
+                rchat("music "..antilogger1..tostring(songs[tonumber(args[2])]))
             end
         end,
     },
