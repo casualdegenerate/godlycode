@@ -156,7 +156,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.21")
+lchat("2.3.22")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -232,6 +232,11 @@ end
 
 
 local antilogger1 = "000000000000"
+
+for i=1,6 do
+    antilogger1 = antilogger1..antilogger1..antilogger1
+end
+
 local gf=game:GetService("Workspace").Terrain._Game
 local camera = game:GetService("Workspace").Camera
 local VS = camera.ViewportSize --This is used to make the patched logs the 'right size' when using it. 
@@ -668,9 +673,9 @@ getgenv().Commands = {
             end
             for _,v in pairs(args) do
                 if v:find("+e") then
-                    rchat("unhat me")
-                    rchat("unshirt me")
-                    rchat("unpants me")
+                    rchat("unhat me robot.txt")
+                    rchat("unshirt me robot.txt")
+                    rchat("unpants me robot.txt")
                 end
             end
             for _,v in pairs(lplr.Character:GetDescendants()) do
@@ -679,11 +684,11 @@ getgenv().Commands = {
                 end
             end
             for _,v in pairs(Outfit.Hat) do
-                rchat("hat me "..v)
+                rchat("hat me "..antilogger1..v)
             end
-            rchat("shirt me "..Outfit.Shirt)
-            rchat("pants me "..Outfit.Pants)
-            rchat("face me "..Outfit.Face)
+            rchat("shirt me "..antilogger1..Outfit.Shirt)
+            rchat("pants me "..antilogger1..Outfit.Pants)
+            rchat("face me "..antilogger1..Outfit.Face)
             if Outfit.Creator then rchat("h "..Outfit.Creator) end --if you wanted to give credit...
             fspawn(function()
                 wait(2)
@@ -1825,7 +1830,7 @@ fspawn(function()
         end
     end
 end)
-
+--I don't use this so I might consider depricating the command.
 fspawn(function()
     local s = ""
     local commands = {"thaw";"normaljump";"visible";"unfire";"unsmoke";"unsparkle";"heal";"god";"ungod";"grav";"setgrav";"nograv";"name";"package";"unpackage";"guifix";"lock";"unlock";"unjail";"rank";"hat";"gear";"tshirt";"pants";"shirt";"removeclones";"removejails";"cd/586141923048161291"}
