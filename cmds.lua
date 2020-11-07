@@ -319,6 +319,7 @@ rconsoleprint("Checking player status. Please wait for it to check...","@@LIGHT_
 fspawn(function()
     for i,aa in pairs({66254, 64354}) do
         if CheckGamepass(lplr.UserId,aa) then
+            rconsoleprint("You're good!","@@GREEN@@")
             return
         end
     end
