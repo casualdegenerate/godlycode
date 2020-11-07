@@ -1268,10 +1268,10 @@ getgenv().Commands = {
                     end
                     local choice = rconsoleinput()
                     if choice == "0" or choice == "" then return end
-                    rchat("music "..antilogger1..tostring(songsn[tonumber(choice)]))
+                    rchat("music "..antilogger1..tostring(songsn[tonumber(choice)].Id))
                 end
             elseif unpack(songsn) ~= nil then
-                rchat("music "..antilogger1..tostring(songsn[tonumber(args[2])]))
+                rchat("music "..antilogger1..tostring(songsn[tonumber(args[2])].Id))
             else
                 rchat("music "..antilogger1..tostring(songs[tonumber(args[2])]))
             end
