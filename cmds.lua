@@ -156,7 +156,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.20")
+lchat("2.3.21")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -316,7 +316,7 @@ end
 wait(1)
 rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
 rconsoleprint("Checking player status. Please wait for it to check...","@@LIGHT_GRAY@@")
-fpsawn(function()
+fspawn(function()
     for i,aa in pairs({66254, 64354}) do
         if CheckGamepass(lplr.UserId,aa) then
             return
