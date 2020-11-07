@@ -101,7 +101,8 @@ end
 
 local s = [[If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)
 Everything I want to tell you is here.
-(NaN)
+If the script does not work sometimes, I'm prob updating it for the 100th time in a day and the update had a bug, but if you can kinda contact me and shit in my dms about it thank you so much.
+
 Listed commands documentation! (please praise me for making this...Also, anything with NaN it's not writen. Just wrote it down so you can see the list of commands, but I might add a description to it here.)
 snipe: (snipe <plr>) Will jail the player and explode them(could lag player if they render the explosion)
 regen: (regen) Will regen the admin pads IF there is a regen button in the first place, else it will just say "WARNING: Regen does not exist? Removed by someone?" in the console.
@@ -156,7 +157,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.3.22")
+lchat("2.4.0")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -167,7 +168,7 @@ if not kek then --Debounce for reboots.
     tchat("Loaded .\\cd\\cmds.lua") 
 end
 local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
-getgenv().kek=true
+
 debug = true
 function dprint(t)if debug --[[and lplr.UserId == 1090451412--]] then print(t)end end
 local Fetch = {}
@@ -233,7 +234,7 @@ end
 
 local antilogger1 = "000000000000"
 
-for i=1,6 do
+for i=1,3 do
     antilogger1 = antilogger1..antilogger1..antilogger1
 end
 
@@ -313,29 +314,28 @@ end
 
 
 
-
-
-
-
-
 wait(1)
+if not kek then
+    rconsoleprint("Checking player status. Please wait for it to check...","@@LIGHT_GRAY@@")
+    fspawn(function()
+        for i,aa in pairs({66254, 64354}) do
+            if CheckGamepass(lplr.UserId,aa) then
+                rconsoleprint("You're good!","@@GREEN@@")
+                return
+            end
+        end
+        for i,aa in pairs({35748, 37127}) do
+            if CheckGamepass(lplr.UserId,aa) then
+                rconsoleprint("This script does not support person's admin. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@RED@@")
+                return
+            end
+        end
+        rconsoleprint("This script does not support non perms. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@RED@@")
+    end)
+end
 rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
-rconsoleprint("Checking player status. Please wait for it to check...","@@LIGHT_GRAY@@")
-fspawn(function()
-    for i,aa in pairs({66254, 64354}) do
-        if CheckGamepass(lplr.UserId,aa) then
-            rconsoleprint("You're good!","@@GREEN@@")
-            return
-        end
-    end
-    for i,aa in pairs({35748, 37127}) do
-        if CheckGamepass(lplr.UserId,aa) then
-            rconsoleprint("This script does not support person's admin. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@RED@@")
-            return
-        end
-    end
-    rconsoleprint("This script does not support non perms. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@RED@@")
-end)
+
+
 
 
 getgenv().Punished = {}
@@ -358,7 +358,7 @@ getgenv().bypassmusic = {
 
 getgenv().hentai = {5707097328}
 getgenv().songs = readfile("cd/Config/Music.txt"):split("\n")
-
+getgenv().songsn = {}
 getgenv().fix = {
     speed = false
 }
@@ -1251,13 +1251,27 @@ getgenv().Commands = {
     ["music"] = {
         funk = function(args)
             if args[2] == nil or args[2] == "" then
-                for _,song in pairs(songs) do
-                    local asset = gpi(song)
-                    rconsoleprint("[".._.."]: "..asset.Name,"@@MAGENTA@@")
+                if unpack(songsn) == nil then
+                    for _,song in pairs(songs) do
+                        local asset = gpi(song)
+                        songsn[_] = {}
+                        songsn[_].Id = song
+                        songsn[_].Name = asset.Name
+                        rconsoleprint("[".._.."]: "..tostring(songsn[_].Name),"@@MAGENTA@@")
+                    end
+                    local choice = rconsoleinput()
+                    if choice == "0" or choice == "" then return end
+                    rchat("music "..antilogger1..tostring(songs[tonumber(choice)]))
+                else
+                    for _,song in pairs(songsn) do
+                        rconsoleprint("[".._.."]: "..tostring(songsn[_].Name),"@@MAGENTA@@")
+                    end
+                    local choice = rconsoleinput()
+                    if choice == "0" or choice == "" then return end
+                    rchat("music "..antilogger1..tostring(songsn[tonumber(choice)]))
                 end
-                local choice = rconsoleinput()
-                if choice == "0" or choice == "" then return end
-                rchat("music "..antilogger1..tostring(songs[tonumber(choice)]))
+            elseif unpack(songsn) ~= nil then
+                rchat("music "..antilogger1..tostring(songsn[tonumber(args[2])]))
             else
                 rchat("music "..antilogger1..tostring(songs[tonumber(args[2])]))
             end
@@ -1929,3 +1943,8 @@ fspawn(function()
     end
     chimney.Smoke.Enabled = true
 end)
+
+
+
+
+getgenv().kek=true
