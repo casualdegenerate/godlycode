@@ -3,6 +3,36 @@ repeat wait() until game:GetService("ReplicatedStorage").DefaultChatSystemChatEv
 loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
 local JSOND = function(a)return game:GetService("HttpService"):JSONDecode(a)end
 local JSONE = function(a)return game:GetService("HttpService"):JSONEncode(a)end
+JSONB=function(jsn) --Thank you [NekO]
+    local o=''local tc=0 local isSt=false local nc=false
+    if type(jsn)~='string'then error('\8[jsonB]:Give Json As String.')else
+      for i=1,jsn:len()do
+        t=function()return('\t'):rep(tc)end
+        local tchr=jsn:sub(i,i)if tchr=='"'or tchr=="'"then isSt=not isSt end
+        if isSt==false then
+          if tchr=='{'or tchr=='['then
+            tc=tc+1 tchr=tchr..'\n'..t()
+          elseif jsn:sub(i,i+1)=='},'or jsn:sub(i,i+1)=='],'then
+            tc=tc-1 nc=true tchr='\n'..t()..jsn:sub(i,i+1)..'\n'..t()
+          elseif jsn:sub(i,i+1)~='},'and jsn:sub(i,i+1)~='],'then
+            if jsn:sub(i,i)=='}'or jsn:sub(i,i)==']'then
+              tc=tc-1 tchr='\n'..t()..tchr..'\n'..t()
+            end
+          end
+          if tchr==','then
+            if jsn:sub(i-1,i)~='],'and jsn:sub(i-1,i)~='},'then
+              if nc==true and jsn:sub(i-1,i+1)~='","' then
+                nc=false
+              else tchr=tchr..'\n'..t()end
+            end
+          end
+          if nc==true and tchr==','then else o=o..tchr end
+        else o=o..tchr
+        end
+      end
+    end
+    return o
+  end
 if not rconsoleprint then
     lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
     rchat("music 5648499584")
@@ -54,19 +84,24 @@ if not isfile("cd") then
 end
 settings = JSOND(readfile("cd/Config/cmds.settings"))
 
-if not settings.antiloud then
+if settings.antiloud == nil then
     settings.antiloud = true
-    writefile("cd/Config/cmds.settings",JSONE(settings))
+    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
 end
-if not settings.antiloud then
-    settings.antiloud = true
-    writefile("cd/Config/cmds.settings",JSONE(settings))
+if settings.experimentalConsole == nil then
+    settings.experimentalConsole = false
+    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
 end
+
+
+
+
 
 
 
 local s = [[If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)
 Everything I want to tell you is here.
+(NaN)
 Listed commands documentation! (please praise me for making this...Also, anything with NaN it's not writen. Just wrote it down so you can see the list of commands, but I might add a description to it here.)
 snipe: (snipe <plr>) Will jail the player and explode them(could lag player if they render the explosion)
 regen: (regen) Will regen the admin pads IF there is a regen button in the first place, else it will just say "WARNING: Regen does not exist? Removed by someone?" in the console.
@@ -127,9 +162,8 @@ lchat("2.3.20")
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
 rconsolename(".\\cd\\cmds.lua")
 
-rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
 local lplr = game:GetService("Players").LocalPlayer
-if not kek then 
+if not kek then --Debounce for reboots.
     tchat("Loaded .\\cd\\cmds.lua") 
 end
 local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
@@ -280,24 +314,22 @@ end
 
 
 wait(1)
-rconsoleprint("Passed reset!","@@LIGHT_GRAY@@")
-
-
-fspawn(function()
+rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
+rconsoleprint("Checking player status. Please wait for it to check...","@@LIGHT_GRAY@@")
+fpsawn(function()
     for i,aa in pairs({66254, 64354}) do
-        if CheckGamepass(v.UserId,aa) then
+        if CheckGamepass(lplr.UserId,aa) then
             return
         end
     end
     for i,aa in pairs({35748, 37127}) do
-        if CheckGamepass(v.UserId,aa) then
-            rconsoleprint("This script does not support person's admin. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@YELLOW@@")
+        if CheckGamepass(lplr.UserId,aa) then
+            rconsoleprint("This script does not support person's admin. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@RED@@")
             return
         end
     end
-    rconsoleprint("This script does not support non perms. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@YELLOW@@")
+    rconsoleprint("This script does not support non perms. I'd suggust you to use 'pads' command to force yourself admin when you can.","@@RED@@")
 end)
-
 
 
 getgenv().Punished = {}
