@@ -1,6 +1,11 @@
 repeat wait() until game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
 repeat wait() until game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents:FindFirstChild("SayMessageRequest")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
+if not rconsoleprint then
+    lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
+    rchat("music 5648499584")
+    return
+end
 local JSOND = function(a)return game:GetService("HttpService"):JSONDecode(a)end
 local JSONE = function(a)return game:GetService("HttpService"):JSONEncode(a)end
 JSONB=function(jsn) --Thank you [NekO]
@@ -33,11 +38,6 @@ JSONB=function(jsn) --Thank you [NekO]
     end
     return o
   end
-if not rconsoleprint then
-    lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
-    rchat("music 5648499584")
-    return
-end
 local rconsoleprint = function(input,color)
     fspawn(function()
         if color then
