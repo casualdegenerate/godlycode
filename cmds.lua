@@ -1271,7 +1271,7 @@ getgenv().Commands = {
                         rconsoleprint("[".._.."]: "..tostring(songsn[_].Name),"@@MAGENTA@@")
                     end
                     local choice = rconsoleinput()
-                    if choice == "0" or choice == "" or #choice:split(" ") > 1 or tonumber(choice) ~= nil then return end
+                    if choice == "0" or choice == "" then return end
                     rchat("music "..antilogger1..tostring(songsn[tonumber(choice)].Id))
                 end
             elseif unpack(songsn) ~= nil then
