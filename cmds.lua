@@ -157,7 +157,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.0")
+lchat("2.4.1")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1267,7 +1267,7 @@ getgenv().Commands = {
                         rconsoleprint("[".._.."]: "..tostring(songsn[_].Name),"@@MAGENTA@@")
                     end
                     local choice = rconsoleinput()
-                    if choice == "0" or choice == "" then return end
+                    if choice == "0" or choice == "" or #choice:split(" ") > 1 or tonumber(choice) ~= nil then return end
                     rchat("music "..antilogger1..tostring(songsn[tonumber(choice)].Id))
                 end
             elseif unpack(songsn) ~= nil then
@@ -1688,7 +1688,8 @@ getgenv().Commands = {
             wait()end
             rchat("ungear "..player.Name)
         end,
-    }
+    },
+    
 }
 
 fspawn(function()
