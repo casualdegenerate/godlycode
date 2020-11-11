@@ -63,14 +63,14 @@ if not isfile("cd") then
     makefolder("cd/Config")
     repeat wait() until isfile("cd/Config")
     writefile("cd/Config/cmds.settings",
-[[{settings = {
+[[settings = {
     servers = {
         colorFriends = true,
         nameOnlyFriends = true,
         namePlayers = false,
     },
     autoupdate = true,
-}]]
+]]
 )
     repeat wait() until isfile("cd/Config/cmds.settings")
     writefile("cd/Config/Music.txt","5580376560\n5833642888\n1064109642\n535308988\n554711853")
