@@ -63,7 +63,7 @@ if not isfile("cd") then
     makefolder("cd/Config")
     repeat wait() until isfile("cd/Config")
     writefile("cd/Config/cmds.settings",
-[[settings = {
+[[{settings = {
     servers = {
         colorFriends = true,
         nameOnlyFriends = true,
