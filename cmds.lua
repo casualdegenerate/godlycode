@@ -157,7 +157,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.2")
+lchat("2.4.3")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -227,6 +227,9 @@ end
 
 --GPI is an acronym for GetProductInfo
 local gpi = function(id)
+    if tonumber(id) == nil then
+        return 
+    end
     return game:GetService("MarketplaceService"):GetProductInfo(tonumber(id))
 end
 
@@ -656,6 +659,7 @@ getgenv().Commands = {
         description = "Set's cd/Outfits/<args[2]>.cd as your outfit.",
         funk = function(args)
             local input = tostring(args[2])
+            local i = 0
             reeeeeeee=false
             for _,v in pairs(args) do
                 if v:find("+random") then reeeeeeee=true
@@ -690,10 +694,15 @@ getgenv().Commands = {
             rchat("pants me "..antilogger1..Outfit.Pants)
             rchat("face me "..antilogger1..Outfit.Face)
             if Outfit.Creator then rchat("h "..Outfit.Creator) end --if you wanted to give credit...
+            for _,v in pairs(lplr.Character:GetDescendants()) do
+                if v.Name == "face" and v:IsA("Decal") then
+                    i=i+1
+                end
+            end
             fspawn(function()
                 wait(2)
                 for _,v in pairs(lplr.Character.Head:GetChildren()) do
-                    if v.Name == "face" and _ ~= #lplr.Character.Head:GetChildren()-1 then
+                    if v.Name == "face" and _ ~= #lplr.Character.Head:GetChildren()-1 and i>1 then
                         v:Destroy()
                     end
                 end
@@ -1127,16 +1136,11 @@ getgenv().Commands = {
             l.TextButton.BackgroundTransparency = .8
 
             l.TextButton.Frame.Frame.ChildAdded:connect(function(c)
-                if c.Text == logslast then
-                    fwait()
-                    getgenv().logslast = c.Text
-                    c:Destroy()
-                end
                 if c.Text:find("robot.txt") or c.Text:find("[CasualDegenerate]:") or c.Text:find(antilogger1) then
                     fwait()c:Destroy()
                 end
-                if c.Text:len() > 200 then 
-                    c.Text = c.Text:sub(1,200) 
+                if c.Text:len() > 200 then
+                    fwait()c:Destroy()
                 end
             end)
             for i,connection in pairs(getconnections(l.TextButton.Frame.Frame.ChildAdded)) do
@@ -1670,22 +1674,31 @@ getgenv().Commands = {
     ["flingball"] = {
         description = "Jump on player's head you wish to fling and POOF they go!",
         funk = function(args)
-            rconsoleprint("[cmds.lua]: Not Added Yet!","@@YELLOW@@")
-            
+            if 0==1 then
+               print("neet") 
+            end
+            for i=1,100 do
+                rchat("shield/me")
+            wait()end
         end,
     },
     ["lag-a"] = {
         description = "Will lag a user.(will take 30 secounds to effect)",
         toggle = true,
         funk = function(args)
+            local val = 500
             local player 
+            if args[3] == nil then
+                val = tonumber(args[3])
+            end
             player = GetPlayer(args[2])[1]
-            for i=1,1000 do
+            for i=1,val do
                 rchat("sword "..player.Name.." "..player.Name.." "..player.Name)
                 if not active then 
                     break 
                 end
             wait()end
+            wait(1)
             rchat("ungear "..player.Name)
         end,
     },
@@ -1733,7 +1746,41 @@ getgenv().Commands = {
                 end
             end)
         end,
-    }
+    },
+    ["patch"] = {
+        description = "patch <args2>(shiftlock) will patch certain bugs. Look in the README for more information about this.",
+        funk = function(args)
+            if args[2] == "shiftlock" then
+                if not game:GetService("ReplicatedStorage"):FindFirstChild("WeaponsSystem") then
+                    rconsoleprint("It does not exist?","@@YELLOW@@")
+                    return
+                end
+                for _,v in pairs(game:GetService("ReplicatedStorage").WeaponsSystem:GetDescendants()) do
+                    if v:IsA("Script") then
+                        v.Disabled = true
+                    end
+                    v:Destroy()
+                end
+                if lplr.PlayerGui:FindFirstChild("ClientWeaponsScript") then
+                    lplr.PlayerGui.ClientWeaponsScript.Disabled = true
+                    lplr.PlayerGui.ClientWeaponsScript:Destroy()
+                end
+                if lplr.PlayerGui:FindFirstChild("WeaponsSystemGui") then
+                    lplr.PlayerGui.WeaponsSystemGui:Destroy()
+                end
+                if lplr.PlayerScripts:FindFirstChild("ClientWeaponsScript") then
+                    lplr.PlayerScripts.ClientWeaponsScript.Disabled = true
+                    lplr.PlayerScripts.ClientWeaponsScript:Destroy()
+                end
+                game:GetService("UserInputService").MouseIconEnabled = true
+                game:GetService("Workspace").Camera.CameraType = Enum.CameraType.Custom
+                game:GetService("Workspace").Camera.CameraSubject = lplr.Character.Humanoid
+                lplr.Character.Humanoid.AutoRotate = true
+            else
+                rconsoleprint("Try spelling it again. \"shiftlock\"","@@BLUE@@")
+            end
+        end,
+    },
 }
 
 fspawn(function()
@@ -1958,10 +2005,10 @@ fspawn(function()
     for _,v in pairs(pads:GetChildren()) do
         if v:FindFirstChild("TransmorphScript") then
             rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Transmorpher'!","@@YELLOW@@")
-            v.Transparency = 0
+            v.Head.Transparency = 0
         elseif v.Head.Velocity ~= Vector3.new(0,0,0) then
             rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Velocity'!","@@YELLOW@@")
-            v.Velocity = Vector3.new(0,0,0)
+            v.Head.Velocity = Vector3.new(0,0,0)
         end
     end
     if #pads:GetChildren() ~= 9 then
