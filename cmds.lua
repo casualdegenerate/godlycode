@@ -63,19 +63,16 @@ if not isfile("cd") then
     makefolder("cd/Config")
     repeat wait() until isfile("cd/Config")
     writefile("cd/Config/cmds.settings",
-[[{
-	"autoupdate":true,
-	"servers":{
-		"colorFriends":true,
-		"nameOnlyFriends":true,
-		"namePlayers":false
-	}
-	
+[[settings = {
+    servers = {
+        colorFriends = true,
+        nameOnlyFriends = true,
+        namePlayers = false,
+    },
+    autoupdate = true,
 }]]
 )
-    repeat wait() until isfile("cd/Config/cmds.settings")
     writefile("cd/Config/Music.txt","5580376560\n5833642888\n1064109642\n535308988\n554711853")
-    repeat wait() until isfile("cd/Config/Music.txt")
     makefolder("cd/Downloads")
     repeat wait() until isfile("cd/Downloads")
     makefolder("cd/Lighting")
@@ -160,7 +157,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.3")
+lchat("2.4.4")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1731,7 +1728,7 @@ getgenv().Commands = {
                 if #pads:GetChildren() == 9 then
                     rconsoleprint("There is "..#pads:GetChildren().."/9 found. All pads exist.","@@GREEN@@")
                 elseif #pads:GetChildren() == 0 then
-                    rconsoelprint("There is "..#pads:GetChildren().."/9 found. There are no pads left!","@@RED@@")
+                    rconsoleprint("There is "..#pads:GetChildren().."/9 found. There are no pads left!","@@RED@@")
                 else
                     rconsoleprint("There is "..#pads:GetChildren().."/9 found.","@@YELLOW@@")
                 end
@@ -2038,7 +2035,21 @@ fspawn(function()
     end
     chimney.Smoke.Enabled = true
 end)
+fspawn(function()
+    local iVelocity = 0
 
+    for _1,v1 in pairs(gf.Workspace:GetDescendants()) do
+        if v1:IsA("BasePart") then
+            if v1.Velocity ~= Vector3.new(0,0,0) then
+                iVelocity = iVelocity + 1
+                v1.Velocity = Vector3.new(0,0,0)
+            end
+        end
+    end
+    if iVelocity ~= 0 then
+        rconsoleprint("Found "..iVelocity.." parts with modified velocity that were corrected.","@@BLUE@@")
+    end
+end)
 
 
 
