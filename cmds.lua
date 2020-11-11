@@ -157,7 +157,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.1")
+lchat("2.4.2")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1689,7 +1689,51 @@ getgenv().Commands = {
             rchat("ungear "..player.Name)
         end,
     },
-    
+    ["analysis"] = {
+        description = "Will tell you any information you need to know about the server such as current bugs",
+        funk = function(args)
+            fspawn(function()
+                local regen
+                regen = gf.Admin:WaitForChild("Regen",.5)
+                if regen == nil then
+                    rconsoleprint("Regen part does not exist?","@@RED@@")
+                    return
+                end
+                if regen.CFrame ~= CFrame.new(-7.16500044, 5.42999268, 94.7430038, 0, 0, -1, 0, 1, 0, 1, 0, 0) then
+                    rconsoleprint("Regen was tampered with via 'Relocation'!","@@YELLOW@@")
+                    return
+                end
+                rconsoleprint("Regen seems fine.","@@GREEN@@")
+            end)
+            fspawn(function()
+                local pads
+                pads = gf.Admin:WaitForChild("Pads",.5)
+                if pads == nil then
+                    rconsoleprint("Pads model does not exist?","@@RED@@")
+                    return
+                end
+                if #pads:GetChildren() == 9 then
+                    rconsoleprint("There is "..#pads:GetChildren().."/9 found. All pads exist.","@@GREEN@@")
+                elseif #pads:GetChildren() == 0 then
+                    rconsoelprint("There is "..#pads:GetChildren().."/9 found. There are no pads left!","@@RED@@")
+                else
+                    rconsoleprint("There is "..#pads:GetChildren().."/9 found.","@@YELLOW@@")
+                end
+                for _,v in pairs(pads:GetChildren()) do
+                    if v:FindFirstChild("TransmorphScript") then
+                        rconsoleprint("Admin pad was tampered with via 'Transmorpher'! I will fix the issue~","@@YELLOW@@")
+                        v.Transparency = 0
+                    elseif v.Head.Velocity ~= Vector3.new(0,0,0) then
+                        rconsoleprint("Admin pad was tampered with via 'Velocity'! I will fix the issue~","@@YELLOW@@")
+                        v.Velocity = Vector3.new(0,0,0)
+                    end
+                end
+                if #pads:GetChildren() ~= 9 then
+                    rconsoleprint("Admin pads was tampered with via 'Removal'!","@@RED@@")
+                end
+            end)
+        end,
+    }
 }
 
 fspawn(function()
@@ -1911,7 +1955,7 @@ fspawn(function()
         rconsoleprint("[cmds.lua]: Pads model does not exist?","@@RED@@")
         return
     end
-    for _,v in pairs(pads:GetChidlren()) do
+    for _,v in pairs(pads:GetChildren()) do
         if v:FindFirstChild("TransmorphScript") then
             rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Transmorpher'!","@@YELLOW@@")
             v.Transparency = 0
@@ -1920,7 +1964,7 @@ fspawn(function()
             v.Velocity = Vector3.new(0,0,0)
         end
     end
-    if #pads:GetChidlren() ~= 9 then
+    if #pads:GetChildren() ~= 9 then
         rconsoleprint("[cmds.lua]: Admin pads was tampered with via 'Removal'!","@@RED@@")
     end
 end)
