@@ -92,7 +92,10 @@ if settings.experimentalConsole == nil then
     settings.experimentalConsole = false
     writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
 end
-
+if settings.antiPunishTime == nil then
+    settings.antiPunishTime = 1
+    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
+end
 
 
 
@@ -157,7 +160,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.5")
+lchat("2.4.6")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -172,18 +175,63 @@ local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
 debug = true
 function dprint(t)if debug --[[and lplr.UserId == 1090451412--]] then print(t)end end
 local Fetch = {}
-Fetch.Get = function(a)local succ,err = game:HttpGet(a) if err then return("err"..err) else return(succ)end end
+Fetch.Get = function(a)
+    local succ = ""
+    local suc,err = pcall(function()
+        succ = game:HttpGet(a)
+    end) 
+    if err then 
+        return("err["..err.."]") 
+    else 
+        return(succ)
+    end 
+end
 local cwarn = function(input)
     lchat("cd/warn/: "..input)
 end
 local cerror = function(input)
     rchat("cd/error/: "..input)
 end
-function GetPlayer(a)local b={}local c=a:lower()if c=="all"then for d,e in pairs(game.Players:GetPlayers())do table.insert(b,e)end elseif c=="others"then for d,e in pairs(game.Players:GetPlayers())do if e.Name~=game.Players.LocalPlayer.Name then table.insert(b,e)end end elseif c=="me"then for d,e in pairs(game.Players:GetPlayers())do if e.Name==game.Players.LocalPlayer.Name then table.insert(b,e)end end else for d,e in pairs(game.Players:GetPlayers())do if e.Name:lower():sub(1,#a)==a:lower()then table.insert(b,e)end end end;if unpack(b) == nil then rconsoleprint("No players in-game goes by that name. If you are spelling their name right and this still pops up, DM @casual_degenerate#7475 586141923048161291 your issue and they will help.","@@RED@@") end return b end
+
+function GetPlayer(a)
+    local b={}
+    local c=a:lower()
+    if c=="all"then 
+        for d,e in pairs(game.Players:GetPlayers())do 
+            table.insert(b,e)
+        end 
+    elseif c=="others"then 
+        for d,e in pairs(game.Players:GetPlayers())do 
+            if e.Name~=game.Players.LocalPlayer.Name then 
+                table.insert(b,e)
+            end 
+        end 
+    elseif c=="me"then 
+        for d,e in pairs(game.Players:GetPlayers())do 
+            if e.Name==game.Players.LocalPlayer.Name then 
+                table.insert(b,e)
+            end 
+        end 
+    else 
+        for d,e in pairs(game.Players:GetPlayers())do 
+            if e.Name:lower():sub(1,#a)==a:lower()then 
+                table.insert(b,e)
+            end 
+        end 
+    end
+    if unpack(b) == nil then --This is to fix any useless uses of the function so if it does spam I can return those parts in the script it does if I'm a dummy.
+        rconsoleprint("No players in-game goes by that name. If you are spelling their name right and this still pops up, DM @casual_degenerate#7475 586141923048161291 your issue and they will help.","@@RED@@") 
+    end 
+    return b 
+end
+
+
 local CheckGamepass=function(userid,gamepass)
 	local g = game:HttpGet("https://inventory.roblox.com/v1/users/"..tostring(userid).."/items/GamePass/"..tostring(gamepass)):sub(65)
-	if g ~= "" then return true
-	else return false
+    if g ~= "" then 
+        return true
+    else 
+        return false
     end
 end
 
@@ -378,7 +426,7 @@ getgenv().logse=1000
 getgenv().active=true
 getgenv().annoy=false
 getgenv().antifling=false
-
+getgenv().locked=false
 
 
 getgenv().Commands = {
@@ -1697,7 +1745,7 @@ getgenv().Commands = {
                 if not active then 
                     break 
                 end
-            wait()end
+            wait(.08)end
             wait(1)
             rchat("ungear "..player.Name)
         end,
@@ -1734,15 +1782,30 @@ getgenv().Commands = {
                 end
                 for _,v in pairs(pads:GetChildren()) do
                     if v:FindFirstChild("TransmorphScript") then
-                        rconsoleprint("Admin pad was tampered with via 'Transmorpher'! I will fix the issue~","@@YELLOW@@")
+                        rconsoleprint("Admin pad[".._.."] was tampered with via 'Transmorpher'! I will fix the issue~","@@YELLOW@@")
                         v.Transparency = 0
-                    elseif v.Head.Velocity ~= Vector3.new(0,0,0) then
-                        rconsoleprint("Admin pad was tampered with via 'Velocity'! I will fix the issue~","@@YELLOW@@")
+                    end
+                    if v.Head.Velocity ~= Vector3.new(0,0,0) then
+                        rconsoleprint("Admin pad[".._.."] was tampered with via 'Velocity'! I will fix the issue~","@@YELLOW@@")
                         v.Velocity = Vector3.new(0,0,0)
                     end
                 end
                 if #pads:GetChildren() ~= 9 then
                     rconsoleprint("Admin pads was tampered with via 'Removal'!","@@RED@@")
+                end
+            end)
+            fspawn(function()
+                local iVelocity = 0
+                for _1,v1 in pairs(gf.Workspace:GetDescendants()) do
+                    if v1:IsA("BasePart") then
+                        if v1.Velocity ~= Vector3.new(0,0,0) then
+                            iVelocity = iVelocity + 1
+                            v1.Velocity = Vector3.new(0,0,0)
+                        end
+                    end
+                end
+                if iVelocity ~= 0 then
+                    rconsoleprint("Found "..iVelocity.." part(s) with modified velocity that were corrected.","@@BLUE@@")
                 end
             end)
         end,
@@ -1781,6 +1844,28 @@ getgenv().Commands = {
             end
         end,
     },
+    ["lock"] = {
+        description = "Will lock you in place.",
+        toggle = true,
+        funk = function(args)
+            if locked then
+                getgenv().locked = false
+                return
+            else
+                getgenv().locked = true
+            end
+            if not lplr.Character:FindFirstChild("HumanoidRootPart") then
+                rconsoleprint("You have no torso?","@@YELLOW@@")
+            end
+            local pos
+            pos = lplr.Character.HumanoidRootPart.CFrame
+            while locked do
+                if lplr.Character:FindFirstChild("HumanoidRootPart") then
+                    lplr.Character.HumanoidRootPart.CFrame = pos
+                end
+            fwait()end
+        end,
+    }
 }
 
 fspawn(function()
@@ -1908,13 +1993,13 @@ game:GetService("Lighting").ChildAdded:connect(function(c)
                     local prevColor = v.Color
                     v.Material = Enum.Material.ForceField
                     v.Color = Color3.new(1,0,0)
-                    wait(1)
+                    wait(settings.antiPunishTime)
                     v.Material = prevMaterial
                     v.Color = prevColor
                 end)
             end
             fwait()lplr.Character.Parent = game:GetService("Workspace")
-            wait(1)
+            wait(settings.antiPunishTime)
             local prev = lplr.Character.HumanoidRootPart.CFrame
             rchat("unpunish me robot.txt")
             lplr.Character.HumanoidRootPart.CFrame = prev
@@ -2008,7 +2093,8 @@ fspawn(function()
         if v:FindFirstChild("TransmorphScript") then
             rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Transmorpher'!","@@YELLOW@@")
             v.Head.Transparency = 0
-        elseif v.Head.Velocity ~= Vector3.new(0,0,0) then
+        end
+        if v.Head.Velocity ~= Vector3.new(0,0,0) then
             rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Velocity'!","@@YELLOW@@")
             v.Head.Velocity = Vector3.new(0,0,0)
         end
@@ -2039,7 +2125,6 @@ fspawn(function()
 end)
 fspawn(function()
     local iVelocity = 0
-
     for _1,v1 in pairs(gf.Workspace:GetDescendants()) do
         if v1:IsA("BasePart") then
             if v1.Velocity ~= Vector3.new(0,0,0) then
@@ -2049,7 +2134,7 @@ fspawn(function()
         end
     end
     if iVelocity ~= 0 then
-        rconsoleprint("Found "..iVelocity.." parts with modified velocity that were corrected.","@@BLUE@@")
+        rconsoleprint("Found "..iVelocity.." part(s) with modified velocity that were corrected.","@@BLUE@@")
     end
 end)
 
