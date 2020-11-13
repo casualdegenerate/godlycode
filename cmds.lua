@@ -157,7 +157,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.4")
+lchat("2.4.5")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1844,7 +1844,9 @@ end)
 
 lplr.PlayerGui.ChildAdded:connect(function(c)
     if c.Name == "MessageGUI" or c.Name == "EFFECTGUIBLIND" then
-        fwait()c.Parent = nil
+        fwait()c:Destroy()
+    elseif c.Name == "CamSpinClient" then
+        fwait()c.Disabled = true c:Destroy()
     end
 end)
 for i,connection in pairs(getconnections(lplr.PlayerGui.ChildAdded)) do
