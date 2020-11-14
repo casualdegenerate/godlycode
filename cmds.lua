@@ -162,7 +162,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.7")
+lchat("2.4.8")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -408,7 +408,7 @@ getgenv().bypassmusic = {
     "5650070170",
 
 }
-
+getgenv().blacklistm = {}
 getgenv().hentai = {5707097328}
 getgenv().songs = readfile("cd/Config/Music.txt"):split("\n")
 getgenv().songsn = {}
@@ -623,10 +623,14 @@ getgenv().Commands = {
             if song == nil then
                 rconsoleprint("[cd.lua]: Aaaaaah! There is no song! ;-;")
             end
-            rconsoleprint("This song is "..gpi(song).Name.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
+            local sung = gpi(song).Name
+            rconsoleprint("This song is "..sung.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
             local input = rconsoleinput()
             if input:sub(1,1):lower() == "y" then
                 setclipboard(tostring(song))
+            elseif input:sub(1,1):lower() == "p" then
+                setclipboard(tostring(song))
+                tchat("[0000"..song.."]: "..sung)
             end
         end,
     },
@@ -1013,7 +1017,7 @@ getgenv().Commands = {
         allies = {"rj"},
         description = "Kicks you and puts you back in the same server.",
         funk = function()
-            lplr:Kick("You have been kicked due to unexpected client behavior.")
+            --lplr:Kick("You have been kicked due to unexpected client behavior.") --[[Felt like leaving this out.]]
             game:GetService("TeleportService"):Teleport(game.PlaceId, lplr)
         end,
     },
@@ -1233,7 +1237,10 @@ getgenv().Commands = {
         funk = function(args)
             local song = songs[math.random(1,#songs)]
             rchat("music "..antilogger1..song)
-            rconsoleprint("[cd.lua]: Enjoy! ^-^ Playing "..gpi(song).Name)
+            --if unpack(songsn) == nil then
+                rconsoleprint("[cd.lua]: Enjoy! ^-^ Playing "..gpi(song).Name)
+            --else
+            --    rconsoleprint("[cmds.lua]: Enjoy! ^-^ Playing "..songsn[])
         end,
     },
     ["clear"] = {
@@ -1880,7 +1887,18 @@ getgenv().Commands = {
                 rconsoleprint("chatbypass/ON","@@GREEN@@")
             end
         end,
-    }
+    },
+    ["blacklist"] = {
+        funk = function(args)
+            if args[2] == "music" then
+                if tonumber(args[3]) == nil then
+                    rconsoleprint("You need an audio id too!","@@YELLOW@@")
+                    return
+                end
+                table.insert(blacklistm,args[3])
+            end
+        end,
+    },
 }
 
 fspawn(function()
@@ -1943,7 +1961,7 @@ end)
 
 
 lplr.PlayerGui.ChildAdded:connect(function(c)
-    if c.Name == "MessageGUI" or c.Name == "EFFECTGUIBLIND" then
+    if c.Name == "MessageGUI" or c.Name == "EFFECTGUIBLIND" or c.Name == "Blind" then
         fwait()c:Destroy()
     elseif c.Name == "CamSpinClient" then
         fwait()c.Disabled = true c:Destroy()
@@ -2153,6 +2171,16 @@ fspawn(function()
     end
 end)
 
-
+fspawn(function()
+    while active do
+        for _,v in pairs(blacklistm) do
+            if gf.Folder:FindFirstChild("Sound") then
+                if gf.Folder.Sound.SoundId:sub(-12):match("%d+") == v then
+                    rchat("stopmusic")
+                end
+            end
+        end
+    wait()end
+end)
 
 getgenv().kek=true
