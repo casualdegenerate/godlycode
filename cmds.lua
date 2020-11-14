@@ -63,13 +63,15 @@ if not isfile("cd") then
     makefolder("cd/Config")
     repeat wait() until isfile("cd/Config")
     writefile("cd/Config/cmds.settings",
-[[settings = {
-    servers = {
-        colorFriends = true,
-        nameOnlyFriends = true,
-        namePlayers = false,
-    },
-    autoupdate = true,
+[[{
+	"experimentalConsole":false,
+	"servers":{
+		"colorFriends":true,
+		"nameOnlyFriends":true,
+		"namePlayers":true
+	},
+	"antiloud":true,"autopdate":false,
+	"antiPunishTime":3
 }]]
 )
     writefile("cd/Config/Music.txt","5580376560\n5833642888\n1064109642\n535308988\n554711853")
@@ -160,7 +162,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.6")
+lchat("2.4.7")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1864,6 +1866,19 @@ getgenv().Commands = {
                     lplr.Character.HumanoidRootPart.CFrame = pos
                 end
             fwait()end
+        end,
+    },
+    ["chatbypass"] = {
+        description = "This only changes a varible, don't mind this. It's only for me.",
+        allies = {"cb"},
+        funk = function(args)
+            if chatbypass then
+                getgenv().chatbypass = false
+                rconsoleprint("chatbypass/OFF","@@RED@@")
+            else
+                getgenv().chatbypass = true
+                rconsoleprint("chatbypass/ON","@@GREEN@@")
+            end
         end,
     }
 }
