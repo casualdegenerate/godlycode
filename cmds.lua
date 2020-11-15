@@ -623,6 +623,7 @@ getgenv().Commands = {
             local song = gf.Folder:WaitForChild("Sound",2)
             if song == nil then
                 rconsoleprint("[cd.lua]: Aaaaaah! There is no song! ;-;")
+                return
             end
             song = song.SoundId:sub(-10):gsub("=","")
             local sung = gpi(song).Name
