@@ -362,8 +362,9 @@ end
 if antipunish then
     getgenv().antipunish = false
 end
-
-
+if selfA then
+    getgenv().selfA:Disable()
+end
 
 
 
@@ -619,10 +620,11 @@ getgenv().Commands = {
                     sounds = v.SoundId
                 end
             end--]]
-            song = gf.Folder:WaitForChild("Sound",10).SoundId:sub(-10):gsub("=","")
+            local song = gf.Folder:WaitForChild("Sound",2)
             if song == nil then
                 rconsoleprint("[cd.lua]: Aaaaaah! There is no song! ;-;")
             end
+            song = song.SoundId:sub(-10):gsub("=","")
             local sung = gpi(song).Name
             rconsoleprint("This song is "..sung.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
             local input = rconsoleinput()
@@ -1115,21 +1117,34 @@ getgenv().Commands = {
 				rconsoleprint("AntiFling/OFF","@@RED@@")
 			end
             while antifling do
-                local h = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart",2)
-                if h then
-                    if h.Velocity.X > 100 or h.Velocity.Y > 100 or h.Velocity.Z > 100 then
-                        h.Anchored = true
-                        h.Velocity = Vector3.new(0,0,0)
-                        wait(.1)
-                        h.Anchored = false
+                fspawn(function()
+                    local h = lplr.Character:WaitForChild("HumanoidRootPart",2)
+                    if h then
+                        if h.Velocity.X > 100 or h.Velocity.Y > 100 or h.Velocity.Z > 100 then
+                            h.Anchored = true
+                            h.Velocity = Vector3.new(0,0,0)
+                            wait(.1)
+                            h.Anchored = false
+                        end
+                        if h.Velocity.X < -100 or h.Velocity.Y < -100 or h.Velocity.Z < -100 then
+                            h.Anchored = true
+                            h.Velocity = Vector3.new(0,0,0)
+                            wait(.1)
+                            h.Anchored = false
+                        end
                     end
-                    if h.Velocity.X < -100 or h.Velocity.Y < -100 or h.Velocity.Z < -100 then
-                        h.Anchored = true
-                        h.Velocity = Vector3.new(0,0,0)
-                        wait(.1)
-                        h.Anchored = false
+                end)
+                fspawn(function()
+                    local h = lplr.Character:WaitForChild("Humanoid",2)
+                    if h then
+                        if h.Sit == true then
+                            h.Sit = false
+                        end
+                        if h.PlatformStand == true then
+                            h.PlatformStand = false
+                        end
                     end
-                end
+                end)
             fwait()end
         end,
     },
@@ -1365,14 +1380,12 @@ getgenv().Commands = {
             end
             rconsoleprint("Giga Script/ON","@@GREEN@@")
             local respawnpos
-            local cameracframe
             lplr.CharacterAdded:connect(function(a)
                 a:WaitForChild("Humanoid").Died:connect(function()
                     if lplr.Character:FindFirstChild("HumanoidRootPart") then
                         lplr.Character.HumanoidRootPart.Anchored = true
                         respawnpos = lplr.Character.HumanoidRootPart.CFrame
                     end
-                    cameracframe = camera.CFrame
                     rchat("respawn me robot.txt")
                 end)
                 for i,connection in pairs(getconnections(a:WaitForChild("Humanoid").Died)) do
@@ -1386,7 +1399,6 @@ getgenv().Commands = {
                 v.Chatted:connect(function(msg)
                     if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
                         respawnpos = lplr.Character:WaitForChild("HumanoidRootPart").CFrame
-                        cameracframe = camera.CFrame
                     end
                 end)
                 for i,connection in pairs(getconnections(v.Chatted)) do
@@ -1396,13 +1408,12 @@ getgenv().Commands = {
             game:GetService("Players").PlayerAdded:connect(function(v)
                 v.Chatted:connect(function(msg)
                     if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
-                        h = lplr.Character:WaitForChild("HumanoidRootPart",5)
+                        h = lplr.Character:FindFirstChild("HumanoidRootPart")
                         if h then
                             respawnpos = h.CFrame
                         else
                             respawnpos = CFrame.new(0,4,0)
                         end
-                        cameracframe = camera.CFrame
                     end
                 end)
                 for i,connection in pairs(getconnections(v.Chatted)) do
@@ -1415,10 +1426,6 @@ getgenv().Commands = {
             lplr.CharacterAdded:connect(function(c)
                 if respawnpos ~= nil then
                     c:WaitForChild("HumanoidRootPart").CFrame = respawnpos
-                end
-                if cameracframe ~= nil then 
-                    fwait()
-                    camera.CFrame = cameracframe
                 end
             end)
             for i,connection in pairs(getconnections(lplr.CharacterAdded)) do
@@ -1899,6 +1906,37 @@ getgenv().Commands = {
             end
         end,
     },
+    ["chill"] = {
+        description = "Casual porch",
+        toggle = true,
+        funk = function(args) 
+            if chill then
+                getgenv().chill = false
+                return
+            else
+                getgenv().chill = true
+            end
+            if not lplr.Character:FindFirstChild("HumanoidRootPart") then
+                rconsoleprint("No torso?","@@YELLOW@@")
+            end
+            local pos = CFrame.new(-68.0893478, 12.1000004, 11.8405981, 0.311288118, 1.03757202e-07, -0.950315654, -8.98145203e-08, 1, 7.97619322e-08, 0.950315654, 6.05231989e-08, 0.311288118)
+            while chill do
+                if lplr.Character:FindFirstChild("HumanoidRootPart") then
+                    lplr.Character.HumanoidRootPart.CFrame = pos
+                end
+            fwait()end
+        end,
+    },
+    ["rigfly"] = {
+        allies = {"rfly"},
+        funk = function(args)
+            if RFLY then
+                getgenv().RFLY = false
+            else
+                getgenv().RFLY = true
+            end
+        end,
+    }
 }
 
 fspawn(function()
@@ -1956,6 +1994,8 @@ fspawn(function()
             --]]
         end
     end
+    --RIG:Destroy()
+    --RIG = nil
     loadstring(readfile("cd/cmds.lua"))()
 end)
 
@@ -1972,6 +2012,14 @@ for i,connection in pairs(getconnections(lplr.PlayerGui.ChildAdded)) do
 end
 
 lplr.CharacterAdded:connect(function(c) --dprint("Spawn")
+    c.ChildAdded:connect(function(p)
+        if p.Name == "Seizure" and p:IsA("Script") then
+            p.Disabled = true
+        end
+    end)
+    for i,connection in pairs(getconnections(c.ChildAdded)) do
+        if i==1 then getgenv().selfA = connection end
+    end
     if charnil then dprint("after nil")
         c.ChildAdded:connect(function(p)
             if c.Parent ~= game:GetService("Workspace") then return end
@@ -1991,6 +2039,18 @@ lplr.CharacterAdded:connect(function(c) --dprint("Spawn")
             if i==1 then getgenv().nameNil = connection end
         end
     end
+    --[[if RIG then
+        local hr = c:WaitForChild("HumanoidRootPart",5)
+        lplr.Character = RIG
+        while c do
+            local pos = RIG.HumanoidRootPart.CFrame
+            wait(.1)
+            if hr then
+                hr.CFrame = pos
+            end
+        end
+    end
+    --]]
 end)
 for i,connection in pairs(getconnections(lplr.CharacterAdded)) do
     if i==1 then getgenv().lplrCAdded = connection end
@@ -2149,7 +2209,7 @@ fspawn(function()
 end)
 fspawn(function()
     local chimney
-    chimney = gf.Workspace:WaitForchild("Chimney",5)
+    chimney = gf.Workspace:WaitForChild("Chimney",5)
     if not chimney then
         rconsoleprint("[cmds.lua]: Chimney does not exist?","@@YELLOW@@")
         return
@@ -2182,5 +2242,26 @@ fspawn(function()
         end
     wait()end
 end)
+
+--[[fspawn(function()
+    if RIG then
+        return
+    end
+    lplr.Character.Archivable = true
+    getgenv().RIG = lplr.Character:clone()
+    RIG.Parent = game:GetService("Workspace")
+    fwait()cam.CameraSubject = RIG.Humanoid
+    lplr.Character = RIG
+    game:GetService("RunService").RenderStepped:connect(function()
+        RIG.Humanoid:ChangeState(11)
+    end)
+end)
+--]]
+
+
+
+
+
+
 
 getgenv().kek=true
