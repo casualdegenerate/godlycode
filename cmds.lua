@@ -71,7 +71,8 @@ if not isfile("cd") then
 		"namePlayers":true
 	},
 	"antiloud":true,"autopdate":false,
-	"antiPunishTime":3
+    "antiPunishTime":3,
+    "logsYield":5
 }]]
 )
     writefile("cd/Config/Music.txt","5580376560\n5833642888\n1064109642\n535308988\n554711853")
@@ -98,7 +99,10 @@ if settings.antiPunishTime == nil then
     settings.antiPunishTime = 1
     writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
 end
-
+if settings.logsYield == nil then
+    settings.logsYield = 5 
+    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
+end
 
 
 
@@ -162,7 +166,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.4.8")
+lchat("2.4.9")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -633,7 +637,7 @@ getgenv().Commands = {
                 setclipboard(tostring(song))
             elseif input:sub(1,1):lower() == "p" then
                 setclipboard(tostring(song))
-                tchat("[0000"..song.."]: "..sung)
+                tchat("[0000"..song:gsub("\n",""):gsub("\r","").."]: "..sung:gsub("\n",""):gsub("\r",""))
             end
         end,
     },
@@ -1195,7 +1199,7 @@ getgenv().Commands = {
                 repeat disapear:Destroy()fwait() until disapear.Parent == nil
             end
             rchat("logs robot.txt")
-            local l = lplr.PlayerGui:WaitForChild("ScrollGui",5)
+            local l = lplr.PlayerGui:WaitForChild("ScrollGui",settings.logsYield)
             if not l then 
                 rconsoleprint("Logs was not created?","@@YELLOW@@") 
                 return 
@@ -1937,7 +1941,67 @@ getgenv().Commands = {
                 getgenv().RFLY = true
             end
         end,
-    }
+    },
+    ["realchat"] = {
+        allies = {"rc","rchat"},
+        description = "Will talk in chat in /c system.",
+        funk = function(args)
+            local string = ""
+            for _1,v1 in pairs(args) do
+                if _1 ~= 1 then
+                    string = string..tostring(v1).." "
+                end
+            end
+            string = string:sub(1,string:len()-1)
+            rchat(string)
+        end,
+    },
+    ["fakechat"] = {
+        allies = {"fc","fchat"},
+        description = "Will talk ingame chat but won't trigger ingame commands like fly or hint",
+        funk = function(args)
+            local string = ""
+            for _1,v1 in pairs(args) do
+                if _1 ~= 1 then
+                    string = string..tostring(v1).." "
+                end
+            end
+            string = string:sub(1,string:len()-1)
+            fchat(string)
+        end,
+    },
+    ["truechat"] = {
+        allies = {"tc","tchat"},
+        description = "Will act as if you were talking ingame.",
+        funk = function(args)
+            local string = ""
+            for _1,v1 in pairs(args) do
+                if _1 ~= 1 then
+                    string = string..tostring(v1).." "
+                end
+            end
+            string = string:sub(1,string:len()-1)
+            tchat(string)
+        end,
+    },
+    ["exc"] = {
+        description = "After what you said will act as a script.(must be one liner though)",
+        funk = function(args) 
+            local string = ""
+            for _,v in pairs(args) do
+                if _ ~= 1 then
+                    string = string..tostring(v).." "
+                end
+            end
+            local bol,err = pcall(function()
+                loadstring(string)()
+            end)
+            if err ~= nil then
+                rconsoleprint(tostring(err),"@@RED@@")
+            end
+
+        end,
+    },
 }
 
 fspawn(function()
@@ -2002,7 +2066,7 @@ end)
 
 
 lplr.PlayerGui.ChildAdded:connect(function(c)
-    if c.Name == "MessageGUI" or c.Name == "EFFECTGUIBLIND" or c.Name == "Blind" then
+    if c.Name == "MessageGUI" or c.Name == "EFFECTGUIBLIND" or c.Name == "Blind" or c.Name == "Message" then
         fwait()c:Destroy()
     elseif c.Name == "CamSpinClient" then
         fwait()c.Disabled = true c:Destroy()
@@ -2240,6 +2304,9 @@ fspawn(function()
                     rchat("stopmusic")
                 end
             end
+        end
+        if game.StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.All) ~= true then
+            game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
         end
     wait()end
 end)
