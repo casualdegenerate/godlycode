@@ -70,9 +70,10 @@ if not isfile("cd") then
 		"nameOnlyFriends":true,
 		"namePlayers":true
 	},
-	"antiloud":true,"autopdate":false,
+    "antiloud":true,"autopdate":false,
     "antiPunishTime":3,
-    "logsYield":5
+    "logsYield":5,
+    "optimizeFPS":true
 }]]
 )
     writefile("cd/Config/Music.txt","5580376560\n5833642888\n1064109642\n535308988\n554711853")
@@ -103,7 +104,10 @@ if settings.logsYield == nil then
     settings.logsYield = 5 
     writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
 end
-
+if settings.optimizeFPS == nil then
+    settings.optimizeFPS = true
+    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
+end
 
 
 
@@ -162,11 +166,11 @@ end
 
 if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") and settings.autoupdate then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
-	fspawn(function()loadstring(readfile("cd/cmds.lua"))()end)
+	fspawn(function()rconsoleprint("New Update!")loadstring(readfile("cd/cmds.lua"))()end)
 	return
 end
 
-lchat("2.4.9")
+lchat("2.5.0")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -297,8 +301,8 @@ end
 
 local gf=game:GetService("Workspace").Terrain._Game
 local camera = game:GetService("Workspace").Camera
-local VS = camera.ViewportSize --This is used to make the patched logs the 'right size' when using it. 
-
+--local VS = camera.ViewportSize --This is used to make the patched logs the 'right size' when using it. 
+--That was removed because it grabbed the PREVIOUS size, when you ran the script. 
 
 
 
@@ -629,8 +633,18 @@ getgenv().Commands = {
                 rconsoleprint("[cd.lua]: Aaaaaah! There is no song! ;-;")
                 return
             end
-            song = song.SoundId:sub(-10):gsub("=","")
-            local sung = gpi(song).Name
+            if not song.SoundId:sub(-10):gsub("=","") == "" then
+                song = song.SoundId:sub(-10):gsub("=","")
+            else
+                rconsoleprint("Possible anomaly, or song playing is cache'd in the :musiclist","@@YELLOW@@")
+                song = song.SoundId
+            end
+            local sung = gpi(song)
+            if sung == nil then
+                rconsoleprint("Error? no name?","@@RED@@")
+                return
+            end
+            sung = sung.Name
             rconsoleprint("This song is "..sung.." | [cd.lua]: Say Y if you want it on your clipboard(say anything else if you don't...) *v*")
             local input = rconsoleinput()
             if input:sub(1,1):lower() == "y" then
@@ -1204,8 +1218,8 @@ getgenv().Commands = {
                 rconsoleprint("Logs was not created?","@@YELLOW@@") 
                 return 
             end
-            l.TextButton.Frame.Size = UDim2.new(0,VS.X,0,VS.Y-300)
-            l.TextButton.Size = UDim2.new(0,VS.X-15,0,20)
+            l.TextButton.Frame.Size = UDim2.new(0,camera.ViewportSize.X,0,camera.ViewportSize.Y-300)
+            l.TextButton.Size = UDim2.new(0,camera.ViewportSize.X-15,0,20)
             l.TextButton.Position = UDim2.new(0,0,0,269)
             l.TextButton.BackgroundTransparency = .8
 
@@ -1214,7 +1228,7 @@ getgenv().Commands = {
                     fwait()c:Destroy()
                 end
                 if c.Text:len() > 200 then
-                    fwait()c:Destroy()
+                    c.Text = c.Text:sub(1,200)
                 end
             end)
             for i,connection in pairs(getconnections(l.TextButton.Frame.Frame.ChildAdded)) do
@@ -1612,9 +1626,17 @@ getgenv().Commands = {
     },
     ["fart"] = {
         funk = function(args)
-            rchat("music "..antilogger1.."4809574295")
-            wait(1.3)
-            rchat("stopmusic")
+            local prevMusic = gf.Folder:FindFirstChild("Sound")
+            if prevMusic == nil then
+                rchat("music "..antilogger1.."4809574295")
+                wait(1.3)
+                rchat("stopmusic")
+            else
+                local prevMusic = prevMusic.SoundId:sub(-10):gsub("=","")
+                rchat("music "..antilogger1.."4809574295")
+                wait(1.3)
+                rchat("music "..antilogger1..prevMusic)
+            end
         end,
     },
     ["unugly"] = {
@@ -2232,7 +2254,7 @@ fspawn(function()
         if State == Enum.TeleportState.InProgress then
             syn.queue_on_teleport("loadstring(readfile(\"cd/cmds.lua\"))()")
         elseif State == Enum.TeleportState.Failed then
-            rchat("h [cmds.lua]: Failed!? Server is full! Oh no!")
+            rchat("h Server is full?")
         end
     end)
     for i,connection in pairs(getconnections(lplr.OnTeleport)) do
@@ -2244,40 +2266,43 @@ fspawn(function()
     local pads
     pads = gf.Admin:WaitForChild("Pads",5)
     if pads == nil then
-        rconsoleprint("[cmds.lua]: Pads model does not exist?","@@RED@@")
+        rconsoleprint("Pads model does not exist?","@@RED@@")
         return
     end
     for _,v in pairs(pads:GetChildren()) do
         if v:FindFirstChild("TransmorphScript") then
-            rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Transmorpher'!","@@YELLOW@@")
+            rconsoleprint("Admin pad was tampered with via 'Transmorpher'!","@@YELLOW@@")
             v.Head.Transparency = 0
         end
         if v.Head.Velocity ~= Vector3.new(0,0,0) then
-            rconsoleprint("[cmds.lua]: Admin pad was tampered with via 'Velocity'!","@@YELLOW@@")
+            rconsoleprint("Admin pad was tampered with via 'Velocity'!","@@YELLOW@@")
             v.Head.Velocity = Vector3.new(0,0,0)
         end
     end
     if #pads:GetChildren() ~= 9 then
-        rconsoleprint("[cmds.lua]: Admin pads was tampered with via 'Removal'!","@@RED@@")
+        rconsoleprint("Admin pads was tampered with via 'Removal'!","@@RED@@")
     end
 end)
 fspawn(function()
     local regen
     regen = gf.Admin:WaitForChild("Regen",5)
     if regen == nil then
-        rconsoleprint("[cmds.lua]: Regen part does not exist?","@@RED@@")
+        rconsoleprint("Regen part does not exist?","@@RED@@")
         return
     end
     if regen.CFrame ~= CFrame.new(-7.16500044, 5.42999268, 94.7430038, 0, 0, -1, 0, 1, 0, 1, 0, 0) then
-        rconsoleprint("[cmds.lua]: Regen was tampered with via 'Relocation'!","@@YELLOW@@")
+        rconsoleprint("Regen was tampered with via 'Relocation'!","@@YELLOW@@")
     end
 end)
 fspawn(function()
     local chimney
     chimney = gf.Workspace:WaitForChild("Chimney",5)
     if not chimney then
-        rconsoleprint("[cmds.lua]: Chimney does not exist?","@@YELLOW@@")
+        rconsoleprint("Chimney does not exist?","@@YELLOW@@")
         return
+    end
+    if not chimney:FindFirstChild("Smoke") then
+        rconsoleprint("")
     end
     chimney.Smoke.Enabled = true
 end)
@@ -2326,7 +2351,26 @@ end)
 end)
 --]]
 
-
+fpsawn(function()
+    if settings.optimizeFPS then
+        game:GetService("Workspace").DescendantAdded:connect(function(d)
+            if d:IsA("BasePart") or d:IsA("MeshPart") then 
+                return 
+            end
+            if d:IsA("Explosion") then 
+                fwait()d:Destroy() 
+            elseif d:IsA("ForceField") then
+                if d.Visible then
+                    d.Visible = false
+                end
+            elseif d:IsA("Smoke") then
+                fwait()d:Destroy()
+            elseif d:IsA("Fire") then
+                fwait()d:Destroy()
+            end
+        end)
+    end
+end)
 
 
 
