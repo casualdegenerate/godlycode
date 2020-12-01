@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.5.0")
+lchat("2.5.1")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1589,14 +1589,14 @@ getgenv().Commands = {
     ["kill"] = {
         funk = function(args)
             local sword
-            if lplr.Backpack:FindFirstChild("LinkedSword") then
-                sword = lplr.Backpack.LinkedSword
+            if lplr.Backpack:FindFirstChild("Darkheart") then
+                sword = lplr.Backpack.Darkheart
                 sword.Parent = lplr.Character
-            elseif lplr.Character:FindFirstChild("LinkedSword") then
-                sword = lplr.Character.LinkedSword
+            elseif lplr.Character:FindFirstChild("Darkheart") then
+                sword = lplr.Character.Darkheart
             else
-                rchat("sword me")
-                sword = lplr.Backpack:WaitForChild("LinkedSword",5)
+                rchat("gear me 16895215")
+                sword = lplr.Backpack:WaitForChild("Darkheart",5)
                 if sword == nil then
                     rconsoleprint("ERROR: Server unresponcive??","@@RED@@")
                     return
@@ -1605,7 +1605,7 @@ getgenv().Commands = {
             end
             for _1,p1 in pairs(GetPlayer(args[2])) do
                 fspawn(function()
-                    for i=1,40 do wait()
+                    for i=1,10 do wait()
                         if not p1.Character:FindFirstChild("Head") then
                             rconsoleprint("WARNING: Player("..p1.Name..") does not have head?","@@YELLOW@@")
                             return
@@ -1615,7 +1615,7 @@ getgenv().Commands = {
                             return
                         end
                         firetouchinterest(p1.Character.Head,sword.Handle,1)
-                        wait()firetouchinterest(p1.Character.Head,sword.Handle,0)
+                        firetouchinterest(p1.Character.Head,sword.Handle,0)
                         if p1.Character.Humanoid.Health == 0 then
                             break
                         end
