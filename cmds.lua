@@ -633,12 +633,7 @@ getgenv().Commands = {
                 rconsoleprint("[cd.lua]: Aaaaaah! There is no song! ;-;")
                 return
             end
-            if not song.SoundId:sub(-10):gsub("=","") == "" then
-                song = song.SoundId:sub(-10):gsub("=","")
-            else
-                rconsoleprint("Possible anomaly, or song playing is cache'd in the :musiclist","@@YELLOW@@")
-                song = song.SoundId
-            end
+            song = song.SoundId:match("%d+")
             local sung = gpi(song)
             if sung == nil then
                 rconsoleprint("Error? no name?","@@RED@@")
@@ -2351,7 +2346,7 @@ end)
 end)
 --]]
 
-fpsawn(function()
+fspawn(function()
     if settings.optimizeFPS then
         game:GetService("Workspace").DescendantAdded:connect(function(d)
             if d:IsA("BasePart") or d:IsA("MeshPart") then 
