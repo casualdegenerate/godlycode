@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.5.1")
+lchat("2.5.2")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -373,7 +373,9 @@ end
 if selfA then
     getgenv().selfA:Disable()
 end
-
+if camMod then
+    getgenv().camMod:Disable()
+end
 
 
 wait(1)
@@ -1575,6 +1577,7 @@ getgenv().Commands = {
             if args[2] == nil then
                 rconsoleprint("[cd.lua]: Hhhhh! You have to add <args2>(server GUID) you idiot! >_<")
             else
+                args[2] = args[2]:gsub("server",""):gsub("[",""):gsub("]","")
                 rchat("h GUID "..args[2])
                 wait(0.5)
                 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, args[2])
@@ -2184,6 +2187,52 @@ end)
 for i,connection in pairs(getconnections(game:GetService("Lighting").ChildAdded)) do
     if i==1 then getgenv().lunpunish = connection end
 end
+
+camera.ChildAdded:connect(function(c)
+    if c.Name == "GrayScale" then
+        wait(10)
+        if c.Parent == camera then
+            rconsoleprint("Detected grayscale inside of camera for over 10 seconds.","@@YELLOW@@")
+            c:Destroy()
+        end
+    end
+end)
+for i,connection in pairs(getconnections(game:GetService("Lighting").ChildAdded)) do
+    if i==1 then getgenv().camMod = connection end
+end
+
+game:GetService("Players").PlayerAdded:connect(function(p)
+    p.CharacterAdded:connect(function(c)
+        local hrp = c:WaitForChild("HumanoidRootPart",30) --If their HumanoidRootPart does not spawn in a certain timeframe. 
+        if hrp == nil then
+            return
+        end
+        hrp.Transparency = 0.8
+        hrp.Color = Color3.new(1,0,0)
+        while hrp.Parent ~= nil do
+            hrp.CanCollide = false
+        fwait()end
+    end)
+end)
+for i,connection in pairs(getconnections(game:GetService("Lighting").ChildAdded)) do
+    if i==1 then getgenv().playerAdded = connection end
+end
+
+fspawn(function()
+    for _,p in pairs(game:GetService("Players"):GetPlayers()) do
+        p.CharacterAdded:connect(function(c)
+            local hrp = c:WaitForChild("HumanoidRootPart",30) --If their HumanoidRootPart does not spawn in a certain timeframe. 
+            if hrp == nil then
+                return
+            end
+            hrp.Transparency = 0.8
+            hrp.Color = Color3.new(1,0,0)
+            while hrp.Parent ~= nil do
+                hrp.CanCollide = false
+            fwait()end
+        end)
+    end
+end)
 
 fspawn(function()
     if game:GetService("Lighting"):FindFirstChild(lplr.Name) then
