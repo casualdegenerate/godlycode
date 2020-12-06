@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.5.2")
+lchat("2.5.3")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1485,32 +1485,36 @@ getgenv().Commands = {
                     else
                         rconsoleprint("Ping: Undefined?","@@MAGENTA@@")
                     end
-                    for _1,player in pairs(server.playerIds) do
-                        if settings.servers.namePlayers then
-                            pcall(function()
-                                asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
-                                asdf2 = JSOND(asdf1)
-                            end)
-                            if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
+                    if server.playerIds then
+                        for _1,player in pairs(server.playerIds) do
+                            if settings.servers.namePlayers then
+                                pcall(function()
+                                    asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
+                                    asdf2 = JSOND(asdf1)
+                                end)
+                                if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
+                                    rconsoleprint(asdf2.Username.."["..player.."]","@@MAGENTA@@")
+                                else
+                                    rconsoleprint(asdf2.Username.."["..player.."]","@@LIGHT_BLUE@@")
+                                end
+                            elseif settings.servers.nameOnlyFriends and lplr:IsFriendsWith(player) then
+                                pcall(function()
+                                    asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
+                                    asdf2 = JSOND(asdf1)
+                                end)
                                 rconsoleprint(asdf2.Username.."["..player.."]","@@MAGENTA@@")
                             else
-                                rconsoleprint(asdf2.Username.."["..player.."]","@@LIGHT_BLUE@@")
-                            end
-                        elseif settings.servers.nameOnlyFriends and lplr:IsFriendsWith(player) then
-                            pcall(function()
-                                asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
-                                asdf2 = JSOND(asdf1)
-                            end)
-                            rconsoleprint(asdf2.Username.."["..player.."]","@@MAGENTA@@")
-                        else
-                            if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
-                                rconsoleprint("["..player.."]","@@MAGENTA@@")
-                            else
-                                rconsoleprint("["..player.."]","@@LIGHT_BLUE@@")
+                                if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
+                                    rconsoleprint("["..player.."]","@@MAGENTA@@")
+                                else
+                                    rconsoleprint("["..player.."]","@@LIGHT_BLUE@@")
+                                end
                             end
                         end
+                        break
+                    else
+                        rconsoleprint("playerIds: MISSING.","@@MAGENTA@@")
                     end
-                    break
                 else
                     if server.id == game.JobId then
                         rconsoleprint("Server["..game.JobId.."]","@@LIGHT_GREEN@@")
@@ -1541,30 +1545,34 @@ getgenv().Commands = {
                     else
                         rconsoleprint("Ping: Undefined?","@@MAGENTA@@")
                     end
-                    for _1,player in pairs(server.playerIds) do
-                        if settings.servers.namePlayers then
-                            pcall(function()
-                                asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
-                                asdf2 = JSOND(asdf1)
-                            end)
-                            if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
+                    if server.playerIds then
+                        for _1,player in pairs(server.playerIds) do
+                            if settings.servers.namePlayers then
+                                pcall(function()
+                                    asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
+                                    asdf2 = JSOND(asdf1)
+                                end)
+                                if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
+                                    rconsoleprint(asdf2.Username.."["..player.."]","@@MAGENTA@@")
+                                else
+                                    rconsoleprint(asdf2.Username.."["..player.."]","@@LIGHT_BLUE@@")
+                                end
+                            elseif settings.servers.nameOnlyFriends and lplr:IsFriendsWith(player) then
+                                pcall(function()
+                                    asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
+                                    asdf2 = JSOND(asdf1)
+                                end)
                                 rconsoleprint(asdf2.Username.."["..player.."]","@@MAGENTA@@")
                             else
-                                rconsoleprint(asdf2.Username.."["..player.."]","@@LIGHT_BLUE@@")
-                            end
-                        elseif settings.servers.nameOnlyFriends and lplr:IsFriendsWith(player) then
-                            pcall(function()
-                                asdf1 = Fetch.Get("https://api.roblox.com/users/"..tostring(player))
-                                asdf2 = JSOND(asdf1)
-                            end)
-                            rconsoleprint(asdf2.Username.."["..player.."]","@@MAGENTA@@")
-                        else
-                            if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
-                                rconsoleprint("["..player.."]","@@MAGENTA@@")
-                            else
-                                rconsoleprint("["..player.."]","@@LIGHT_BLUE@@")
+                                if lplr:IsFriendsWith(player) and settings.servers.colorFriends then
+                                    rconsoleprint("["..player.."]","@@MAGENTA@@")
+                                else
+                                    rconsoleprint("["..player.."]","@@LIGHT_BLUE@@")
+                                end
                             end
                         end
+                    else
+                        rconsoleprint("playerIds: MISSING.","@@MAGENTA@@")
                     end
                 end
             end
