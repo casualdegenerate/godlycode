@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.5.3")
+lchat("2.5.4")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -2098,6 +2098,8 @@ lplr.PlayerGui.ChildAdded:connect(function(c)
         fwait()c:Destroy()
     elseif c.Name == "CamSpinClient" then
         fwait()c.Disabled = true c:Destroy()
+    elseif c.Name == "HintGUI" then
+        c.bg.msg.Text = c.bg.msg.Text:sub(200)
     end
 end)
 for i,connection in pairs(getconnections(lplr.PlayerGui.ChildAdded)) do
