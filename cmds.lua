@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.5.4")
+lchat("2.5.5")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -1611,19 +1611,19 @@ getgenv().Commands = {
             end
             for _1,p1 in pairs(GetPlayer(args[2])) do
                 fspawn(function()
-                    for i=1,10 do wait()
-                        if not p1.Character:FindFirstChild("Head") then
-                            rconsoleprint("WARNING: Player("..p1.Name..") does not have head?","@@YELLOW@@")
-                            return
-                        end
+                    for i=1,10 do fwait()
                         if not p1.Character:FindFirstChild("Humanoid") then
                             rconsoleprint("WARNING: Player("..p1.Name..") does not have humanoid?","@@YELLOW@@")
                             return
                         end
-                        firetouchinterest(p1.Character.Head,sword.Handle,1)
-                        firetouchinterest(p1.Character.Head,sword.Handle,0)
-                        if p1.Character.Humanoid.Health == 0 then
-                            break
+                        for _,v in pairs(p1.Character:GetChildren()) do 
+                            if v:IsA("BasePart") then
+                                firetouchinterest(v,sword.Handle,1)fwait()
+                                firetouchinterest(v,sword.Handle,0)fwait()
+                                if p1.Character.Humanoid.Health == 0 then
+                                    break
+                                end
+                            end
                         end
                     end
                 end)
@@ -2030,6 +2030,29 @@ getgenv().Commands = {
 
         end,
     },
+    ["control"] = {
+        description = "Allows you to control a clone",
+        funk = function(args)
+            if network then
+                getgenv().network = false
+                rchat("reset me robot.txt")
+                return
+            else
+                getgenv().network = true
+            end
+            clone = game:GetService("Workspace").Terrain["_Game"].Folder:WaitForChild(args[2],5)
+            if clone == nil then
+                rconsoleprint("Could not find clone","@@RED@@")
+                return
+            end
+            game:GetService("Workspace").Camera.CameraSubject = clone.Humanoid
+            game:GetService("Players").LocalPlayer.Character = clone
+            while network do 
+                sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
+                setsimulationradius(1e308)
+            fwait()end
+        end
+    },
 }
 
 fspawn(function()
@@ -2226,6 +2249,19 @@ game:GetService("Players").PlayerAdded:connect(function(p)
 end)
 for i,connection in pairs(getconnections(game:GetService("Lighting").ChildAdded)) do
     if i==1 then getgenv().playerAdded = connection end
+end
+
+game:GetService("Workspace").ChildAdded:connect(function(c)
+    if c:IsA("BasePart") then
+        if c.Name == "EggBomb" then
+            for _,con in pairs(getconnections(c.Touched)) do
+                con:Disable() 
+            end
+        end
+    end
+end)
+for i,connection in pairs(getconnections(game:GetService("Workspace").ChildAdded)) do
+    if i==1 then getgenv().workspaceCAdded = connection end
 end
 
 fspawn(function()
