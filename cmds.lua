@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.5.5")
+lchat("2.5.6")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -794,8 +794,15 @@ getgenv().Commands = {
         localunpunish = false
     end,
     ["rainbow"] = function()
-        rchat("gear me 18474459")
-        local t = lplr.Backpack:WaitForChild("PaintBucket")
+        local t = lplr.Character:WaitForChild("PaintBucket",1)
+		if not t then
+			t = lplr.Backpack:WaitForChild("PaintBucket",1)
+		end
+		if not t then
+			rchat("gear me 18474459")
+			t = lplr.Backpack:WaitForChild("PaintBucket",3)
+		end
+		rconsoleprint("Unable to find paintbucket, maybe you don't have admin? or there is a massive issue with the script.","@@RED@@")
         fwait()t.Parent = lplr.Character
         wait(0.5)
         local function color(part,c)
@@ -1513,7 +1520,7 @@ getgenv().Commands = {
                         end
                         break
                     else
-                        rconsoleprint("playerIds: MISSING.","@@MAGENTA@@")
+                        rconsoleprint("playerIds: MISSING. "..tostring(server.playing).."/"..tostring(server.maxPlayers),"@@MAGENTA@@")
                     end
                 else
                     if server.id == game.JobId then
@@ -1572,7 +1579,7 @@ getgenv().Commands = {
                             end
                         end
                     else
-                        rconsoleprint("playerIds: MISSING.","@@MAGENTA@@")
+                        rconsoleprint("playerIds: MISSING. "..tostring(server.playing).."/"..tostring(server.maxPlayers),"@@MAGENTA@@")
                     end
                 end
             end
@@ -1585,9 +1592,6 @@ getgenv().Commands = {
             if args[2] == nil then
                 rconsoleprint("[cd.lua]: Hhhhh! You have to add <args2>(server GUID) you idiot! >_<")
             else
-                args[2] = args[2]:gsub("server",""):gsub("[",""):gsub("]","")
-                rchat("h GUID "..args[2])
-                wait(0.5)
                 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, args[2])
             end
         end
