@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.5.6")
+lchat("2.6.0")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -424,7 +424,8 @@ getgenv().hentai = {5707097328}
 getgenv().songs = readfile("cd/Config/Music.txt"):split("\n")
 getgenv().songsn = {}
 getgenv().fix = {
-    speed = false
+    speed = false,
+	light = false,
 }
 getgenv().Music = false
 getgenv().power=1
@@ -880,17 +881,16 @@ getgenv().Commands = {
         end,
     },
     ["fix"] = {
+		toggle = true,
         allies = {"fixed"},
         description = "<args2>(speed) <args3>(number) will make you at a fixed speed.",
         funk = function(args)
             if args[2] == "speed" then
                 if fix.speed == false then fix.speed = true else fix.speed = false end
                 if args[3] == nil then args[3] = 16 end
-                fspawn(function()
-                    while fix.speed do fwait()
-                        if lplr.Character.Humanoid.WalkSpeed ~= args[3] then lplr.Character.Humanoid.WalkSpeed = args[3] end
-                    end
-                end)
+                while fix.speed do fwait()
+                    if lplr.Character.Humanoid.WalkSpeed ~= args[3] then lplr.Character.Humanoid.WalkSpeed = args[3] end
+                end
             --[[elseif args[2] == "anchor" then
                 if args[3] == nil or args[3] == "1" then args[3] = 
                 
@@ -900,6 +900,34 @@ getgenv().Commands = {
                         v.Parent = nil
                     end
                 end--]]
+			elseif args[2] == "terrain"then
+                if fix.terrain == false then fix.terrain = true else fix.terrain = false end
+				while fix.terrain do
+					game:GetService("Workspace").Terrain:Clear()
+				fwait()end
+			elseif args[2] == "light"then
+				local LS = game:GetService("Lighting")
+                if fix.light == false then fix.light = true else fix.light = false end
+				while fix.light do
+					if LS.Ambient ~= Color3.new(.69,.69,.69) then
+						LS.Ambient = Color3.new(.69,.69,.69)
+					end
+					if LS.FogEnd ~= 1/0 then
+						LS.FogEnd = 1/0
+					end
+					if LS.FogStart ~= 1/0 then
+						LS.FogStart = 1/0
+					end
+					if LS.OutdoorAmbient ~= Color3.new(.69,.69,.69) then
+						LS.OutdoorAmbient = Color3.new(.69,.69,.69)
+					end
+					if LS.ColorShift_Top ~= Color3.new(.69,.69,.69) then
+						LS.ColorShift_Top = Color3.new(.69,.69,.69)
+					end
+					if LS.ColorShift_Bottom ~= Color3.new(.69,.69,.69) then
+						LS.ColorShift_Bottom = Color3.new(.69,.69,.69)
+					end
+				fwait()end
             end
         end,
     },
@@ -1190,6 +1218,13 @@ getgenv().Commands = {
                 for _,v in pairs(game:GetService("Workspace").Terrain["_Game"].Admin.Pads:GetChildren()) do
                     if v.Name:sub(1,lplr.Name:len()) ~= lplr.Name then
                         local hit = lplr.Character:WaitForChild("Head",2)
+						if RIG then
+							for _1,v1 in pairs(game:GetService("Workspace"):GetChildren())do
+								if v1.Name == lplr.Name and lplr.Character ~= v1 then
+									hit = v1:WaitForChild("Head",2)
+								end
+							end
+						end
                         if hit then
                             fireclickdetector(game:GetService("Workspace").Terrain["_Game"].Admin.Regen.ClickDetector)
                             for _,v in pairs(game:GetService("Workspace").Terrain["_Game"].Admin.Pads:GetChildren()) do
@@ -1404,56 +1439,69 @@ getgenv().Commands = {
             rconsoleprint("Giga Script/ON","@@GREEN@@")
             local respawnpos
             lplr.CharacterAdded:connect(function(a)
-                a:WaitForChild("Humanoid").Died:connect(function()
-                    if lplr.Character:FindFirstChild("HumanoidRootPart") then
-                        lplr.Character.HumanoidRootPart.Anchored = true
-                        respawnpos = lplr.Character.HumanoidRootPart.CFrame
-                    end
-                    rchat("respawn me robot.txt")
-                end)
-                for i,connection in pairs(getconnections(a:WaitForChild("Humanoid").Died)) do
-                    if i==1 then getgenv().giga1 = connection end
-                end
+				if not RIG then
+					a:WaitForChild("Humanoid").Died:connect(function()
+						if lplr.Character:FindFirstChild("HumanoidRootPart") then
+							lplr.Character.HumanoidRootPart.Anchored = true
+							respawnpos = lplr.Character.HumanoidRootPart.CFrame
+						end
+						rchat("respawn me robot.txt")
+					end)
+					for i,connection in pairs(getconnections(a:WaitForChild("Humanoid").Died)) do
+						if i==1 then getgenv().giga1 = connection end
+					end
+				else
+					a:WaitForChild("Humanoid").Died:connect(function()
+						rchat("respawn me robot.txt")
+					end)
+					for i,connection in pairs(getconnections(a:WaitForChild("Humanoid").Died)) do
+						if i==1 then getgenv().giga1 = connection end
+					end
+				end
             end)
             for i,connection in pairs(getconnections(lplr.CharacterAdded)) do
                 if i==1 then getgenv().giga2 = connection end
             end
-            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-                v.Chatted:connect(function(msg)
-                    if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
-                        respawnpos = lplr.Character:WaitForChild("HumanoidRootPart").CFrame
-                    end
-                end)
-                for i,connection in pairs(getconnections(v.Chatted)) do
-                    if i==1 then getgenv().giga3 = connection end
-                end
-            end
-            game:GetService("Players").PlayerAdded:connect(function(v)
-                v.Chatted:connect(function(msg)
-                    if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
-                        h = lplr.Character:FindFirstChild("HumanoidRootPart")
-                        if h then
-                            respawnpos = h.CFrame
-                        else
-                            respawnpos = CFrame.new(0,4,0)
-                        end
-                    end
-                end)
-                for i,connection in pairs(getconnections(v.Chatted)) do
-                    if i==1 then getgenv().giga4 = connection end
-                end
-            end)
-            for i,connection in pairs(getconnections(game:GetService("Players").PlayerAdded)) do
-                if i==1 then getgenv().giga5 = connection end
-            end
-            lplr.CharacterAdded:connect(function(c)
-                if respawnpos ~= nil then
-                    c:WaitForChild("HumanoidRootPart").CFrame = respawnpos
-                end
-            end)
-            for i,connection in pairs(getconnections(lplr.CharacterAdded)) do
-                if i==1 then getgenv().giga6 = connection end
-            end
+			if not RIG then
+				for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+					v.Chatted:connect(function(msg)
+						if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
+							respawnpos = lplr.Character:WaitForChild("HumanoidRootPart").CFrame
+						end
+					end)
+					for i,connection in pairs(getconnections(v.Chatted)) do
+						if i==1 then getgenv().giga3 = connection end
+					end
+				end
+			end
+			if not RIG then
+				game:GetService("Players").PlayerAdded:connect(function(v)
+					v.Chatted:connect(function(msg)
+						if msg:lower():find("respawn") or msg:lower():find("char") or msg:lower():find("reload") or msg:lower():find("reset") or msg:lower():find("tp") or msg:lower():find("teleport") then
+							h = lplr.Character:FindFirstChild("HumanoidRootPart")
+							if h then
+								respawnpos = h.CFrame
+							else
+								respawnpos = CFrame.new(0,4,0)
+							end
+						end
+					end)
+					for i,connection in pairs(getconnections(v.Chatted)) do
+						if i==1 then getgenv().giga4 = connection end
+					end
+				end)
+				for i,connection in pairs(getconnections(game:GetService("Players").PlayerAdded)) do
+					if i==1 then getgenv().giga5 = connection end
+				end
+				lplr.CharacterAdded:connect(function(c)
+					if respawnpos ~= nil then
+						c:WaitForChild("HumanoidRootPart").CFrame = respawnpos
+					end
+				end)
+				for i,connection in pairs(getconnections(lplr.CharacterAdded)) do
+					if i==1 then getgenv().giga6 = connection end
+				end
+			end
             rchat("reset me robot.txt")
         end
     },
@@ -2057,6 +2105,157 @@ getgenv().Commands = {
             fwait()end
         end
     },
+	["nextserver"] = {
+        allies = {"ns"},
+		description = "Will join the next server, and list the one you were just in so you don't rejoin it.",
+		funk = function()
+			local h
+			local cache = readfile("cd/bin/Cache.data")
+            pcall(function()
+                local r = Fetch.Get("https://games.roblox.com/v1/games/"..tostring(game.PlaceId).."/servers/Public?sortOrder=Asc&limit=100")
+                h = JSOND(r)
+            end)
+			
+			for i,v in pairs(h.data)do
+				print("check",v.id)
+				if v.playing~=v.maxPlayers and v.fps > 50 then
+					print("grab",v.id)
+					appendfile("cd/bin/Cache.data",tostring(v.id).."\n")
+					game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id)
+					break
+				end
+			end
+			
+		end
+	},
+	--[[
+	["streamsnipe"] = {
+		funk = function()
+			local h
+            pcall(function()
+                h = JSOND(Fetch.Get("https://games.roblox.com/v1/games/"..tostring(game.PlaceId).."/servers/Public?sortOrder=Asc&limit=100"))
+            end)
+            for _,server in pairs(h.data) do
+				game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, args[2])
+			end
+		end
+	},
+	--]]
+	--[[
+	["limit"] = {
+		funk = function(args)
+			local myass = false
+			if #args==3 then
+				for i,v in pairs(args)do
+					if tonumber(v) == nil then
+						myass = true --fuck me
+						break
+					end
+					
+				end
+			else
+			
+			end
+		end
+	}
+	--]]
+	["exp"] = {
+		toggle = true,
+		funk = function(args)
+			if args[2] == "movement" then
+				if not fwait() then loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))() end
+				local lplr = game:GetService("Players").LocalPlayer
+				local cam = game:GetService("Workspace").Camera
+				local debounce1 = true
+				lplr.Character.Archivable = true
+				local RIG = lplr.Character:clone()
+				local f = Instance.new("ForceField",RIG)
+				getgenv().updateRate = .3
+				getgenv().framewaits = false
+
+				RIG.Parent = game:GetService("Workspace")
+				cam.CameraSubject = RIG.Humanoid
+				lplr.Character = RIG
+
+				RIG.HumanoidRootPart.ChildAdded:connect(function(c)
+					if c:IsA("Sound") then
+						fwait()c:Destroy()
+					end
+				end)
+
+				lplr.CharacterAdded:connect(function(c) 
+					if RIG then
+						local d = false
+						game:GetService("RunService").RenderStepped:connect(function()
+							if c.Parent ~= nil or c:FindFirstChild("Humanoid") then
+								c.Humanoid:ChangeState(11)
+							end
+						end)
+						cam.CameraSubject = RIG.Humanoid
+						lplr.Character = RIG
+						while c do
+							if c:FindFirstChild("HumanoidRootPart") then
+								c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position)
+							end
+							--[[Depricated method.(took too much of my powa)
+							for i,v in pairs(c:GetChildren())do
+								if v:IsA("BasePart")then
+									if RIG:FindFirstChild(v.Name) then
+										v.CFrame = CFrame.new(RIG[v.Name].Position)
+									end
+								end
+							end
+							--]]
+							--[[
+							local hr = c:WaitForChild("HumanoidRootPart",5)
+							if hr then
+								hr.CFrame = CFrame.new(RIG.HumanoidRootPart.Position)
+							end
+							--]]
+						if framewaits then
+							fwait()
+						else
+							wait(updateRate)end 
+						end
+					end
+				end)
+
+				local UIS = game:GetService("UserInputService")
+				local M = lplr:GetMouse()
+				UIS.InputBegan:connect(function(inputObject,gamep)
+					if gamep then return end
+					if inputObject.KeyCode.Name == "Space" then
+						RIG.Humanoid.Jump = true
+					elseif inputObject.KeyCode.Name == "Q" then
+						RIG.HumanoidRootPart.CFrame = M.Hit
+					elseif inputObject.KeyCode.Name == "E" then
+						if ylock then 
+							ylock = false
+						else
+							ylock = true
+						end
+					end
+				end)
+				lplr.CharacterAdded:connect(function(a)
+					local human = a:WaitForChild("Humanoid",5)
+					if human then
+						human.Died:connect(function()
+							if not debounce1 then
+								rchat("respawn me robot.txt")
+								debounce1 = true
+							end
+						end)
+					end
+				end)
+				while RIG do
+					if debounce1 then
+						wait(1)
+						debounce1=false
+					end
+				fwait()end
+			end
+		end
+	},
 }
 
 fspawn(function()
@@ -2073,24 +2272,40 @@ fspawn(function()
                     for _1,v1 in pairs(v.allies) do 
                         if args[1] == v1 then 
                             if v.toggle then
-                                fspawn(function()v.funk(args)end)
+                                fspawn(function()
+									local a,err = pcall(function()v.funk(args)end)
+									if err then
+										rconsoleprint(err,"@@RED@@")
+									end
+								end)
                             else
-                                v.funk(args)
+                                local a,err = pcall(function()v.funk(args)end)
+								if err then
+									rconsoleprint(err,"@@RED@@")
+								end
                             end
                         end
                     end
                 end
                 if args[1] == _ then
                     if v.toggle then
-                        fspawn(function()v.funk(args)end)
+                        fspawn(function()
+                            local a,err = pcall(function()v.funk(args)end)
+							if err then
+								rconsoleprint(err,"@@RED@@")
+							end
+						end)
                     else
-                        v.funk(args)
+                        local a,err = pcall(function()v.funk(args)end)
+						if err then
+							rconsoleprint(err,"@@RED@@")
+						end
                     end
                 end
             elseif type(v) == "nil" then
                 rconsoleprint("nil","@@WHITE@@")
             else
-                rconsoleprint("CRITICAL FLAW! THE SAID MESSAGE EXIST IN COMMANDS BUT DOES NOT FOLLOW RULES OF BEING A FUNCTION OR TABLE? NEW UPDATE WAS INCOMPATIBLE??\n\tTYPE: "..type(v).."\n\tINDEX: "..pe_,"@@RED@@")
+                rconsoleprint("CRITICAL FLAW! THE SAID MESSAGE EXIST IN COMMANDS BUT DOES NOT FOLLOW RULES OF BEING A FUNCTION OR TABLE? NEW UPDATE WAS INCOMPATIBLE??\n\tTYPE: "..type(v).."\n\tINDEX: ".._,"@@RED@@")
             end
             --[[Old method I was working on...
             if args[1] == _ then
@@ -2126,7 +2341,9 @@ lplr.PlayerGui.ChildAdded:connect(function(c)
     elseif c.Name == "CamSpinClient" then
         fwait()c.Disabled = true c:Destroy()
     elseif c.Name == "HintGUI" then
-        c.bg.msg.Text = c.bg.msg.Text:sub(200)
+	repeat fwait() until c:FindFirstChild("bg")
+	repeat fwait() until c.bg:FindFirstChild("msg")
+        c.bg.msg.Text = c.bg.msg.Text:sub(800)
     end
 end)
 for i,connection in pairs(getconnections(lplr.PlayerGui.ChildAdded)) do
@@ -2297,32 +2514,44 @@ fspawn(function()
         end
     end
 end)
---I don't use this so I might consider depricating the command.
+
 fspawn(function()
-    local s = ""
-    local commands = {"thaw";"normaljump";"visible";"unfire";"unsmoke";"unsparkle";"heal";"god";"ungod";"grav";"setgrav";"nograv";"name";"package";"unpackage";"guifix";"lock";"unlock";"unjail";"rank";"hat";"gear";"tshirt";"pants";"shirt";"removeclones";"removejails";"cd/586141923048161291"}
     while active do wait()
-        while logsscramble do fwait()
-            for i=1,math.random(logss,logse) do
-                s = s..string.char(math.random(1,255))
-            end
-            rchat(commands[math.random(1,#commands)].." "..s)
-            s=""
-            if not active then break end
-            wait(math.random(30,100)/100)
-            if not active then break end
-        end
         pcall(function()
             if lplr.Character.HumanoidRootPart.Position.Y < 0 then
                 fspawn(function()
                     for i=1,60 do
-                        lplr.Character.HumanoidRootPart.Velocity = 0
+                        lplr.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
                     fwait()end
                 end)
                 lplr.Character.HumanoidRootPart.CFrame = CFrame.new(-30.125618, 7.92999983, 71.0002747, -0.999968767, -0.000224543168, -0.00791277923, -0.00023817255, 0.99999851, 0.00172152603, 0.00791238621, 0.00172335713, -0.999967277)
             end
         end)
     end
+end)
+--I don't use this so I might consider depricating the command. NOTE 2.23.2021 I do sometimes mess with it though with newbies. So I will keep it. 
+fspawn(function()
+	local var1 = 0
+    local s = ""
+    local commands = {"thaw";"normaljump";"visible";"unfire";"unsmoke";"unsparkle";"heal";"god";"ungod";"grav";"setgrav";"nograv";"name";"package";"unpackage";"guifix";"lock";"unlock";"unjail";"rank";"hat";"gear";"tshirt";"pants";"shirt";"removeclones";"removejails"}
+	for i=1,math.random(logss,logse) do
+		s = s..string.char(math.random(1,255))
+	end
+    while active do 
+		while logsscramble do 
+			if var1>10 then var1=0
+				for i=1,math.random(logss,logse) do
+					s = s..string.char(math.random(1,255))
+				end
+			else 
+				var1=var1+1
+			end
+			rchat(commands[math.random(1,#commands)].." "..s)
+			if not active then break end
+			wait(math.random(30,100)/100)
+			if not active then break end
+		fwait()end
+	fwait()end
 end)
 
 fspawn(function()
