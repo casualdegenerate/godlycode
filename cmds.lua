@@ -50,7 +50,18 @@ local rconsoleprint = function(input,color)
         fspawn(function()rconsoleprint("@@WHITE@@")end)
     end)
 end
-
+local logwrite = function(msg)
+	if not isfile("cd/logs.txt")then
+		writefile("cd/logs.txt",tick().."\n"..msg.."\n")
+	end
+end
+local warn = function(msg)
+	if not isfile("cd/logs.txt")then
+		writefile("cd/logs.txt",msg)
+	else
+		logwrite("cd/logs.txt",":WARN:\n"..msg)
+	end
+end
 if not isfile("cd") then
     lchat("Welcome newcomer!",Color3.new(0,1,0))
     makefolder("cd")
@@ -86,29 +97,35 @@ if not isfile("cd") then
     makefolder("cd/Scripts")
     repeat wait() until isfile("cd/Scripts")
 end
-settings = JSOND(readfile("cd/Config/cmds.settings"))
-
-if settings.antiloud == nil then
-    settings.antiloud = true
-    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
-end
-if settings.experimentalConsole == nil then
-    settings.experimentalConsole = false
-    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
-end
-if settings.antiPunishTime == nil then
-    settings.antiPunishTime = 1
-    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
-end
-if settings.logsYield == nil then
-    settings.logsYield = 5 
-    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
-end
-if settings.optimizeFPS == nil then
-    settings.optimizeFPS = true
-    writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
+local a = pcall(function()settings = JSOND(readfile("cd/Config/cmds.settings"))end)
+if not a then
+	settings = {}
 end
 
+print(settings,a)
+function ws(setting,default)
+	if settings[setting] == nil then
+		settings[setting] = default
+	end
+end
+function ows(setting,set)
+	if settings[setting] ~= nil then
+		settings[setting] = set
+		writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
+	else
+		warn("log.txt","You are trying to overwrite "..tostring(setting).." to be "..tostring(set).." that does not exist inside of "..tostring(settings))
+		rconsoleprint("Please check log.txt","@@YELLOW@@")
+	end
+end
+ws("antiloud",true)
+ws("experimentalConsole",false)
+ws("antiPunishTime",1)
+ws("logsYield",5)
+ws("optimizeFPS",true)
+ws("spin",false)
+ws("spinSpeed",65)
+ws("fixedMovementHZ",0.3)
+writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
 
 
 
@@ -170,7 +187,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.6.1")
+lchat("2.6.2")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -2180,7 +2197,9 @@ getgenv().Commands = {
 				local f = Instance.new("ForceField",RIG)
 				getgenv().updateRate = .1
 				getgenv().framewaits = false
-
+				getgenv().SPIN = settings.spin
+				getgenv().SPINV = 0
+				getgenv().SPINC = settings.spinSpeed
 				--Modding RIG
 				for i,v in pairs(RIG:GetDescendants())do
 					if v:IsA("BasePart")then
@@ -2216,7 +2235,12 @@ getgenv().Commands = {
 						lplr.Character = RIG
 						while c do
 							if c:FindFirstChild("HumanoidRootPart") then
-								c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(RIG.HumanoidRootPart.Orientation.Y),0)
+								if SPIN then
+									if SPINV > 360 then SPINV = 0 else SPINV = SPINV+SPINC end
+									c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(SPINV),0)
+								else
+									c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(RIG.HumanoidRootPart.Orientation.Y),0)
+								end
 							end
 							--[[Depricated method.(took too much of my powa)
 							for i,v in pairs(c:GetChildren())do
@@ -2276,10 +2300,26 @@ getgenv().Commands = {
 					end
 				fwait()end
 			elseif args[3] ~= nil then
-				if tonumber(args[3]) == nil then
-					rconsoleprint("Please state third arg as a number 0.03-X","@@YELLOW@@")
-				else
-					getgenv().updateRate = tonumber(args[3])
+				if args[3] == "hz"then
+					if tonumber(args[4])then
+						ows("fixedMovementHZ",tonumber(args[4]))
+						getgenv().updateRate = tonumber(args[4])
+					end
+				elseif args[3] == "spin"then
+					if SPIN then
+						getgenv().SPIN = false
+						ows("spin",false)
+					else
+						getgenv().SPIN = true
+						ows("spin",true)
+					end
+				elseif args[3] == "spinspeed"then
+					if tonumber(args[4])then
+						getgenv().SPINC = tonumber(args[4])
+						ows("spinSpeed",tonumber(args[4]))
+					end
+				elseif args[3] == "?"then
+					rconsoleprint("Please state [hz]num [spin]bool [spinspeed]num","@@YELLOW@@")
 				end
 			end
 		end
