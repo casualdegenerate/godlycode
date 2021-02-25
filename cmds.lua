@@ -170,7 +170,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.6.0")
+lchat("2.6.1")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -183,6 +183,7 @@ end
 local cd = Instance.new("Folder") cd.Name = "cd" cd.Parent = Lighting
 
 debug = true
+local LS = game:GetService("Lighting")
 function dprint(t)if debug --[[and lplr.UserId == 1090451412--]] then print(t)end end
 local Fetch = {}
 Fetch.Get = function(a)
@@ -442,6 +443,11 @@ getgenv().annoy=false
 getgenv().antifling=false
 getgenv().locked=false
 
+getgenv().cdENV = {
+	secure = false
+}
+
+
 
 getgenv().Commands = {
     ["snipe"] = {
@@ -515,7 +521,7 @@ getgenv().Commands = {
                     table.insert(Punished,v.UserId,true)
                     pcall(function()
                         while Punished[v.UserId] do wait(0.3)
-                            if v.Character.Parent ~= game:GetService("Lighting") then
+                            if v.Character.Parent ~= LS then
                                 rchat("punish "..v.Name)
                             end
                         end
@@ -2162,7 +2168,7 @@ getgenv().Commands = {
 	["exp"] = {
 		toggle = true,
 		funk = function(args)
-			if args[2] == "movement" then
+			if args[2] == "movement"and args[3] == nil then
 				if not fwait() then loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))() end
 				local lplr = game:GetService("Players").LocalPlayer
 				local cam = game:GetService("Workspace").Camera
@@ -2170,13 +2176,26 @@ getgenv().Commands = {
 				lplr.Character.Archivable = true
 				local RIG = lplr.Character:clone()
 				local f = Instance.new("ForceField",RIG)
-				getgenv().updateRate = .3
+				getgenv().updateRate = .1
 				getgenv().framewaits = false
 
+				--Modding RIG
+				for i,v in pairs(RIG:GetDescendants())do
+					if v:IsA("BasePart")then
+						v.Color = Color3.new(.2,.2,.2)
+						--v.Material = Enum.Material.Glass --[[I think this is not needed. It's not my taste so far I see...]]
+						if v.Name == "HumanoidRootPart"then
+							v.Transparency = 1
+						else
+							v.Transparency = 0.8
+						end
+					end
+				end
+				--
 				RIG.Parent = game:GetService("Workspace")
 				cam.CameraSubject = RIG.Humanoid
 				lplr.Character = RIG
-
+				
 				RIG.HumanoidRootPart.ChildAdded:connect(function(c)
 					if c:IsA("Sound") then
 						fwait()c:Destroy()
@@ -2195,7 +2214,7 @@ getgenv().Commands = {
 						lplr.Character = RIG
 						while c do
 							if c:FindFirstChild("HumanoidRootPart") then
-								c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position)
+								c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(RIG.HumanoidRootPart.Orientation.Y),0)
 							end
 							--[[Depricated method.(took too much of my powa)
 							for i,v in pairs(c:GetChildren())do
@@ -2236,6 +2255,7 @@ getgenv().Commands = {
 						end
 					end
 				end)
+				rchat("respawn me robot.txt")
 				lplr.CharacterAdded:connect(function(a)
 					local human = a:WaitForChild("Humanoid",5)
 					if human then
@@ -2253,9 +2273,28 @@ getgenv().Commands = {
 						debounce1=false
 					end
 				fwait()end
+			elseif args[3] ~= nil then
+				if tonumber(args[3]) == nil then
+					rconsoleprint("Please state third arg as a number 0.03-X","@@YELLOW@@")
+				else
+					getgenv().updateRate = tonumber(args[3])
+				end
 			end
 		end
 	},
+	["secure"] = {
+		description = "An attempt to secure network ownership so no one crashes you with network ownership, but I can't figure it out for now ;vvvv",
+		funk = function(args)
+			if cdENV.secure then 
+				getgenv().cdENV.secure = false 
+				setsimulationradius(0,-5000)
+				return 
+			else 
+				getgenv().cdENV.secure = true 
+			end
+		end
+	},
+	
 }
 
 fspawn(function()
@@ -2411,7 +2450,7 @@ for i,connection in pairs(getconnections(gf.Folder.ChildAdded)) do
     if i==1 then getgenv().gffCAdded = connection end
 end
 
-game:GetService("Lighting").ChildAdded:connect(function(c)
+LS.ChildAdded:connect(function(c)
     if localunpunish then
         if c == lplr.Character then 
             fwait()lplr.Character.Parent = game:GetService("Workspace")
@@ -2695,7 +2734,14 @@ fspawn(function()
     end
 end)
 
-
+fspawn(function()
+	while active do
+		while cdENV.secure do
+			sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",0)
+			setsimulationradius(0,0)
+		fwait()end
+	fwait()end
+end)
 
 
 
