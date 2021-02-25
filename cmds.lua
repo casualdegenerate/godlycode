@@ -427,6 +427,7 @@ getgenv().songsn = {}
 getgenv().fix = {
     speed = false,
 	light = false,
+	terrain = false,
 }
 getgenv().Music = false
 getgenv().power=1
@@ -1263,12 +1264,13 @@ getgenv().Commands = {
                 rconsoleprint("Logs was not created?","@@YELLOW@@") 
                 return 
             end
-            l.TextButton.Frame.Size = UDim2.new(0,camera.ViewportSize.X,0,camera.ViewportSize.Y-300)
+			l.TextButton.Active = false -- Avoid misclicking and moving the logs(making text invisible)
+            l.TextButton.Frame.Size = UDim2.new(0,camera.ViewportSize.X,0,camera.ViewportSize.Y-300) --Not real time, so if you mess with it, it won't optimize to your monitor/resolutionhhhhh
             l.TextButton.Size = UDim2.new(0,camera.ViewportSize.X-15,0,20)
             l.TextButton.Position = UDim2.new(0,0,0,269)
             l.TextButton.BackgroundTransparency = .8
 
-            l.TextButton.Frame.Frame.ChildAdded:connect(function(c)
+            l.TextButton.Frame.Frame.ChildAdded:connect(function(c) --2.25.2021 wtf was I doing?
                 if c.Text:find("robot.txt") or c.Text:find("[CasualDegenerate]:") or c.Text:find(antilogger1) then
                     fwait()c:Destroy()
                 end
@@ -2294,7 +2296,31 @@ getgenv().Commands = {
 			end
 		end
 	},
-	
+	["yeet"] = {
+		allies = {"massfling","superfling"},
+		description = "Will super fling a player.",
+		example = "yeet noob 5",
+		funk = function(args)
+			if args[2] ~= nil then
+				local pw = 10
+				if tonumber(args[3]) ~= nil then
+					if tonumber(args[3]) > 30 then
+						rconsoleprint("You are limited to 30","@@YELLOW@@")
+						pw = 30
+					else
+						pw = tonumber(args[3])
+					end
+				end
+				for i,v in pairs(GetPlayer(args[2]))do
+					local name = v.Name.." "
+					name = name:rep(3) -- Doing anymore will just spam chat/DDOS yourself lol. Think. You are sending god knows amount of info to the server and fast, you will DOS yourself out the server or DOS the server with a bunch of bytes. So if you ever wonder when you lag doing fling a a a a a a a a a a that is why.
+					for i1=1,pw do
+						rchat("fling "..name)
+					end
+				end
+			end
+		end
+	}
 }
 
 fspawn(function()
