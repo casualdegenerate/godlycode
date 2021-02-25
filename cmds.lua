@@ -187,7 +187,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.6.2")
+lchat("2.6.3")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -2201,6 +2201,12 @@ getgenv().Commands = {
 				getgenv().SPINV = 0
 				getgenv().SPINC = settings.spinSpeed
 				--Modding RIG
+				RIG.DescendantAdded:connect(function(d)
+					if d:IsA("Humanoid")then
+						d.DisplayDistanceType = "None"
+					end
+				end)
+				RIG.Name = "RIG"
 				for i,v in pairs(RIG:GetDescendants())do
 					if v:IsA("BasePart")then
 						v.Color = Color3.new(.2,.2,.2)
@@ -2210,6 +2216,8 @@ getgenv().Commands = {
 						else
 							v.Transparency = 0.8
 						end
+					elseif v:IsA("Humanoid")then
+						v.DisplayDistanceType = "None"
 					end
 				end
 				--
@@ -2228,6 +2236,7 @@ getgenv().Commands = {
 						local d = false
 						game:GetService("RunService").RenderStepped:connect(function()
 							if c.Parent ~= nil or c:FindFirstChild("Humanoid") then
+								c.Humanoid.DisplayDistanceType = "None"
 								c.Humanoid:ChangeState(11)
 							end
 						end)
@@ -2240,6 +2249,14 @@ getgenv().Commands = {
 									c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(SPINV),0)
 								else
 									c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(RIG.HumanoidRootPart.Orientation.Y),0)
+								end
+							elseif c:FindFirstChildWhichIsA("BasePart")then
+								local partReplacement = c:FindFirstChildWhichIsA("BasePart")
+								if SPIN then
+									if SPINV > 360 then SPINV = 0 else SPINV = SPINV+SPINC end
+									partReplacement.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(SPINV),0)
+								else
+									partReplacement.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(RIG.HumanoidRootPart.Orientation.Y),0)
 								end
 							end
 							--[[Depricated method.(took too much of my powa)
