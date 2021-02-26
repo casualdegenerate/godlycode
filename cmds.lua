@@ -1,7 +1,7 @@
 repeat wait() until game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
 repeat wait() until game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents:FindFirstChild("SayMessageRequest")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))()
-if not rconsoleprint then
+if not syn then
     lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
     rchat("music 5648499584")
     return
