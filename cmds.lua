@@ -1,10 +1,12 @@
-repeat wait() until game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
-repeat wait() until game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents:FindFirstChild("SayMessageRequest")
+game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents")
+game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+print("start")
 if not syn then
-    lchat("Run it on SynX you idiot. Only works on SynX.",Color3.new(1,0,0))
+    tchat("Run it on SynX you idiot. Only works on SynX.")
     rchat("music 5648499584")
     return
 end
+print("pass syn check")
 local JSOND = function(a)return game:GetService("HttpService"):JSONDecode(a)end
 local JSONE = function(a)return game:GetService("HttpService"):JSONEncode(a)end
 JSONB=function(jsn) --Thank you [NekO]
@@ -61,17 +63,16 @@ local warn = function(msg)
 		logwrite("cd/logs.txt",":WARN:\n"..msg)
 	end
 end
-if not isfile("cd") then
-    lchat("Welcome newcomer!",Color3.new(0,1,0))
+if not isfolder("cd") then
     makefolder("cd")
-    repeat wait() until isfile("cd")
+    repeat wait() until isfolder("cd")
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
     writefile("cd/Log.txt","Will be used later to log any errors!")
     writefile("cd/README.txt","If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)")
     makefolder("cd/Cache")
-    repeat wait() until isfile("cd/Cache")
+    repeat wait() until isfolder("cd/Cache")
     makefolder("cd/Config")
-    repeat wait() until isfile("cd/Config")
+    repeat wait() until isfolder("cd/Config")
     writefile("cd/Config/cmds.settings",
 [[{
 	"experimentalConsole":false,
@@ -88,13 +89,13 @@ if not isfile("cd") then
 )
     writefile("cd/Config/Music.txt","5580376560\n5833642888\n1064109642\n535308988\n554711853")
     makefolder("cd/Downloads")
-    repeat wait() until isfile("cd/Downloads")
+    repeat wait() until isfolder("cd/Downloads")
     makefolder("cd/Lighting")
-    repeat wait() until isfile("cd/Lighting")
+    repeat wait() until isfolder("cd/Lighting")
     makefolder("cd/Outfits")
-    repeat wait() until isfile("cd/Outfits")
+    repeat wait() until isfolder("cd/Outfits")
     makefolder("cd/Scripts")
-    repeat wait() until isfile("cd/Scripts")
+    repeat wait() until isfolder("cd/Scripts")
 end
 local a = pcall(function()settings = JSOND(readfile("cd/Config/cmds.settings"))end)
 if not a then
@@ -128,45 +129,9 @@ writefile("cd/Config/cmds.settings",JSONB(JSONE(settings)))
 
 
 
-local s = [[If you have anything to ask, just message CasualDegenerate on roblox or DM me on discord @casual_degenerate@7475 (586141923048161291)
-Everything I want to tell you is here.
-If the script does not work sometimes, I'm prob updating it for the 100th time in a day and the update had a bug, but if you can kinda contact me and shit in my dms about it thank you so much.
-
-Listed commands documentation! (please praise me for making this...Also, anything with NaN it's not writen. Just wrote it down so you can see the list of commands, but I might add a description to it here.)
-snipe: (snipe <plr>) Will jail the player and explode them(could lag player if they render the explosion)
-regen: (regen) Will regen the admin pads IF there is a regen button in the first place, else it will just say "WARNING: Regen does not exist? Removed by someone?" in the console.
-reset: (reset) You say "reset me" command. I just made it cause I don't like tabbing whenever I want to reset.
-permpunish: (permpunish <plr>) This will punish the player when they are placed back into the game's workspace(where you see them).
-unpermpunish: (unpermpunish <plr>) This will remove the player from the list of people you perm punished.
-klown: (klown <plr>) Will turn someone into a clown.
-visualize: (NaN)
-unvisualize: (NaN)
-con: (NaN)
-cn: (NaN)
-uncn: (NaN)
-?: (?) Will tell you the song the person played in the game with "music 12345678" and tell you the name, it would ask you if you want to copy it to your clipboard.
-mimic: (NaN)
-cd: (NaN)
-outfit: (NaN)
-nn: (NaN)
-unnn: (NaN)
-lunp: (NaN)
-unlunp: (NaN)
-rainbow: (rainbow) Will make the map turn into a rainbow.
-copyplayerlist: (copyplayerlist) Will copy the playerlist to your clipboard.
-logsscramble: (NaN)
-cdcommands: (NaN)
-bypass: (NaN)
-cd-a: (NaN)
-chat: (NaN)
-fix: (NaN)
-cache: (NaN)
-check: (NaN)
-logss: (NaN)
-logse: (NaN)
-cdfunni: (NaN)
-rejoin: (rejoin) Will make you rejoin the game.
-dcache: (NaN)]]
+local s = [[
+Nothing here for now :)
+]]
 if not isfile("cd/README.txt") then
     writefile("cd/README.txt",s)
 elseif readfile("cd/README.txt") ~= s then
@@ -186,7 +151,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-lchat("2.6.3")
+tchat("2.6.3")
 
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -214,7 +179,7 @@ Fetch.Get = function(a)
     end 
 end
 local cwarn = function(input)
-    lchat("cd/warn/: "..input)
+    rchat("cd/warn/: "..input)
 end
 local cerror = function(input)
     rchat("cd/error/: "..input)
@@ -247,7 +212,7 @@ function GetPlayer(a)
         end 
     end
     if unpack(b) == nil then --This is to fix any useless uses of the function so if it does spam I can return those parts in the script it does if I'm a dummy.
-        rconsoleprint("No players in-game goes by that name. If you are spelling their name right and this still pops up, DM @casual_degenerate#7475 586141923048161291 your issue and they will help.","@@RED@@") 
+        rconsoleprint("Player is not ingame or you spelt it wrong.","@@RED@@") 
     end 
     return b 
 end
@@ -461,7 +426,8 @@ getgenv().antifling=false
 getgenv().locked=false
 
 getgenv().cdENV = {
-	secure = false
+	['secure'] = false, --Depricated I guess...
+	['character'] = nil,
 }
 
 
@@ -778,7 +744,7 @@ getgenv().Commands = {
                     rchat("unpants me robot.txt")
                 end
             end
-            for _,v in pairs(lplr.Character:GetDescendants()) do
+            for _,v in pairs(cdENV.character:GetDescendants()) do
                 if v.Name == "face" and v:IsA("Decal") then
                     v:Destroy()
                 end
@@ -790,15 +756,15 @@ getgenv().Commands = {
             rchat("pants me "..antilogger1..Outfit.Pants)
             rchat("face me "..antilogger1..Outfit.Face)
             if Outfit.Creator then rchat("h "..Outfit.Creator) end --if you wanted to give credit...
-            for _,v in pairs(lplr.Character:GetDescendants()) do
+            for _,v in pairs(cdENV.character:GetDescendants()) do
                 if v.Name == "face" and v:IsA("Decal") then
                     i=i+1
                 end
             end
             fspawn(function()
                 wait(2)
-                for _,v in pairs(lplr.Character.Head:GetChildren()) do
-                    if v.Name == "face" and _ ~= #lplr.Character.Head:GetChildren()-1 and i>1 then
+                for _,v in pairs(cdENV.character.Head:GetChildren()) do
+                    if v.Name == "face" and _ ~= #cdENV.character.Head:GetChildren()-1 and i>1 then
                         v:Destroy()
                     end
                 end
@@ -818,7 +784,7 @@ getgenv().Commands = {
         localunpunish = false
     end,
     ["rainbow"] = function()
-        local t = lplr.Character:WaitForChild("PaintBucket",1)
+        local t = cdENV.character:WaitForChild("PaintBucket",1)
 		if not t then
 			t = lplr.Backpack:WaitForChild("PaintBucket",1)
 		end
@@ -827,7 +793,7 @@ getgenv().Commands = {
 			t = lplr.Backpack:WaitForChild("PaintBucket",3)
 		end
 		rconsoleprint("Unable to find paintbucket, maybe you don't have admin? or there is a massive issue with the script.","@@RED@@")
-        fwait()t.Parent = lplr.Character
+        fwait()t.Parent = cdENV.character
         wait(0.5)
         local function color(part,c)
             local ohTable2 = {
@@ -1240,10 +1206,10 @@ getgenv().Commands = {
             while autopads do
                 for _,v in pairs(game:GetService("Workspace").Terrain["_Game"].Admin.Pads:GetChildren()) do
                     if v.Name:sub(1,lplr.Name:len()) ~= lplr.Name then
-                        local hit = lplr.Character:WaitForChild("Head",2)
+                        local hit = cdENV.character:WaitForChild("Head",2)
 						if RIG then
 							for _1,v1 in pairs(game:GetService("Workspace"):GetChildren())do
-								if v1.Name == lplr.Name and lplr.Character ~= v1 then
+								if v1.Name == lplr.Name and cdENV.character ~= v1 then
 									hit = v1:WaitForChild("Head",2)
 								end
 							end
@@ -2376,19 +2342,51 @@ getgenv().Commands = {
 				end
 			end
 		end
-	}
+	},
+	["tp"] = {
+		funk = function(args)
+			if args[2] then
+				local res
+				local plr 
+				if #GetPlayer(args[2])>1 then
+					for i,v in pairs(GetPlayer(args[2]))do
+						rconsoleprint(i,v.Name)
+					end
+					local res = rconsoleinput()
+					if tonumber(res)then
+						if GetPlayer(args[2])[tonumber(res)]then 
+							plr = GetPlayer(args[2])[tonumber(res)]
+						end
+					end
+				elseif GetPlayer(args[2]) then
+					plr = GetPlayer(args[2])[1]
+				end
+				if plr then
+					if plr.Character then
+						if plr.Character:FindFirstChildWhichIsA("BasePart")then
+							print('tp')
+							lplr.Character.HumanoidRootPart.CFrame = plr.Character:FindFirstChildWhichIsA("BasePart").CFrame
+						end
+					end
+				end
+			end
+		end
+	},
 }
 
 fspawn(function()
     while true do
         local args = rconsoleinput():lower():split(" ")
         if args[1] == "exit" or args[1] == "stop" or args[1] == "restart" or args[1] == "reboot" or args[1] == "reload" then break end
+		if Kcmds then 
+			if not CheckGamepass(lplr.Name,1293677)then
+				for i,v in pairs()do
+				
+				end
+			end
+		end
         for _,v in pairs(Commands) do
-            if type(v) == "function" then
-                if args[1] == _ then
-                    v(args)
-                end
-            elseif type(v) == "table" then
+            if type(v) == "table" then
                 if v.allies then
                     for _1,v1 in pairs(v.allies) do 
                         if args[1] == v1 then 
@@ -2423,32 +2421,8 @@ fspawn(function()
 						end
                     end
                 end
-            elseif type(v) == "nil" then
-                rconsoleprint("nil","@@WHITE@@")
-            else
-                rconsoleprint("CRITICAL FLAW! THE SAID MESSAGE EXIST IN COMMANDS BUT DOES NOT FOLLOW RULES OF BEING A FUNCTION OR TABLE? NEW UPDATE WAS INCOMPATIBLE??\n\tTYPE: "..type(v).."\n\tINDEX: ".._,"@@RED@@")
-            end
-            --[[Old method I was working on...
-            if args[1] == _ then
-                --lchat("[cd/cmds.lua]: Running "..tostring(_),Color3.new(0,0,0))
-                fspawn(function()
-                    if type(v) == "function" then
-                        v(args)
-                    elseif type(v) == "table"
-                        if v.allies then
-                            for _1,v1 in pairs(v.allies) do
-                                if args[1] == v1 v.funk(args)
-                            end
-                        else
-                            v.funk(args)
-                        end
-                    else
-                        rconsoleprint("CRITICAL FLAW! THE SAID MESSAGE EXIST IN COMMANDS BUT DOES NOT FOLLOW RULES OF BEING A FUNCTION OR TABLE? NEW UPDATE WAS INCOMPATIBLE??","@@RED@@")
-                    end
-                end)
-            end
-            --]]
-        end
+			end
+		end
     end
     --RIG:Destroy()
     --RIG = nil
@@ -2511,6 +2485,7 @@ lplr.CharacterAdded:connect(function(c) --dprint("Spawn")
         end
     end
     --]]
+	getgenv().cdENV.character = c --Keep track of server side character
 end)
 for i,connection in pairs(getconnections(lplr.CharacterAdded)) do
     if i==1 then getgenv().lplrCAdded = connection end
@@ -2828,3 +2803,4 @@ end)
 
 
 getgenv().kek=true
+print("end")
