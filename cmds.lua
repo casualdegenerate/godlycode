@@ -40,15 +40,15 @@ JSONB=function(jsn) --Thank you [NekO]
     return o
   end
 local rconsoleprint = function(input,color)
-    fspawn(function()
+    spawn(function()
         if color then
-            fspawn(function()rconsoleprint(color)end)
+            spawn(function()rconsoleprint(color)end)
         else
-            fspawn(function()rconsoleprint("@@WHITE@@")end)
+            spawn(function()rconsoleprint("@@WHITE@@")end)
         end
-        fspawn(function()rconsoleprint(input.."\n")end)
+        spawn(function()rconsoleprint(input.."\n")end)
         fwait()
-        fspawn(function()rconsoleprint("@@WHITE@@")end)
+        spawn(function()rconsoleprint("@@WHITE@@")end)
     end)
 end
 local logwrite = function(msg)
@@ -141,18 +141,18 @@ end
 
 if not isfile("cd/cmds.lua") then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
-	fspawn(function()loadstring(readfile("cd/cmds.lua"))()end)
+	spawn(function()loadstring(readfile("cd/cmds.lua"))()end)
 	return
 end
 
 if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua") and settings.autoupdate then
     writefile("cd/cmds.lua",game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/godlycode/main/cmds.lua"))
-	fspawn(function()rconsoleprint("New Update!")loadstring(readfile("cd/cmds.lua"))()end)
+	spawn(function()rconsoleprint("New Update!")loadstring(readfile("cd/cmds.lua"))()end)
 	return
 end
 
 tchat("2.6.3")
-
+print("first run check pass")
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
 rconsolename(".\\cd\\cmds.lua")
@@ -314,7 +314,8 @@ if antifling then
     getgenv().antifling=false
 end
 if logsA then
-    getgenv().logsA:Disable()
+    logsA:Disconnect()
+	logsA = nil
 end
 if serverc then
     getgenv().serverc = false
@@ -363,7 +364,7 @@ end
 wait(1)
 if not kek then
     rconsoleprint("Checking player status. Please wait for it to check...","@@LIGHT_GRAY@@")
-    fspawn(function()
+    spawn(function()
         for i,aa in pairs({66254, 64354}) do
             if CheckGamepass(lplr.UserId,aa) then
                 rconsoleprint("You're good!","@@GREEN@@")
@@ -380,7 +381,7 @@ if not kek then
     end)
 end
 rconsoleprint("Loaded!\nType \"commands\" to get a list of commands ✨✨✨","@@GREEN@@")
-
+print("passed player status")
 
 
 
@@ -761,7 +762,7 @@ getgenv().Commands = {
                     i=i+1
                 end
             end
-            fspawn(function()
+            spawn(function()
                 wait(2)
                 for _,v in pairs(cdENV.character.Head:GetChildren()) do
                     if v.Name == "face" and _ ~= #cdENV.character.Head:GetChildren()-1 and i>1 then
@@ -926,7 +927,7 @@ getgenv().Commands = {
         description = "Will download the <args2>(plr)'s entire outfits list and check if they have an email on that account(Just because it says they are unverified it is not 100% but if it's verified it's 100%).",
         funk = function(args)
             local eh = function(idname,userid,plr)local idname, userid = tostring(idname), tostring(userid) 
-                fspawn(function()if hasAsset(userid,102611803) == "true" then
+                spawn(function()if hasAsset(userid,102611803) == "true" then
                     rconsoleprint("["..idname.."]: I'm Verified!","@@GREEN@@") 
                 else
                     rconsoleprint("["..idname.."]: I'm Not verified?","@@RED@@") 
@@ -1017,7 +1018,7 @@ getgenv().Commands = {
                 end
             end
             for _,v in pairs(GetPlayer(args[2])) do
-                fspawn(function()eh(v.Name,v.UserId)end)
+                spawn(function()eh(v.Name,v.UserId)end)
             end
         end,
     },
@@ -1028,7 +1029,7 @@ getgenv().Commands = {
             local a = {66254, 64354}
             local p = {35748, 37127}
             for _,v in pairs(GetPlayer(args[2])) do --dprint('found',v.Name)
-                fspawn(function()
+                spawn(function()
                     for i,aa in pairs(a) do
                         if CheckGamepass(v.UserId,aa) then
                             rconsoleprint("["..v.Name.."]: I have perm admin!","@@GREEN@@") --dprint("perm")
@@ -1132,7 +1133,7 @@ getgenv().Commands = {
                     wait(3)
                     rchat("music "..antilogger1.."743521691")
                     wait(1.38)
-                    fspawn(function()
+                    spawn(function()
                         rchat("music "..antilogger1.."743521450")
                         wait(3)
                         rchat("music "..antilogger1.."4940109913")
@@ -1157,7 +1158,7 @@ getgenv().Commands = {
 				rconsoleprint("AntiFling/OFF","@@RED@@")
 			end
             while antifling do
-                fspawn(function()
+                spawn(function()
                     local h = lplr.Character:WaitForChild("HumanoidRootPart",2)
                     if h then
                         if h.Velocity.X > 100 or h.Velocity.Y > 100 or h.Velocity.Z > 100 then
@@ -1174,7 +1175,7 @@ getgenv().Commands = {
                         end
                     end
                 end)
-                fspawn(function()
+                spawn(function()
                     local h = lplr.Character:WaitForChild("Humanoid",2)
                     if h then
                         if h.Sit == true then
@@ -1233,18 +1234,16 @@ getgenv().Commands = {
         allies = {"l"},
         description = "Patched logs.",
         funk = function(args)
-            if logsA then
-                getgenv().logsA:Disable()
+            if not lplr.PlayerGui:FindFirstChild("ScrollGui") then
+				rchat("logs robot.txt")
             end
-            if lplr.PlayerGui:FindFirstChild("ScrollGui") then
-                local disapear = lplr.PlayerGui.ScrollGui
-                repeat disapear:Destroy()fwait() until disapear.Parent == nil
-            end
-            rchat("logs robot.txt")
             local l = lplr.PlayerGui:WaitForChild("ScrollGui",settings.logsYield)
             if not l then 
                 rconsoleprint("Logs was not created?","@@YELLOW@@") 
                 return 
+            end
+            if logsA then
+                logsA:Disconnect()
             end
 			l.TextButton.Active = false -- Avoid misclicking and moving the logs(making text invisible)
             l.TextButton.Frame.Size = UDim2.new(0,camera.ViewportSize.X,0,camera.ViewportSize.Y-300) --Not real time, so if you mess with it, it won't optimize to your monitor/resolutionhhhhh
@@ -1252,7 +1251,7 @@ getgenv().Commands = {
             l.TextButton.Position = UDim2.new(0,0,0,269)
             l.TextButton.BackgroundTransparency = .8
 
-            l.TextButton.Frame.Frame.ChildAdded:connect(function(c) --2.25.2021 wtf was I doing?
+            getgenv().logsA = l.TextButton.Frame.Frame.ChildAdded:connect(function(c) --2.25.2021 wtf was I doing?
                 if c.Text:find("robot.txt") or c.Text:find("[CasualDegenerate]:") or c.Text:find(antilogger1) then
                     fwait()c:Destroy()
                 end
@@ -1260,9 +1259,6 @@ getgenv().Commands = {
                     c.Text = c.Text:sub(1,200)
                 end
             end)
-            for i,connection in pairs(getconnections(l.TextButton.Frame.Frame.ChildAdded)) do
-                if i==1 then getgenv().logsA = connection end
-            end
         end,
     },
     ["server"] = {
@@ -1652,7 +1648,7 @@ getgenv().Commands = {
                 sword.Parent = lplr.Character
             end
             for _1,p1 in pairs(GetPlayer(args[2])) do
-                fspawn(function()
+                spawn(function()
                     for i=1,10 do fwait()
                         if not p1.Character:FindFirstChild("Humanoid") then
                             rconsoleprint("WARNING: Player("..p1.Name..") does not have humanoid?","@@YELLOW@@")
@@ -1844,7 +1840,7 @@ getgenv().Commands = {
     ["analysis"] = {
         description = "Will tell you any information you need to know about the server such as current bugs",
         funk = function(args)
-            fspawn(function()
+            spawn(function()
                 local regen
                 regen = gf.Admin:WaitForChild("Regen",.5)
                 if regen == nil then
@@ -1857,7 +1853,7 @@ getgenv().Commands = {
                 end
                 rconsoleprint("Regen seems fine.","@@GREEN@@")
             end)
-            fspawn(function()
+            spawn(function()
                 local pads
                 pads = gf.Admin:WaitForChild("Pads",.5)
                 if pads == nil then
@@ -1885,7 +1881,7 @@ getgenv().Commands = {
                     rconsoleprint("Admin pads was tampered with via 'Removal'!","@@RED@@")
                 end
             end)
-            fspawn(function()
+            spawn(function()
                 local iVelocity = 0
                 for _1,v1 in pairs(gf.Workspace:GetDescendants()) do
                     if v1:IsA("BasePart") then
@@ -2153,7 +2149,6 @@ getgenv().Commands = {
 		toggle = true,
 		funk = function(args)
 			if args[2] == "movement"and args[3] == nil then
-				if not fwait() then loadstring(game:HttpGet("https://raw.githubusercontent.com/casualdegenerate/cd/master/Better%20Proto%20API"))() end
 				local lplr = game:GetService("Players").LocalPlayer
 				local cam = game:GetService("Workspace").Camera
 				local debounce1 = true
@@ -2373,25 +2368,18 @@ getgenv().Commands = {
 		end
 	},
 }
-
-fspawn(function()
+print("starting pcall first")
+spawn(function()
     while true do
         local args = rconsoleinput():lower():split(" ")
-        if args[1] == "exit" or args[1] == "stop" or args[1] == "restart" or args[1] == "reboot" or args[1] == "reload" then break end
-		if Kcmds then 
-			if not CheckGamepass(lplr.Name,1293677)then
-				for i,v in pairs()do
-				
-				end
-			end
-		end
-        for _,v in pairs(Commands) do
+		print(args[1])
+        for _,v in next, Commands do
             if type(v) == "table" then
                 if v.allies then
-                    for _1,v1 in pairs(v.allies) do 
+                    for _1,v1 in next, v.allies do 
                         if args[1] == v1 then 
                             if v.toggle then
-                                fspawn(function()
+                                spawn(function()
 									local a,err = pcall(function()v.funk(args)end)
 									if err then
 										rconsoleprint(err,"@@RED@@")
@@ -2408,7 +2396,7 @@ fspawn(function()
                 end
                 if args[1] == _ then
                     if v.toggle then
-                        fspawn(function()
+                        spawn(function()
                             local a,err = pcall(function()v.funk(args)end)
 							if err then
 								rconsoleprint(err,"@@RED@@")
@@ -2428,7 +2416,7 @@ fspawn(function()
     --RIG = nil
     loadstring(readfile("cd/cmds.lua"))()
 end)
-
+print("passed first pcall")
 
 lplr.PlayerGui.ChildAdded:connect(function(c)
     if c.Name == "MessageGUI" or c.Name == "EFFECTGUIBLIND" or c.Name == "Blind" or c.Name == "Message" then
@@ -2516,7 +2504,7 @@ LS.ChildAdded:connect(function(c)
     if antipunish then
         if c.Name == lplr.Name then
             for _,v in pairs(c:GetDescendants()) do
-                fspawn(function()
+                spawn(function()
                     local prevMaterial = v.Material
                     local prevColor = v.Color
                     v.Material = Enum.Material.ForceField
@@ -2581,7 +2569,7 @@ for i,connection in pairs(getconnections(game:GetService("Workspace").ChildAdded
     if i==1 then getgenv().workspaceCAdded = connection end
 end
 
-fspawn(function()
+spawn(function()
     for _,p in pairs(game:GetService("Players"):GetPlayers()) do
         p.CharacterAdded:connect(function(c)
             local hrp = c:WaitForChild("HumanoidRootPart",30) --If their HumanoidRootPart does not spawn in a certain timeframe. 
@@ -2597,13 +2585,13 @@ fspawn(function()
     end
 end)
 
-fspawn(function()
+spawn(function()
     if game:GetService("Lighting"):FindFirstChild(lplr.Name) then
         lplr.Character.Parent = game:GetService("Workspace")
     end
 end)
 
-fspawn(function()
+spawn(function()
     for _,v in pairs(gf.Folder:GetChildren()) do
         if v.Name:sub(-4) == "jail" then
             v.Parent = nil
@@ -2611,11 +2599,11 @@ fspawn(function()
     end
 end)
 
-fspawn(function()
+spawn(function()
     while active do wait()
         pcall(function()
             if lplr.Character.HumanoidRootPart.Position.Y < 0 then
-                fspawn(function()
+                spawn(function()
                     for i=1,60 do
                         lplr.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
                     fwait()end
@@ -2626,7 +2614,7 @@ fspawn(function()
     end
 end)
 --I don't use this so I might consider depricating the command. NOTE 2.23.2021 I do sometimes mess with it though with newbies. So I will keep it. 
-fspawn(function()
+spawn(function()
 	local var1 = 0
     local s = ""
     local commands = {"thaw";"normaljump";"visible";"unfire";"unsmoke";"unsparkle";"heal";"god";"ungod";"grav";"setgrav";"nograv";"name";"package";"unpackage";"guifix";"lock";"unlock";"unjail";"rank";"hat";"gear";"tshirt";"pants";"shirt";"removeclones";"removejails"}
@@ -2650,7 +2638,7 @@ fspawn(function()
 	fwait()end
 end)
 
-fspawn(function()
+spawn(function()
     while fix.speed do fwait()
         if lplr.Character.Humanoid.WalkSpeed ~= 16 then lplr.Character.Humanoid.WalkSpeed = 16 end
     end
@@ -2662,13 +2650,13 @@ fspawn(function()
     wait(7.77)end
 end)
 --]]
-fspawn(function()
+spawn(function()
     if not kek then 
         rchat("particle me c")
     end
 end)
 
-fspawn(function()
+spawn(function()
     lplr.OnTeleport:Connect(function(State)
         if State == Enum.TeleportState.InProgress then
             syn.queue_on_teleport("loadstring(readfile(\"cd/cmds.lua\"))()")
@@ -2681,7 +2669,7 @@ fspawn(function()
     end
 end)
 
-fspawn(function()
+spawn(function()
     local pads
     pads = gf.Admin:WaitForChild("Pads",5)
     if pads == nil then
@@ -2702,7 +2690,7 @@ fspawn(function()
         rconsoleprint("Admin pads was tampered with via 'Removal'!","@@RED@@")
     end
 end)
-fspawn(function()
+spawn(function()
     local regen
     regen = gf.Admin:WaitForChild("Regen",5)
     if regen == nil then
@@ -2713,7 +2701,7 @@ fspawn(function()
         rconsoleprint("Regen was tampered with via 'Relocation'!","@@YELLOW@@")
     end
 end)
-fspawn(function()
+spawn(function()
     local chimney
     chimney = gf.Workspace:WaitForChild("Chimney",5)
     if not chimney then
@@ -2725,7 +2713,7 @@ fspawn(function()
     end
     chimney.Smoke.Enabled = true
 end)
-fspawn(function()
+spawn(function()
     local iVelocity = 0
     for _1,v1 in pairs(gf.Workspace:GetDescendants()) do
         if v1:IsA("BasePart") then
@@ -2740,7 +2728,7 @@ fspawn(function()
     end
 end)
 
-fspawn(function()
+spawn(function()
     while active do
         for _,v in pairs(blacklistm) do
             if gf.Folder:FindFirstChild("Sound") then
@@ -2770,7 +2758,7 @@ end)
 end)
 --]]
 
-fspawn(function()
+spawn(function()
     if settings.optimizeFPS then
         game:GetService("Workspace").DescendantAdded:connect(function(d)
             if d:IsA("BasePart") or d:IsA("MeshPart") then 
@@ -2791,7 +2779,7 @@ fspawn(function()
     end
 end)
 
-fspawn(function()
+spawn(function()
 	while active do
 		while cdENV.secure do
 			sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",0)
