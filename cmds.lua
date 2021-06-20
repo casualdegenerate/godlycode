@@ -70,6 +70,8 @@ if getgenv then
 			_G.owoToggle = false
 			game:GetService("Players"):Chat(input) 
 			_G.owoToggle = true
+		else
+			game:GetService("Players"):Chat(input) 
 		end
 	end
 	getgenv().tchat = function(input)
