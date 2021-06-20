@@ -17,89 +17,91 @@ print("pass syn check")
 
 -- // This is just a library, so incase you don't have it...
 
-loadstring(
-	[=====[
---LUAU ROBLOX LUA
+if not is_cd_caller then
+	loadstring(
+		[=====[
+	--LUAU ROBLOX LUA
 
---SynXLuaU
---[[ Deprecated for now.
-if rconsoleprint then
-	--messagebox("Hello SynX user.","cd/library",0)
-	
+	--SynXLuaU
+	--[[ Deprecated for now.
+	if rconsoleprint then
+		--messagebox("Hello SynX user.","cd/library",0)
+		
+	end
+	--]]
+	--EXTERNAL LUAU
+	if getgenv then
+
+		-- // SERVICES
+		
+		getgenv().Players = game:GetService("Players")
+		getgenv().FirstReplicated = nil
+		
+		
+		
+		-- // #############
+
+		--Easy to write coroutine.
+		getgenv().fspawn = function(f)
+			coroutine.wrap(f) -- / 5.24.2021 Doing a wrap might work better?
+		end
+		--Easy to write frame wait.
+		getgenv().fwait=function()
+			game:GetService("RunService").RenderStepped:Wait()
+		end
+		--This should just be a function it's self in Lua.
+		getgenv().stringtobyte = function(text)
+			local output = ""
+			for i=1,#text do
+				output = output.."\\"..text:sub(i):byte()
+			end
+			return output
+		end
+		--This is the say request remote and won't fire any .Chatted connections. So pretty much most basic admin scripts(This includes chat loggers).
+		getgenv().fchat = function(input)
+			game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(input,"All")
+		end
+		--Real chat(works in vanilla games that don't mess with the .Chatted or say request remote.
+		getgenv().rchat = function(input)
+			if chatbypass then 
+				getgenv().chatbypass = false
+				game:GetService("Players"):Chat(input) 
+				getgenv().chatbypass = true
+			elseif _G.owoToggle then
+				_G.owoToggle = false
+				game:GetService("Players"):Chat(input) 
+				_G.owoToggle = true
+			else
+				game:GetService("Players"):Chat(input) 
+			end
+		end
+		getgenv().tchat = function(input)
+			fchat(input)
+			rchat(input)
+		end
+		--This is proof you are using my library(do you like the way I worded that >3<)
+		getgenv().is_cd_caller = function()
+			return true
+		end
+		
+		-- / This is WaitFor it's a form of WaitForChild() that will only take strings of code and convert them to wait for each instance.
+		getgenv().WaitFor = function(objectString)
+			splits = objectString:split(".")
+			local out = splits[1]
+			for i,v in next, splits do
+				if i~=1 then out = out .. ":WaitForChild('" .. v .. "')" end
+			end
+			return out
+		end
+		
+		-- / Rejoin
+		getgenv().Rejoin = function()
+			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
+		end
+
+	end
+	]=====])()
 end
---]]
---EXTERNAL LUAU
-if getgenv then
-
-	-- // SERVICES
-	
-	getgenv().Players = game:GetService("Players")
-	getgenv().FirstReplicated = nil
-	
-	
-	
-	-- // #############
-
-	--Easy to write coroutine.
-	getgenv().fspawn = function(f)
-		coroutine.wrap(f) -- / 5.24.2021 Doing a wrap might work better?
-	end
-	--Easy to write frame wait.
-	getgenv().fwait=function()
-		game:GetService("RunService").RenderStepped:Wait()
-	end
-	--This should just be a function it's self in Lua.
-	getgenv().stringtobyte = function(text)
-		local output = ""
-		for i=1,#text do
-			output = output.."\\"..text:sub(i):byte()
-		end
-		return output
-	end
-	--This is the say request remote and won't fire any .Chatted connections. So pretty much most basic admin scripts(This includes chat loggers).
-	getgenv().fchat = function(input)
-		game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(input,"All")
-	end
-	--Real chat(works in vanilla games that don't mess with the .Chatted or say request remote.
-	getgenv().rchat = function(input)
-		if chatbypass then 
-			getgenv().chatbypass = false
-			game:GetService("Players"):Chat(input) 
-			getgenv().chatbypass = true
-		elseif _G.owoToggle then
-			_G.owoToggle = false
-			game:GetService("Players"):Chat(input) 
-			_G.owoToggle = true
-		else
-			game:GetService("Players"):Chat(input) 
-		end
-	end
-	getgenv().tchat = function(input)
-		fchat(input)
-		rchat(input)
-	end
-	--This is proof you are using my library(do you like the way I worded that >3<)
-	getgenv().is_cd_caller = function()
-		return true
-	end
-	
-	-- / This is WaitFor it's a form of WaitForChild() that will only take strings of code and convert them to wait for each instance.
-	getgenv().WaitFor = function(objectString)
-		splits = objectString:split(".")
-		local out = splits[1]
-		for i,v in next, splits do
-			if i~=1 then out = out .. ":WaitForChild('" .. v .. "')" end
-		end
-		return out
-	end
-	
-	-- / Rejoin
-	getgenv().Rejoin = function()
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
-	end
-
-end
-]=====])()
 
 --############
 
