@@ -43,7 +43,8 @@ if not is_cd_caller then
 
 		--Easy to write coroutine.
 		getgenv().fspawn = function(f)
-			coroutine.wrap(f) -- / 5.24.2021 Doing a wrap might work better?
+			coroutine.wrap(f)() -- / 5.24.2021 Doing a wrap might work better?
+			-- / 6.20.2021 Thanks to unkown user I fixed this lmao
 		end
 		--Easy to write frame wait.
 		getgenv().fwait=function()
