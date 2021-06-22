@@ -2348,9 +2348,9 @@ getgenv().Commands = {
 				UIS.InputBegan:connect(function(inputObject,gamep)
 					if gamep then return end
 					if inputObject.KeyCode.Name == "Space" then
-						RIG.Humanoid.Jump = true
+						cdENV.RIG.Humanoid.Jump = true
 					elseif inputObject.KeyCode.Name == "Q" then
-						RIG.HumanoidRootPart.CFrame = M.Hit
+						cdENV.RIG.HumanoidRootPart.CFrame = M.Hit
 					elseif inputObject.KeyCode.Name == "E" then
 						if ylock then 
 							ylock = false
@@ -2371,12 +2371,13 @@ getgenv().Commands = {
 						end)
 					end
 				end)
-				while RIG do
+				while cdENV.RIG do
 					if debounce1 then
 						wait(1)
 						debounce1=false
 					end
-				fwait()end
+					fwait()
+				end
 			elseif args[3] ~= nil then
 				if args[3] == "hz"then
 					if tonumber(args[4])then
@@ -2673,15 +2674,18 @@ end
 spawn(function()
     for _,p in pairs(game:GetService("Players"):GetPlayers()) do
         p.CharacterAdded:connect(function(c)
-            local hrp = c:WaitForChild("HumanoidRootPart",30) --If their HumanoidRootPart does not spawn in a certain timeframe. 
-            if hrp == nil then
-                return
-            end
-            hrp.Transparency = 0.8
-            hrp.Color = Color3.new(1,0,0)
-            while hrp.Parent ~= nil do
-                hrp.CanCollide = false
-            fwait()end
+			pcall(function()
+				local hrp = c:WaitForChild("HumanoidRootPart",30) --If their HumanoidRootPart does not spawn in a certain timeframe. 
+				if hrp == nil then
+					return
+				end
+				hrp.Transparency = 0.8
+				hrp.Color = Color3.new(1,0,0)
+				while hrp.Parent ~= nil do
+					hrp.CanCollide = false
+					fwait()
+				end
+			end)
         end)
     end
 end)
