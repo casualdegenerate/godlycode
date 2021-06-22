@@ -250,7 +250,7 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-local msg = "V2.7.0 made by @casual_degenerate#7475"
+local msg = "@casual_degenerate#7475"
 rchat("h " .. msg)
 tchat(msg)
 print("first run check pass")
