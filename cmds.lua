@@ -2254,21 +2254,21 @@ getgenv().Commands = {
 				local cam = game:GetService("Workspace").Camera
 				local debounce1 = true
 				lplr.Character.Archivable = true
-				local RIG = lplr.Character:clone()
-				local f = Instance.new("ForceField",RIG)
+				getgenv().cdENV.RIG = lplr.Character:clone()
+				local f = Instance.new("ForceField",cdENV.RIG)
 				getgenv().updateRate = .1
 				getgenv().framewaits = false
 				getgenv().SPIN = settings.spin
 				getgenv().SPINV = 0
 				getgenv().SPINC = settings.spinSpeed
 				--Modding RIG
-				RIG.DescendantAdded:connect(function(d)
+				cdENV.RIG.DescendantAdded:connect(function(d)
 					if d:IsA("Humanoid")then
 						d.DisplayDistanceType = "None"
 					end
 				end)
-				RIG.Name = "RIG"
-				for i,v in pairs(RIG:GetDescendants())do
+				cdENV.RIG.Name = "RIG"
+				for i,v in pairs(cdENV.RIG:GetDescendants())do
 					if v:IsA("BasePart")then
 						v.Color = Color3.new(.2,.2,.2)
 						--v.Material = Enum.Material.Glass --[[I think this is not needed. It's not my taste so far I see...]]
@@ -2282,18 +2282,18 @@ getgenv().Commands = {
 					end
 				end
 				--
-				RIG.Parent = game:GetService("Workspace")
-				cam.CameraSubject = RIG.Humanoid
-				lplr.Character = RIG
+				cdENV.RIG.Parent = game:GetService("Workspace")
+				cam.CameraSubject = cdENV.RIG.Humanoid
+				lplr.Character = cdENV.RIG
 				
-				RIG.HumanoidRootPart.ChildAdded:connect(function(c)
+				cdENV.RIG.HumanoidRootPart.ChildAdded:connect(function(c)
 					if c:IsA("Sound") then
 						fwait()c:Destroy()
 					end
 				end)
 
 				lplr.CharacterAdded:connect(function(c) 
-					if RIG then
+					if cdENV.RIG then
 						local d = false
 						game:GetService("RunService").RenderStepped:connect(function()
 							if c.Parent ~= nil or c:FindFirstChild("Humanoid") then
@@ -2301,23 +2301,23 @@ getgenv().Commands = {
 								c.Humanoid:ChangeState(11)
 							end
 						end)
-						cam.CameraSubject = RIG.Humanoid
-						lplr.Character = RIG
+						cam.CameraSubject = cdENV.RIG.Humanoid
+						lplr.Character = cdENV.RIG
 						while c do
 							if c:FindFirstChild("HumanoidRootPart") then
 								if SPIN then
 									if SPINV > 360 then SPINV = 0 else SPINV = SPINV+SPINC end
-									c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(SPINV),0)
+									c.HumanoidRootPart.CFrame = CFrame.new(cdENV.RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(SPINV),0)
 								else
-									c.HumanoidRootPart.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(RIG.HumanoidRootPart.Orientation.Y),0)
+									c.HumanoidRootPart.CFrame = CFrame.new(cdENV.RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(cdENV.RIG.HumanoidRootPart.Orientation.Y),0)
 								end
 							elseif c:FindFirstChildWhichIsA("BasePart")then
 								local partReplacement = c:FindFirstChildWhichIsA("BasePart")
 								if SPIN then
 									if SPINV > 360 then SPINV = 0 else SPINV = SPINV+SPINC end
-									partReplacement.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(SPINV),0)
+									partReplacement.CFrame = CFrame.new(cdENV.RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(SPINV),0)
 								else
-									partReplacement.CFrame = CFrame.new(RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(RIG.HumanoidRootPart.Orientation.Y),0)
+									partReplacement.CFrame = CFrame.new(cdENV.RIG.HumanoidRootPart.Position) * CFrame.Angles(0,math.rad(cdENV.RIG.HumanoidRootPart.Orientation.Y),0)
 								end
 							end
 							--[[Depricated method.(took too much of my powa)
@@ -2888,6 +2888,42 @@ spawn(function()
 		fwait()end
 	fwait()end
 end)
+
+fspawn(function()
+	if game:GetService("Workspace"):WaitForChild("Baseplatev3",15) then
+		return
+	end
+	
+	local Disco = Instance.new("Folder",game:GetService("Workspace"))
+	Disco.Name = "Baseplatev3"
+	local xm = 100
+	local zm = 100 -- / This makes 100x100 baseplate with a size of 2048x2048 so it's really big.
+	for x=1,xm do wait() -- / This process is very stressful building. And you will stop rendering for a bit because of it.
+		for z=1,zm do
+			local p = Instance.new("Part")
+			--local s = Instance.new("SelectionBox")
+			p.Anchored = true
+			p.Name = "Disco Part"
+			p.Size = Vector3.new(2048,6,2048)
+			p.Position = Vector3.new(-1*(xm*2048/2)+x*p.Size.X*1.001,-2,-1*(zm*2048/2)+z*p.Size.Z*1.001)
+			p.Material = Enum.Material.Neon
+			p.Color = Color3.new(0,0,0)
+			
+			--s.Adornee = p
+			--s.LineThickness = .2
+			--s.Color3 = Color3.fromRGB(127,0,128)
+			
+			--s.Parent = Disco
+			p.Parent = Disco
+		end
+	end
+end)
+
+
+
+
+
+
 
 
 
