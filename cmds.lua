@@ -529,7 +529,7 @@ getgenv().locked=false
 
 getgenv().cdENV = {
 	['secure'] = false, --Depricated I guess...
-	['character'] = nil,
+	['character'] = lplr.Character,
 }
 
 
