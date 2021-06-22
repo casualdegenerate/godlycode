@@ -250,7 +250,9 @@ if readfile("cd/cmds.lua") ~= game:HttpGet("https://raw.githubusercontent.com/ca
 	return
 end
 
-tchat("2.6.3")
+local msg = "V2.7.0 made by @casual_degenerate#7475"
+rchat("h " .. msg)
+tchat(msg)
 print("first run check pass")
 
 local lplr = game:GetService("Players").LocalPlayer or game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):wait()
@@ -502,7 +504,7 @@ getgenv().bypassmusic = {
 
 }
 getgenv().blacklistm = {}
-getgenv().hentai = {5707097328}
+getgenv().hentai = {5707097328;6591385583}
 getgenv().songs = readfile("cd/Config/Music.txt"):split("\n")
 getgenv().songsn = {}
 getgenv().fix = {
