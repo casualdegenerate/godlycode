@@ -216,7 +216,7 @@ function ows(setting,set)
 		rconsoleprint("Please check log.txt","@@YELLOW@@")
 	end
 end
-ws("antiloud",true)
+ws("antiloud",false)
 ws("experimentalConsole",false)
 ws("antiPunishTime",1)
 ws("logsYield",5)
@@ -885,37 +885,42 @@ getgenv().Commands = {
     ["unlunp"] = function()
         localunpunish = false
     end,
-    ["rainbow"] = function()
-        local t = cdENV.character:WaitForChild("PaintBucket",1)
-		if not t then
-			t = lplr.Backpack:WaitForChild("PaintBucket",1)
-		end
-		if not t then
-			rchat("gear me 18474459")
-			t = lplr.Backpack:WaitForChild("PaintBucket",3)
-		end
-		rconsoleprint("Unable to find paintbucket, maybe you don't have admin? or there is a massive issue with the script.","@@RED@@")
-        fwait()t.Parent = cdENV.character
-        wait(0.5)
-        local function color(part,c)
-            local ohTable2 = {
-                ["Part"] = part,
-                ["Color"] = c
-            }
-            local ohString1 = "PaintPart"
-            spawn(function()t.Remotes.ServerControls:InvokeServer(ohString1, ohTable2)end)
-        end
-        for aaaa=1,1 do 
-        for _,v in pairs(game:GetService("Workspace").Terrain._Game:GetDescendants()) do if v:IsA("BasePart") then
-            spawn(function()
-                for i=0,1,0.04 do fwait()
-                    color(v,Color3.fromHSV(i,1,1))
-                end
-            end)
+    ["rainbow"] = {
+        allies = {"rgb"},
+        description = "You run through HSV to rainbow the map once(really internet heavy so it's run through once because I don't want to DDoS the game lol)",
+        toggle = true,
+        funk = function(args)
+			local t = cdENV.character:WaitForChild("PaintBucket",1)
+			if not t then
+				t = lplr.Backpack:WaitForChild("PaintBucket",1)
+			end
+			if not t then
+				rchat("gear me 18474459")
+				t = lplr.Backpack:WaitForChild("PaintBucket",3)
+			end
+			rconsoleprint("Unable to find paintbucket, maybe you don't have admin? or there is a massive issue with the script.","@@RED@@")
+			fwait()t.Parent = cdENV.character
+			wait(0.5)
+			local function color(part,c)
+				local ohTable2 = {
+					["Part"] = part,
+					["Color"] = c
+				}
+				local ohString1 = "PaintPart"
+				spawn(function()t.Remotes.ServerControls:InvokeServer(ohString1, ohTable2)end)
+			end
+			for aaaa=1,1 do 
+			for _,v in pairs(game:GetService("Workspace").Terrain._Game:GetDescendants()) do if v:IsA("BasePart") then
+				spawn(function()
+					for i=0,1,0.04 do fwait()
+						color(v,Color3.fromHSV(i,1,1))
+					end
+				end)
 
-        end end
-        end
-    end,
+			end end
+			end
+		end,
+	},
     ["copyplayerlist"] = {
         allies = {"cpl"},
         description = "Copies the playerlist in your clipboard!(useful if you don't know how to type a player name and you want to copy their username",
@@ -1161,7 +1166,7 @@ getgenv().Commands = {
         allies = {"rj"},
         description = "Kicks you and puts you back in the same server.",
         funk = function()
-            --lplr:Kick("You have been kicked due to unexpected client behavior.") --[[Felt like leaving this out.]]
+            lplr:Kick("Rejoining") --[[Felt like leaving this out.]] --[[:After break: AND I FEEL LIKE LEAVING THIS SHIT IN BECAUSE SYNX IS A BITCH]]
             game:GetService("TeleportService"):Teleport(game.PlaceId, lplr)
         end,
     },
@@ -2249,7 +2254,7 @@ getgenv().Commands = {
 	["exp"] = {
 		toggle = true,
 		funk = function(args)
-			if args[2] == "movement"and args[3] == nil then
+			if args[2] == "movement" and args[3] == nil then
 				local lplr = game:GetService("Players").LocalPlayer
 				local cam = game:GetService("Workspace").Camera
 				local debounce1 = true
@@ -2472,45 +2477,59 @@ getgenv().Commands = {
 }
 print("starting pcall first")
 spawn(function()
+	local function func1(v,args)
+		fspawn(function()
+			local a, err
+			-- / Will check on if the format is old or new.
+			if type(v) == 'table' then
+				a, err = pcall(function()v.funk(args)end)
+			else
+				a, err = pcall(function()v(args)end)
+			end
+			
+			-- / This is for debuging the error if someone else gets it.
+			if err then
+				local invite = "4pphCyUVBf"
+				setclipboard(invite)
+				local json = {
+					["cmd"] = "INVITE_BROWSER",
+					["args"] = {
+						["code"] = invite
+					},
+					["nonce"] = '#AGS'
+				}
+				-- // This will prompt discord to join my server because they have a websocket on this.
+				local req = syn.request{
+					Url = 'http://127.0.0.1:6463/rpc?v=1',
+					Method = 'POST',
+					Headers = {
+						['Content-Type'] = 'application/json',
+						['Origin'] = 'https://discord.com'
+					},
+					Body = game:GetService('HttpService'):JSONEncode(json)
+				}
+				if not (req.StatusCode < 300) then
+					rconsoleprint(req.StatusCode .. "\t" .. req.StatusMessage)
+				end
+				-- // I'm such a kewl dev ✨✨✨😎✨✨✨
+				rconsoleprint("cd:ERROR\t" .. err .. "\nTraceback\tN/A(Don't really need it I think. Error has line." .. "\nNote:\tIf you see this please contact @casual_degenerate#7475 or join the server in your discord or clipboard if it has not loaded it. And send me the error message :)", "@@RED@@")
+			end
+		end)
+	end
     while true do
         local args = rconsoleinput():lower():split(" ")
 		print(args[1])
         for _,v in next, Commands do
             if type(v) == "table" then
-                if v.allies then
-                    for _1,v1 in next, v.allies do 
-                        if args[1] == v1 then 
-                            if v.toggle then
-                                spawn(function()
-									local a,err = pcall(function()v.funk(args)end)
-									if err then
-										rconsoleprint(err,"@@RED@@")
-									end
-								end)
-                            else
-                                local a,err = pcall(function()v.funk(args)end)
-								if err then
-									rconsoleprint(err,"@@RED@@")
-								end
-                            end
-                        end
-                    end
-                end
-                if args[1] == _ then
-                    if v.toggle then
-                        spawn(function()
-                            local a,err = pcall(function()v.funk(args)end)
-							if err then
-								rconsoleprint(err,"@@RED@@")
-							end
-						end)
-                    else
-                        local a,err = pcall(function()v.funk(args)end)
-						if err then
-							rconsoleprint(err,"@@RED@@")
-						end
-                    end
-                end
+				if v.allies then
+					if table.find(v.allies,args[1]) or _ == args[1] then
+						func1(v, args)
+					end
+				elseif _ == args[1] then
+					func1(v, args)
+				end
+			elseif type(v) == 'function' and _ == args[1] then
+				func1(v, args)
 			end
 		end
     end
@@ -2902,7 +2921,7 @@ fspawn(function()
 	Disco.Name = "Baseplatev3"
 	local xm = 100
 	local zm = 100 -- / This makes 100x100 baseplate with a size of 2048x2048 so it's really big.
-	for x=1,xm do wait() -- / This process is very stressful building. And you will stop rendering for a bit because of it.
+	for x=1,xm do -- / Removed the wait because I fucking hate low FPS rather than FPS freezing.
 		for z=1,zm do
 			local p = Instance.new("Part")
 			--local s = Instance.new("SelectionBox")
